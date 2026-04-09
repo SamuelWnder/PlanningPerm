@@ -113,15 +113,15 @@ function TestimonialBanner({ name, location, quote }: { name: string; location: 
   return (
     <section className="bg-[#eaf5f5] py-10 px-4 sm:px-8">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div>
+        <div className="text-center sm:text-left w-full md:w-auto">
           <p className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[#0b1d28] mb-1">{name} · {location}</p>
-          <Stars />
-          <p className="text-xl italic font-medium text-[#0b1d28] mt-3 max-w-xl">
-            "{quote}"
+          <div className="flex justify-center sm:justify-start"><Stars /></div>
+          <p className="text-lg sm:text-xl italic font-medium text-[#0b1d28] mt-3 max-w-xl">
+            &ldquo;{quote}&rdquo;
           </p>
         </div>
-        <div className="shrink-0">
-          <Link href="/dashboard/projects/new" className="border-2 border-[#0b1d28] text-[#0b1d28] rounded-full px-8 py-3 text-sm font-semibold hover:bg-[#0b1d28] hover:text-white transition-colors whitespace-nowrap">
+        <div className="shrink-0 w-full sm:w-auto text-center sm:text-left">
+          <Link href="/dashboard/projects/new" className="inline-block border-2 border-[#0b1d28] text-[#0b1d28] rounded-full px-8 py-3 text-sm font-semibold hover:bg-[#0b1d28] hover:text-white transition-colors whitespace-nowrap">
             Check my property
           </Link>
         </div>
@@ -237,22 +237,22 @@ export default function HomePage() {
           </svg>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 py-16 sm:py-24 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-16 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 py-14 sm:py-24 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-16 items-center">
           {/* Left — text */}
-          <div>
+          <div className="text-center sm:text-left">
 
-            <h1 className="text-3xl sm:text-5xl xl:text-7xl font-normal text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
-              Know before you build.
+            <h1 className="text-4xl sm:text-5xl xl:text-7xl font-normal text-white leading-[1.05] tracking-tight mb-5" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+              Know before<br className="sm:hidden" /> you build.
             </h1>
-            <p className="text-[rgba(255,255,255,0.70)] text-lg leading-relaxed max-w-lg mb-10">
-              Real approval odds for your property — based on your council's actual decision history, not generic advice. 20 site checks, AI-drafted documents, ready in under 2 minutes.
+            <p className="text-[rgba(255,255,255,0.70)] text-base sm:text-lg leading-relaxed max-w-lg mb-8 mx-auto sm:mx-0">
+              Real approval odds for your property — based on your council's actual decision history. 20 site checks, AI-drafted documents, ready in under 2 minutes.
             </p>
 
             {/* Postcode widget */}
-            <form onSubmit={handleSearch} className="bg-white rounded-3xl p-7 max-w-[560px]" style={{ boxShadow: "0 8px 48px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.16)" }}>
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#2d3843] mb-4">Start with your property address</p>
-              <div className="flex items-center gap-4 bg-[#eaf5f5] rounded-2xl px-5 py-4 mb-5">
-                <svg className="w-6 h-6 text-[#D4922A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <form onSubmit={handleSearch} className="bg-white rounded-3xl p-4 sm:p-7 w-full sm:max-w-[560px] mx-auto sm:mx-0" style={{ boxShadow: "0 8px 48px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.16)" }}>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#2d3843] mb-3">Start with your property address</p>
+              <div className="flex items-center gap-3 bg-[#eaf5f5] rounded-2xl px-4 py-3.5 mb-3">
+                <svg className="w-5 h-5 text-[#D4922A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
@@ -260,14 +260,14 @@ export default function HomePage() {
                   value={postcode}
                   onChange={(e) => setPostcode(e.target.value)}
                   placeholder="Enter your postcode or address"
-                  className="flex-1 text-lg text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
+                  className="flex-1 text-base text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
                   style={{ fontFamily: "'Euclid Circular B', sans-serif" }}
                 />
               </div>
-              <button type="submit" className="w-full bg-[#D4922A] text-white rounded-2xl py-5 text-base font-bold hover:bg-[#b87820] transition-colors tracking-wide">
+              <button type="submit" className="w-full bg-[#D4922A] text-white rounded-2xl py-4 text-base font-bold hover:bg-[#b87820] transition-colors tracking-wide">
                 Get my free planning score →
               </button>
-              <p className="text-center text-xs text-[#2d3843] mt-4 opacity-60">Free preview · Full report &amp; documents £20 · No account needed</p>
+              <p className="text-center text-xs text-[#2d3843] mt-3 opacity-60">Free preview · Full report &amp; documents £20 · No account needed</p>
             </form>
 
           </div>
@@ -345,23 +345,23 @@ export default function HomePage() {
       />
 
       {/* ── 4. SOCIAL PROOF / BIG QUOTE ────────────────────────────────────── */}
-      <section className="bg-white py-16 sm:py-28 px-4 sm:px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="rounded-2xl overflow-hidden h-[280px] sm:h-[420px]">
+      <section className="bg-white py-14 sm:py-28 px-4 sm:px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 items-center">
+          <div className="rounded-2xl overflow-hidden h-[220px] sm:h-[420px]">
             <img
               src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&auto=format&fit=crop"
               alt="Homeowners reviewing their planning report"
               className="w-full h-full object-cover"
             />
           </div>
-          <div>
-            <p className="text-xl sm:text-3xl xl:text-4xl font-normal italic text-[#0b1d28] leading-[1.3] mb-8" style={{ fontFamily: "'Clash Display', sans-serif" }}>
-              "PlanningPerm showed me exactly what conservation area rules applied — and what didn't. We got permission first time."
+          <div className="text-center sm:text-left">
+            <p className="text-xl sm:text-3xl xl:text-4xl font-normal italic text-[#0b1d28] leading-[1.3] mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+              &ldquo;PlanningPerm showed me exactly what conservation area rules applied — and what didn&apos;t. We got permission first time.&rdquo;
             </p>
             <p className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[#2d3843] mb-2">
               Priya S. · Hackney, London
             </p>
-            <Stars />
+            <div className="flex justify-center sm:justify-start"><Stars /></div>
           </div>
         </div>
       </section>
@@ -429,19 +429,19 @@ export default function HomePage() {
       />
 
       {/* ── 7. BUILT ON REAL DATA ──────────────────────────────────────────── */}
-      <section className="bg-white py-16 sm:py-28 px-4 sm:px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl sm:text-5xl font-normal text-[#0b1d28] leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+      <section className="bg-white py-14 sm:py-28 px-4 sm:px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 items-center">
+          <div className="text-center sm:text-left">
+            <h2 className="text-3xl sm:text-5xl font-normal text-[#0b1d28] leading-[1.05] tracking-tight mb-5" style={{ fontFamily: "'Clash Display', sans-serif" }}>
               Built on real<br />planning data.<br />Not guesswork.
             </h2>
             <p className="text-[#2d3843] leading-relaxed mb-3 text-base">
-              If your council is approving 89% of rear extensions in your postcode, you'll know. If an Article 4 direction removes your permitted development rights, you'll know that too — before you speak to an architect.
+              If your council is approving 89% of rear extensions in your postcode, you&apos;ll know. If an Article 4 direction removes your permitted development rights, you&apos;ll know that too — before you speak to an architect.
             </p>
-            <p className="text-[#2d3843] leading-relaxed mb-10 text-base font-medium" style={{ color: "rgb(55,176,170)" }}>
+            <p className="leading-relaxed mb-8 text-base font-medium" style={{ color: "rgb(55,176,170)" }}>
               Based on 23 million real UK planning decisions — not a formula we invented.
             </p>
-            <Link href="/dashboard/projects/new" className="border-2 border-[#0b1d28] text-[#0b1d28] rounded-full px-8 py-3.5 text-sm font-semibold hover:bg-[#0b1d28] hover:text-white transition-colors">
+            <Link href="/dashboard/projects/new" className="inline-block border-2 border-[#0b1d28] text-[#0b1d28] rounded-full px-8 py-3.5 text-sm font-semibold hover:bg-[#0b1d28] hover:text-white transition-colors">
               Check my property — it&apos;s free
             </Link>
           </div>
