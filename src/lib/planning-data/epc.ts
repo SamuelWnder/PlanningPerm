@@ -90,7 +90,6 @@ export async function getEpcData(address: string): Promise<EpcResult> {
         Accept: "application/json",
         Authorization: `Basic ${token}`,
       },
-      cache: "no-store", // avoid stale cached results during testing
     });
 
     if (!resp.ok) {
