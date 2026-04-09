@@ -51,3 +51,6 @@ CLAUDE.md
 
 # Root-level video files (originals — served copies live in public/)
 /*.mp4
+
+# Data dumps
+planning-application.json
