@@ -20,12 +20,19 @@ export async function GET(request: NextRequest) {
   const latitude  = parseFloat(lat);
   const longitude = parseFloat(lng);
 
-  if (isNaN(latitude) || isNaN(longitude)) {
+  if (
+    isNaN(latitude)  || isNaN(longitude)  ||
+    latitude  < 49.5 || latitude  > 60.9  || // UK bounding box
+    longitude < -8.2 || longitude > 2.0
+  ) {
     return NextResponse.json(
-      { error: "Invalid coordinates" },
+      { error: "Coordinates must be within the United Kingdom" },
       { status: 400 }
     );
   }
+
+  // Truncate address to prevent oversized requests
+  const safeAddress = address.slice(0, 200);
 
   try {
     // Run all four sources in parallel
@@ -33,7 +40,7 @@ export async function GET(request: NextRequest) {
       getConstraintsAtPoint(latitude, longitude),
       getNhleListedBuildings(latitude, longitude),
       getEaFloodZone(latitude, longitude),
-      address ? getEpcData(address) : Promise.resolve(null),
+      safeAddress ? getEpcData(safeAddress) : Promise.resolve(null),
     ]);
 
     const merged = {
