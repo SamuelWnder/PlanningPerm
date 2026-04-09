@@ -63,8 +63,6 @@ const PROJECT_TYPES = [
   { id: "change",       label: "Change of use",                 icon: Repeat2,       desc: "Converting a property to a different planning use class"  },
 ];
 
-const TIMELINES = ["As soon as possible", "Within 3 months", "3–6 months", "6–12 months", "Just exploring"];
-
 const USE_CLASSES = [
   "Residential (C3)",
   "Flat / HMO (C4)",
@@ -266,18 +264,17 @@ function NewProjectContent() {
   const [constraints, setConstraints]   = useState<ConstraintResult | null>(null);
   const [constraintsLoading, setConstraintsLoading] = useState(false);
 
-  // Step 2
-  const [projectType, setProjectType] = useState("");
-
-  // Step 3 — property details
+  // Step 2 — property details
   const [propertyType, setPropertyType] = useState("");
   const [tenure, setTenure]             = useState("");
 
+  // Step 3 — project type
+  const [projectType, setProjectType] = useState("");
+
   // Step 4 — project details (common)
-  const [size, setSize]           = useState("");
-  const [roof, setRoof]           = useState("");
-  const [material, setMaterial]   = useState("");
-  const [timeline, setTimeline]   = useState("");
+  const [size, setSize]         = useState("");
+  const [roof, setRoof]         = useState("");
+  const [material, setMaterial] = useState("");
   const [description, setDescription] = useState("");
 
   // Step 4 — garage extras
@@ -318,10 +315,9 @@ function NewProjectContent() {
 
   const canAdvance = (() => {
     if (step === 1) return resolved !== null;
-    if (step === 2) return projectType !== "";
-    if (step === 3) return propertyType !== "" && tenure !== "";
+    if (step === 2) return propertyType !== "" && tenure !== "";
+    if (step === 3) return projectType !== "";
     if (step === 4) {
-      if (!timeline) return false;
       if (typeConfig.showTreeExtras)   return treeWorkType !== "" && treeTPO !== "";
       if (typeConfig.showChangeExtras) return currentUse !== "" && proposedUse !== "";
       return size !== "";
@@ -334,8 +330,8 @@ function NewProjectContent() {
 
   const STEP_TITLES: Record<number, string> = {
     1: "What's the address?",
-    2: "What are you planning to build?",
-    3: "About your property",
+    2: "About your property",
+    3: "What are you planning to build?",
     4: selectedType ? `Tell us about the ${selectedType.label.toLowerCase()}` : "Tell us a bit more",
     5: "Ready to run your check",
   };
@@ -450,7 +446,6 @@ function NewProjectContent() {
       if (roof && typeConfig.showRoof)         rows.push({ label: "Roof type",  value: roof });
       if (material && typeConfig.showMaterials) rows.push({ label: "Materials", value: material });
     }
-    rows.push({ label: "Timeline", value: timeline });
     if (description) rows.push({ label: "Notes", value: description });
     return rows;
   })();
@@ -669,36 +664,8 @@ function NewProjectContent() {
 
           <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
 
-          {/* ── Step 2: Project type ─────────────────────────────────────── */}
+          {/* ── Step 2: Property details ─────────────────────────────────── */}
           {step === 2 && (
-            <div style={{ ...CARD, padding: "32px" }}>
-              <p style={{ fontSize: 16, color: "rgb(100,120,130)", margin: "0 0 24px 0" }}>Select the type of work you&apos;re planning</p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                {PROJECT_TYPES.map((type) => {
-                  const Icon = type.icon;
-                  const selected = projectType === type.id;
-                  return (
-                    <button
-                      key={type.id}
-                      onClick={() => setProjectType(type.id)}
-                      style={{ textAlign: "left", border: `2px solid ${selected ? "rgb(55,176,170)" : "rgb(226,240,240)"}`, borderRadius: 16, padding: "18px 20px", background: selected ? "rgba(55,176,170,0.06)" : "white", cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 14, transition: "all 0.15s" }}
-                    >
-                      <div style={{ width: 40, height: 40, borderRadius: 10, background: selected ? "rgb(55,176,170)" : "rgb(234,245,245)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "background 0.15s" }}>
-                        <Icon size={20} color={selected ? "white" : "rgb(100,120,130)"} strokeWidth={1.8} />
-                      </div>
-                      <div>
-                        <p style={{ fontSize: 15, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 3px 0" }}>{type.label}</p>
-                        <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: 0, lineHeight: 1.4 }}>{type.desc}</p>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* ── Step 3: Property details ─────────────────────────────────── */}
-          {step === 3 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
               {/* Property type */}
@@ -749,6 +716,34 @@ function NewProjectContent() {
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Step 3: Project type ─────────────────────────────────────── */}
+          {step === 3 && (
+            <div style={{ ...CARD, padding: "32px" }}>
+              <p style={{ fontSize: 16, color: "rgb(100,120,130)", margin: "0 0 24px 0" }}>Select the type of work you&apos;re planning</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {PROJECT_TYPES.map((type) => {
+                  const Icon = type.icon;
+                  const selected = projectType === type.id;
+                  return (
+                    <button
+                      key={type.id}
+                      onClick={() => setProjectType(type.id)}
+                      style={{ textAlign: "left", border: `2px solid ${selected ? "rgb(55,176,170)" : "rgb(226,240,240)"}`, borderRadius: 16, padding: "18px 20px", background: selected ? "rgba(55,176,170,0.06)" : "white", cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 14, transition: "all 0.15s" }}
+                    >
+                      <div style={{ width: 40, height: 40, borderRadius: 10, background: selected ? "rgb(55,176,170)" : "rgb(234,245,245)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "background 0.15s" }}>
+                        <Icon size={20} color={selected ? "white" : "rgb(100,120,130)"} strokeWidth={1.8} />
+                      </div>
+                      <div>
+                        <p style={{ fontSize: 15, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 3px 0" }}>{type.label}</p>
+                        <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: 0, lineHeight: 1.4 }}>{type.desc}</p>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -890,17 +885,6 @@ function NewProjectContent() {
                 </>
               )}
 
-              {/* Timeline — shown for all types */}
-              <div style={{ ...CARD, padding: "28px 32px" }}>
-                <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>When are you hoping to start?</p>
-                <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Helps us prioritise what&apos;s most useful for you</p>
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  {TIMELINES.map((opt) => (
-                    <PillBtn key={opt} label={opt} selected={timeline === opt} onClick={() => setTimeline(opt)} />
-                  ))}
-                </div>
-              </div>
-
               {/* Notes — shown for all types */}
               <div style={{ ...CARD, padding: "28px 32px" }}>
                 <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>
@@ -965,7 +949,6 @@ function NewProjectContent() {
                     size,
                     roof,
                     material,
-                    timeline,
                     description,
                     latitude:   resolved?.latitude  ?? 0,
                     longitude:  resolved?.longitude ?? 0,
