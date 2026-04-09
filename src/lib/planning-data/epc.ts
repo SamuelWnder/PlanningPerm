@@ -37,8 +37,16 @@ function parseYearBand(band: string | null): number | null {
   return match ? parseInt(match[1], 10) : null;
 }
 
+/** Extract a UK postcode from an address string, e.g. "W8 7AX" from "21 Campden Hill Gardens, London, W8 7AX" */
+function extractPostcode(address: string): string | null {
+  const m = address.match(/\b([A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2})\b/i);
+  return m ? m[1].toUpperCase().replace(/\s+/, " ") : null;
+}
+
 /**
  * Look up EPC data for a property by address string.
+ * Extracts the postcode and searches by that — the full-address ?address= param
+ * returns an empty body from the EPC API for comma-separated addresses.
  * Returns null if EPC_API_EMAIL or EPC_API_KEY are not set.
  */
 export async function getEpcData(address: string): Promise<EpcResult> {
@@ -65,14 +73,17 @@ export async function getEpcData(address: string): Promise<EpcResult> {
   try {
     const token = btoa(`${email}:${apiKey}`);
 
-    // Search by address — EPC API does fuzzy address matching
-    // Strip country suffix and normalise for best results
-    const query = address.replace(/,?\s*(england|wales|uk|united kingdom)$/i, "").trim();
+    // Prefer postcode search — the ?address= param silently returns no results
+    // for full comma-separated address strings from OS Places.
+    const postcode = extractPostcode(address);
 
-    const params = new URLSearchParams({
-      address: query,
-      size: "5",
-    });
+    const params = postcode
+      ? new URLSearchParams({ postcode, size: "10" })
+      : new URLSearchParams({
+          // Fallback: strip commas, use just street + first part
+          address: address.split(",")[0].trim(),
+          size: "5",
+        });
 
     const resp = await fetch(`${EPC_BASE}?${params}`, {
       headers: {
@@ -87,15 +98,21 @@ export async function getEpcData(address: string): Promise<EpcResult> {
       return empty;
     }
 
-    const data = await resp.json() as {
-      rows?: Array<Record<string, string>>;
-    };
+    const text = await resp.text();
+    if (!text) return empty; // API returns empty body when no results
 
+    const data = JSON.parse(text) as { rows?: Array<Record<string, string>> };
     const rows = data.rows ?? [];
     if (rows.length === 0) return empty;
 
-    // Take the most recent certificate (first row — API returns newest first)
-    const row = rows[0];
+    // When searching by postcode, try to pick the row whose EPC address best
+    // matches the first token of our address (house number or name).
+    const firstToken = address.split(/[\s,]/)[0].toLowerCase();
+    const bestRow =
+      rows.find((r) => (r["address"] ?? "").toLowerCase().startsWith(firstToken)) ??
+      rows[0];
+
+    const row = bestRow;
 
     const ageBand = row["construction-age-band"] ?? null;
 
