@@ -3,12 +3,16 @@ import Stripe from "stripe";
 
 
 export const runtime = 'edge';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
-  apiVersion: "2025-03-31.basil",
-});
+
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error("STRIPE_SECRET_KEY is not configured");
+  return new Stripe(key, { apiVersion: "2025-03-31.basil" });
+}
 
 export async function POST(req: NextRequest) {
   try {
+    const stripe = getStripe();
     const { address } = await req.json();
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 

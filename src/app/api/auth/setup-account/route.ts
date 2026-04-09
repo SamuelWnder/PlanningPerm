@@ -5,13 +5,17 @@ import type { StoredProject, AssessmentResult } from "@/lib/project-store";
 
 
 export const runtime = 'edge';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
-  apiVersion: "2025-03-31.basil",
-});
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error("STRIPE_SECRET_KEY is not configured");
+  return new Stripe(key, { apiVersion: "2025-03-31.basil" });
+}
 
 export async function POST(req: NextRequest) {
+  const stripe = getStripe();
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+
   try {
     const body = await req.json() as {
       stripeSessionId: string;

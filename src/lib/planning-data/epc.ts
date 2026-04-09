@@ -63,7 +63,7 @@ export async function getEpcData(address: string): Promise<EpcResult> {
   }
 
   try {
-    const token = Buffer.from(`${email}:${apiKey}`).toString("base64");
+    const token = btoa(`${email}:${apiKey}`);
 
     // Search by address — EPC API does fuzzy address matching
     // Strip country suffix and normalise for best results
