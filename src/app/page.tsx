@@ -198,8 +198,12 @@ export default function HomePage() {
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#0b1d28]">
-          {["For homeowners", "For professionals", "How it works", "Pricing"].map((l) => (
-            <a key={l} href="#" className="hover:text-[#D4922A] transition-colors whitespace-nowrap">{l}</a>
+          {[
+            ["How it works", "#how-it-works"],
+            ["Pricing",       "#pricing"],
+            ["Blog",          "/blog"],
+          ].map(([label, href]) => (
+            <a key={label} href={href} className="hover:text-[#D4922A] transition-colors whitespace-nowrap">{label}</a>
           ))}
         </div>
 
@@ -299,7 +303,7 @@ export default function HomePage() {
                   style={{ position: "absolute", inset: 0, opacity: fading ? 0 : 1, transition: "opacity 0.8s ease" }}
                 />
               )}
-              {/* Incoming video (fades in) */}
+              {/* Incoming video — always visible; outgoing fades out on top */}
               <video
                 ref={videoRef}
                 key={`curr-${videos[videoIdx]}`}
@@ -309,7 +313,7 @@ export default function HomePage() {
                 playsInline
                 onEnded={() => advanceVideo((videoIdx + 1) % videos.length)}
                 className="w-full h-full object-cover object-center scale-110"
-                style={{ position: "absolute", inset: 0, opacity: fading ? 1 : 1, transition: "opacity 0.8s ease" }}
+                style={{ position: "absolute", inset: 0 }}
               />
             </div>
             {/* Dot indicators */}
@@ -380,7 +384,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 5. THREE-COLUMN FEATURES ───────────────────────────────────────── */}
-      <section className="bg-white py-20 px-8 border-t border-gray-100">
+      <section id="how-it-works" className="bg-white py-20 px-8 border-t border-gray-100">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             {[
@@ -482,7 +486,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 8. COMPARISON TABLE ────────────────────────────────────────────── */}
-      <section className="bg-[#eaf5f5] py-28 px-8">
+      <section id="pricing" className="bg-[#eaf5f5] py-28 px-8">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl font-normal text-[#0b1d28] tracking-tight text-center mb-14" style={{ fontFamily: "'Clash Display', sans-serif" }}>
             {BRAND} vs. the<br />alternatives
@@ -543,8 +547,8 @@ export default function HomePage() {
               </div>
               <p className="text-[#2d3843] text-sm mb-1">AI-powered planning permission guidance</p>
               <p className="text-[#2d3843] text-sm mb-1">for UK homeowners.</p>
-              <a href="mailto:hello@planningperm.co.uk" className="text-[#D4922A] text-sm font-semibold hover:underline mt-3 inline-block">
-                hello@planningperm.co.uk
+              <a href="mailto:hello@planningperm.com" className="text-[#D4922A] text-sm font-semibold hover:underline mt-3 inline-block">
+                hello@planningperm.com
               </a>
             </div>
 
@@ -566,7 +570,7 @@ export default function HomePage() {
                 { heading: "Legal", links: [
                   ["Privacy policy", "/privacy"],
                   ["Terms & conditions", "/terms"],
-                  ["Complaints", "mailto:hello@planningperm.co.uk?subject=Complaint"],
+                  ["Complaints", "mailto:hello@planningperm.com?subject=Complaint"],
                 ]},
               ].map((col) => (
                 <div key={col.heading}>

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Real approval odds for your property based on your council's actual decision history. 20 site checks, AI-drafted documents, free in under 2 minutes.",
   openGraph: {
-    title: "Planning Perm",
+    title: "PlanningPerm — Know Before You Build",
     description: "AI-powered planning permission guidance for UK homeowners.",
     type: "website",
   },
@@ -30,8 +30,6 @@ export default function RootLayout({
       className={`${rethink.variable} h-full antialiased`}
     >
       <head>
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
         {/* Privacy-friendly analytics by Plausible */}
         <script async src="https://plausible.io/js/pa-Qdczfs_XyMHR9ouVXG2b5.js"></script>
         <script dangerouslySetInnerHTML={{ __html: `window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()` }} />

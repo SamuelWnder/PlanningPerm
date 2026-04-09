@@ -461,7 +461,7 @@ function NewProjectContent() {
   // ── Gate: used their free check, no active preview
   if (gated === "used") {
     return (
-      <div style={{ fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif', minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", padding: 24, textAlign: "center" }}>
+      <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", padding: 24, textAlign: "center" }}>
         <div style={{ width: 60, height: 60, borderRadius: 16, background: "#D4922A", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 28 }}>
           <span style={{ fontSize: 18, fontWeight: 700, color: "white" }}>PP</span>
         </div>
@@ -533,7 +533,7 @@ function NewProjectContent() {
   }
 
   return (
-    <div style={{ fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
 
       <main>
         {/* ══ HERO ════════════════════════════════════════════════════════ */}
@@ -548,7 +548,7 @@ function NewProjectContent() {
                 <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.5)", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.1em" }}>
                   Step {step} of {TOTAL_STEPS}
                 </p>
-                <h1 style={{ fontSize: 36, fontWeight: 700, color: "white", margin: 0, letterSpacing: -0.5 }}>
+                <h1 style={{ fontSize: 36, fontWeight: 400, color: "white", margin: 0, letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif" }}>
                   {STEP_TITLES[step]}
                 </h1>
               </div>
@@ -988,7 +988,9 @@ function NewProjectContent() {
                   sessionStorage.removeItem("pp_latest_project_id");
                   router.push("/dashboard/projects/generated");
                 }}
-                style={{ width: "100%", background: "rgb(11,29,40)", color: "white", border: "none", borderRadius: 16, padding: "20px 32px", fontSize: 18, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}
+                style={{ width: "100%", background: "#D4922A", color: "white", border: "none", borderRadius: 16, padding: "20px 32px", fontSize: 18, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, transition: "background 0.2s" }}
+                onMouseEnter={e => (e.currentTarget.style.background = "#b87820")}
+                onMouseLeave={e => (e.currentTarget.style.background = "#D4922A")}
               >
                 Run my planning check
                 <ArrowRight size={20} strokeWidth={2.5} />
