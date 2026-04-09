@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FolderOpen, FileText, MapPin, Bell, User } from "lucide-react";
+import { Home, FolderOpen, FileText, Bell, User } from "lucide-react";
 import { useGreeting } from "@/lib/use-greeting";
 
 const NAV_ITEMS = [
-  { label: "Home",       href: "/dashboard",           icon: Home       },
-  { label: "Projects",   href: "/dashboard/projects",  icon: FolderOpen },
-  { label: "Documents",  href: "/dashboard/documents", icon: FileText   },
-  { label: "Area Intel", href: "/area",                icon: MapPin     },
+  { label: "Home",      href: "/dashboard",           icon: Home       },
+  { label: "Projects",  href: "/dashboard/projects",  icon: FolderOpen },
+  { label: "Documents", href: "/dashboard/documents", icon: FileText   },
 ];
 
 function LogoIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {

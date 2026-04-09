@@ -650,24 +650,9 @@ function NewProjectContent() {
                   </div>
                 )}
               </div>
-              <div style={{ ...CARD, padding: "24px 28px" }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 14px 0", textTransform: "uppercase", letterSpacing: "0.06em" }}>20 checks run automatically against national planning data</p>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-                  {[
-                    "Conservation area", "Listed building", "Locally listed building",
-                    "Heritage at risk", "Green belt", "Flood zone (EA verified)",
-                    "Article 4 direction", "AONB", "National Park",
-                    "Tree Preservation Order", "Ancient woodland", "Scheduled monument",
-                    "Archaeological priority", "SSSI", "Special Area of Conservation",
-                    "Special Protection Area", "Ramsar site", "Registered Historic Park",
-                    "World Heritage Site", "Local Nature Reserve",
-                  ].map((item) => (
-                    <div key={item} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <div style={{ width: 7, height: 7, borderRadius: "50%", background: "rgb(55,176,170)", flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, color: "rgb(60,80,90)" }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 16px", background: "rgba(55,176,170,0.07)", border: "1px solid rgba(55,176,170,0.2)", borderRadius: 12 }}>
+                <div style={{ width: 7, height: 7, borderRadius: "50%", background: "rgb(55,176,170)", flexShrink: 0 }} />
+                <span style={{ fontSize: 13, color: "rgb(45,100,95)", fontWeight: 500 }}>20 checks run automatically against national planning data</span>
               </div>
             </div>
           )}
