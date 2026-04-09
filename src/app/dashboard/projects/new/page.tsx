@@ -270,6 +270,8 @@ function NewProjectContent() {
   // Step 2 — property details
   const [propertyType, setPropertyType] = useState("");
   const [tenure, setTenure]             = useState("");
+  const [epcPrefilled, setEpcPrefilled] = useState(false);
+  const [showPropertyGrid, setShowPropertyGrid] = useState(false);
 
   // Step 3 — project type
   const [projectType, setProjectType] = useState("");
@@ -417,6 +419,34 @@ function NewProjectContent() {
     }
   };
 
+  // ── EPC → propertyType auto-fill ─────────────────────────────────────────
+  function mapEpcToPropertyType(epc: ConstraintResult["epc"]): string | null {
+    if (!epc?.found) return null;
+    const pt = (epc.property_type ?? "").toLowerCase();
+    const bf = (epc.built_form    ?? "").toLowerCase();
+    if (pt === "flat")       return "Flat / apartment";
+    if (pt === "maisonette") return "Maisonette";
+    if (pt === "bungalow")   return "Bungalow";
+    if (pt === "house") {
+      if (bf.includes("detached") && !bf.includes("semi")) return "Detached house";
+      if (bf.includes("semi"))                              return "Semi-detached";
+      if (bf.includes("end-terrace") || bf.includes("enclosed end-terrace")) return "End-of-terrace";
+      if (bf.includes("mid-terrace") || bf.includes("enclosed mid-terrace")) return "Mid-terrace";
+    }
+    return null;
+  }
+
+  useEffect(() => {
+    if (!constraints?.epc?.found) return;
+    const mapped = mapEpcToPropertyType(constraints.epc);
+    if (mapped && !epcPrefilled) {
+      setPropertyType(mapped);
+      setEpcPrefilled(true);
+      setShowPropertyGrid(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [constraints]);
+
   const CARD = {
     background: "white",
     borderRadius: 24,
@@ -431,6 +461,8 @@ function NewProjectContent() {
       { label: "Project type", value: selectedType?.label ?? "" },
       { label: "Property type", value: propertyType },
       { label: "Tenure",       value: tenure },
+      ...(constraints?.epc?.total_floor_area ? [{ label: "Floor area (EPC)", value: `${constraints.epc.total_floor_area} m²` }] : []),
+      ...(constraints?.epc?.construction_age_band ? [{ label: "Built (EPC)", value: constraints.epc.construction_age_band.replace(/^(england and wales|scotland|northern ireland):\s*/i, "") }] : []),
     ];
     if (typeConfig.showTreeExtras) {
       if (treeWorkType)  rows.push({ label: "Work type",     value: treeWorkType });
@@ -669,35 +701,85 @@ function NewProjectContent() {
           {step === 2 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
-              {/* Property type */}
+              {/* Property type — EPC confirmation or manual grid */}
               <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                 <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What type of property is it?</p>
                 <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Affects permitted development rights and planning rules</p>
-                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
-                  {[
-                    { id: "Detached house",    desc: "Free-standing on all sides" },
-                    { id: "Semi-detached",      desc: "Shares one party wall" },
-                    { id: "Mid-terrace",        desc: "Walls on both sides" },
-                    { id: "End-of-terrace",     desc: "One side attached" },
-                    { id: "Flat / apartment",   desc: "Usually no PD rights" },
-                    { id: "Maisonette",         desc: "Multi-floor flat" },
-                    { id: "Bungalow",           desc: "Single-storey house" },
-                    { id: "Other",              desc: "Listed, barn, other" },
-                  ].map((opt) => (
-                    <button
-                      key={opt.id}
-                      onClick={() => setPropertyType(opt.id)}
-                      style={{ textAlign: "left", border: `2px solid ${propertyType === opt.id ? "rgb(55,176,170)" : "rgb(226,240,240)"}`, borderRadius: 14, padding: "16px 18px", background: propertyType === opt.id ? "rgba(55,176,170,0.06)" : "white", cursor: "pointer", transition: "all 0.15s" }}
-                    >
-                      <p style={{ fontSize: 15, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 2px 0" }}>{opt.id}</p>
-                      <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: 0 }}>{opt.desc}</p>
-                    </button>
-                  ))}
-                </div>
+
+                {/* EPC confirmation card */}
+                {epcPrefilled && !showPropertyGrid && constraints?.epc && (
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(55,176,170,0.07)", border: "1.5px solid rgba(55,176,170,0.25)", borderRadius: 14, padding: "14px 18px", marginBottom: 12 }}>
+                      <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(55,176,170,0.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Check size={18} color="rgb(55,176,170)" strokeWidth={2.5} />
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)", margin: "0 0 1px 0", textTransform: "uppercase", letterSpacing: "0.06em" }}>Found on EPC register</p>
+                        <p style={{ fontSize: 16, fontWeight: 700, color: "rgb(11,29,40)", margin: 0 }}>{propertyType}</p>
+                      </div>
+                      <button
+                        onClick={() => setShowPropertyGrid(true)}
+                        style={{ fontSize: 13, fontWeight: 600, color: "rgb(100,120,130)", background: "none", border: "1.5px solid rgb(226,240,240)", borderRadius: 8, padding: "6px 14px", cursor: "pointer", flexShrink: 0 }}
+                      >
+                        Change
+                      </button>
+                    </div>
+                    {/* EPC extra details */}
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 4 }}>
+                      {constraints.epc.construction_age_band && (
+                        <span style={{ fontSize: 12, background: "rgb(234,245,245)", color: "rgb(45,100,95)", borderRadius: 8, padding: "4px 12px", fontWeight: 500 }}>
+                          Built: {constraints.epc.construction_age_band.replace(/^(england and wales|scotland|northern ireland):\s*/i, "")}
+                        </span>
+                      )}
+                      {constraints.epc.total_floor_area && (
+                        <span style={{ fontSize: 12, background: "rgb(234,245,245)", color: "rgb(45,100,95)", borderRadius: 8, padding: "4px 12px", fontWeight: 500 }}>
+                          Floor area: {constraints.epc.total_floor_area} m²
+                        </span>
+                      )}
+                      {constraints.epc.current_energy_rating && (
+                        <span style={{ fontSize: 12, background: "rgb(234,245,245)", color: "rgb(45,100,95)", borderRadius: 8, padding: "4px 12px", fontWeight: 500 }}>
+                          EPC rating: {constraints.epc.current_energy_rating}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Manual grid — shown when no EPC, or user clicks Change */}
+                {(!epcPrefilled || showPropertyGrid) && (
+                  <div>
+                    {showPropertyGrid && (
+                      <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: "0 0 14px 0" }}>
+                        Select the correct type — EPC data has been pre-selected but you can change it.
+                      </p>
+                    )}
+                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
+                      {[
+                        { id: "Detached house",    desc: "Free-standing on all sides" },
+                        { id: "Semi-detached",      desc: "Shares one party wall" },
+                        { id: "Mid-terrace",        desc: "Walls on both sides" },
+                        { id: "End-of-terrace",     desc: "One side attached" },
+                        { id: "Flat / apartment",   desc: "Usually no PD rights" },
+                        { id: "Maisonette",         desc: "Multi-floor flat" },
+                        { id: "Bungalow",           desc: "Single-storey house" },
+                        { id: "Other",              desc: "Listed, barn, other" },
+                      ].map((opt) => (
+                        <button
+                          key={opt.id}
+                          onClick={() => { setPropertyType(opt.id); if (showPropertyGrid) setShowPropertyGrid(false); }}
+                          style={{ textAlign: "left", border: `2px solid ${propertyType === opt.id ? "rgb(55,176,170)" : "rgb(226,240,240)"}`, borderRadius: 14, padding: "16px 18px", background: propertyType === opt.id ? "rgba(55,176,170,0.06)" : "white", cursor: "pointer", transition: "all 0.15s" }}
+                        >
+                          <p style={{ fontSize: 15, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 2px 0" }}>{opt.id}</p>
+                          <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: 0 }}>{opt.desc}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Tenure */}
-              <div style={{ ...CARD, padding: "28px 32px" }}>
+              <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                 <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the ownership status?</p>
                 <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Leasehold properties may need landlord consent in addition to planning</p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
