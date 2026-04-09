@@ -50,8 +50,22 @@ interface OsDpa {
   LAT: number;
 }
 
+// OS Places also returns LPI (Local Property Identifier) records
+interface OsLpi {
+  UPRN: string;
+  ADDRESS: string;
+  POSTCODE_LOCATOR: string;
+  LOCAL_CUSTODIAN_CODE: number;
+  LOCAL_CUSTODIAN_CODE_DESCRIPTION: string;
+  X_COORDINATE: number;
+  Y_COORDINATE: number;
+  LNG: number;
+  LAT: number;
+}
+
 interface OsResult {
   DPA?: OsDpa;
+  LPI?: OsLpi;
 }
 
 interface OsResponse {
@@ -84,12 +98,20 @@ export async function autocompleteAddress(
     if (!resp.ok) return fallbackPostcodeAutocomplete(query);
 
     const data: OsResponse = await resp.json();
-    return (data.results || [])
-      .filter((r) => r.DPA)
-      .map((r) => ({
-        text: r.DPA!.ADDRESS,
-        uprn: r.DPA!.UPRN,
-      }));
+    const seen = new Set<string>();
+    const results: AddressAutocompleteResult[] = [];
+
+    for (const r of data.results || []) {
+      // Prefer DPA (postal address) over LPI (property identifier)
+      const match = r.DPA ?? r.LPI;
+      if (!match) continue;
+      const text = match.ADDRESS;
+      if (!text || seen.has(text)) continue;
+      seen.add(text);
+      results.push({ text, uprn: match.UPRN ?? null });
+    }
+
+    return results.length > 0 ? results : fallbackPostcodeAutocomplete(query);
   } catch {
     return fallbackPostcodeAutocomplete(query);
   }
