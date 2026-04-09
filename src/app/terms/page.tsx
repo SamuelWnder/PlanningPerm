@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   description: "Terms and conditions for using the PlanningPerm platform.",
 };
 
-const LAST_UPDATED = "1 April 2025";
-const EMAIL = "hello@planningperm.co.uk";
+const LAST_UPDATED = "1 April 2026";
+const EMAIL = "hello@planningperm.com";
 
 export default function TermsPage() {
   return (
@@ -38,7 +38,7 @@ export default function TermsPage() {
           </p>
 
           <Section title="1. About these terms">
-            <p>These terms and conditions ("Terms") govern your use of the PlanningPerm platform operated by PlanningPerm Ltd, a company registered in England and Wales ("we", "us", "our").</p>
+            <p>These terms and conditions ("Terms") govern your use of the PlanningPerm platform operated by DueReady Ltd, a company registered in England and Wales ("we", "us", "our"). PlanningPerm is a trading name of DueReady Ltd.</p>
             <p>By accessing or using PlanningPerm, you agree to these Terms. If you do not agree, do not use the service.</p>
           </Section>
 
@@ -83,7 +83,7 @@ export default function TermsPage() {
           </Section>
 
           <Section title="7. Intellectual property">
-            <p>The PlanningPerm platform, including its design, code, and branding, is owned by PlanningPerm Ltd. You may not reproduce or distribute any part of the platform without our written consent.</p>
+            <p>The PlanningPerm platform, including its design, code, and branding, is owned by DueReady Ltd. You may not reproduce or distribute any part of the platform without our written consent.</p>
             <p>Planning documents generated for you are provided for your personal use in connection with your specific property. You may submit them to your local planning authority as part of an application.</p>
           </Section>
 
@@ -93,7 +93,7 @@ export default function TermsPage() {
           </Section>
 
           <Section title="9. Limitation of liability">
-            <p>To the maximum extent permitted by law, PlanningPerm Ltd shall not be liable for:</p>
+            <p>To the maximum extent permitted by law, DueReady Ltd shall not be liable for:</p>
             <ul>
               <li>Any planning application being refused, delayed, or subject to conditions.</li>
               <li>Loss of profit, revenue, or business arising from use of the service.</li>
@@ -120,7 +120,7 @@ export default function TermsPage() {
           </Section>
 
           <Section title="14. Contact">
-            <p>PlanningPerm Ltd<br />London, England<br /><a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a></p>
+            <p>DueReady Ltd (trading as PlanningPerm)<br />London, England<br /><a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a></p>
           </Section>
 
         </div>

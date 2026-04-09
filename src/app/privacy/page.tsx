@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   description: "How PlanningPerm collects, uses, and protects your personal data.",
 };
 
-const LAST_UPDATED = "1 April 2025";
-const EMAIL = "hello@planningperm.co.uk";
+const LAST_UPDATED = "1 April 2026";
+const EMAIL = "hello@planningperm.com";
 
 export default function PrivacyPage() {
   return (
@@ -34,7 +34,7 @@ export default function PrivacyPage() {
         <div style={{ background: "white", borderRadius: 20, padding: "48px 52px", boxShadow: "0 2px 24px rgba(0,0,0,0.06)", lineHeight: 1.8, color: "#0b1d28", fontSize: 16 }}>
 
           <Section title="1. Who we are">
-            <p>PlanningPerm Ltd ("we", "us", "our") is a company registered in England and Wales. We operate the PlanningPerm platform available at planningperm.co.uk.</p>
+            <p>DueReady Ltd ("we", "us", "our") is a company registered in England and Wales. We operate PlanningPerm, available at planningperm.com. PlanningPerm is a trading name of DueReady Ltd.</p>
             <p>We are the data controller for the personal data we process. If you have any questions about this policy, contact us at <a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a>.</p>
           </Section>
 
@@ -120,7 +120,7 @@ export default function PrivacyPage() {
           </Section>
 
           <Section title="11. Contact">
-            <p>PlanningPerm Ltd<br />London, England<br /><a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a></p>
+            <p>DueReady Ltd (trading as PlanningPerm)<br />London, England<br /><a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a></p>
           </Section>
 
         </div>
