@@ -171,6 +171,11 @@ export default function PreviewPage() {
     const capturedEmail = sessionStorage.getItem("pp_lead_email") ?? "";
     const priceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID ?? "";
 
+    if (!priceId) {
+      alert("Payments are not yet configured. Please contact support.");
+      return;
+    }
+
     setPaying(true);
     paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
@@ -266,7 +271,7 @@ export default function PreviewPage() {
             </Link>
 
             <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "space-between", gap: isMobile ? 24 : 40, textAlign: isMobile ? "center" : "left" }}>
-              <ScoreArc score={assessment.score} sizePx={isMobile ? 160 : 220} />
+              <ScoreArc score={assessment.score} sizePx={isMobile ? 210 : 220} />
               <div style={{ flex: 1 }}>
                 {/* Badges */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16, justifyContent: isMobile ? "center" : "flex-start" }}>
