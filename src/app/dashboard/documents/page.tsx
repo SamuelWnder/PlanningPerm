@@ -66,7 +66,7 @@ function DocModal({ entry, onClose }: { entry: DocEntry; onClose: () => void }) 
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{ background: "white", borderRadius: 20, width: "100%", maxWidth: 780, maxHeight: "90vh", display: "flex", flexDirection: "column", overflow: "hidden", fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif' }}
+        style={{ background: "white", borderRadius: 20, width: "100%", maxWidth: 780, maxHeight: "90vh", display: "flex", flexDirection: "column", overflow: "hidden", fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif' }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 28px", borderBottom: "1px solid rgb(234,245,245)" }}>
           <div>
@@ -232,7 +232,7 @@ export default function DocumentsPage() {
   const totalProjs = byProject.length;
 
   return (
-    <div style={{ fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
 
       <main>
         <div style={{ background: "rgb(234,245,245)", paddingBottom: 40 }}>
@@ -246,14 +246,14 @@ export default function DocumentsPage() {
               </Link>
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24 }}>
                 <div>
-                  <h1 style={{ fontSize: 44, fontWeight: 700, color: "white", margin: "0 0 10px 0", letterSpacing: -1 }}>Your documents</h1>
+                  <h1 style={{ fontSize: 44, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>Your documents</h1>
                   <p style={{ fontSize: 18, color: "rgba(255,255,255,0.55)", margin: 0 }}>
                     {loading ? "Loading…" : totalDocs > 0
                       ? <>{totalDocs} document{totalDocs !== 1 ? "s" : ""} across {totalProjs} project{totalProjs !== 1 ? "s" : ""}</>
                       : "No documents generated yet"}
                   </p>
                 </div>
-                <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgb(55,176,170)", color: "white", borderRadius: 12, padding: "13px 24px", fontSize: 16, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
+                <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 12, padding: "13px 24px", fontSize: 16, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 24px rgba(212,146,42,0.35)" }}>
                   <Plus size={17} strokeWidth={2.5} /> Check new property
                 </Link>
               </div>

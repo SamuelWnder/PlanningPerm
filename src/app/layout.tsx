@@ -1,14 +1,5 @@
 import type { Metadata } from "next";
-import { Rethink_Sans } from "next/font/google";
 import "./globals.css";
-
-// Rethink Sans — humanist geometric sans, works at all sizes
-const rethink = Rethink_Sans({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "PlanningPerm — Know Before You Build",
@@ -25,16 +16,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${rethink.variable} h-full antialiased`}
-    >
+    <html lang="en" className="h-full antialiased">
       <head>
         {/* Privacy-friendly analytics by Plausible */}
         <script async src="https://plausible.io/js/pa-Qdczfs_XyMHR9ouVXG2b5.js"></script>
         <script dangerouslySetInnerHTML={{ __html: `window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()` }} />
       </head>
-      <body className="min-h-full flex flex-col bg-[#FAFAF8] text-[#1A1F2E]" style={{ fontFamily: "var(--font-sans)" }}>
+      <body className="min-h-full flex flex-col bg-[#FAFAF8] text-[#1A1F2E]">
         {children}
       </body>
     </html>

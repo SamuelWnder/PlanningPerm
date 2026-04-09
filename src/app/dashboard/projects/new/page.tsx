@@ -471,7 +471,7 @@ function NewProjectContent() {
           <span style={{ fontSize: 13, fontWeight: 600, color: "#D4922A" }}>Free check used</span>
         </div>
 
-        <h1 style={{ fontSize: 34, fontWeight: 700, color: "white", margin: "0 0 14px 0", letterSpacing: -0.5, maxWidth: 440, lineHeight: 1.2 }}>
+        <h1 style={{ fontSize: 34, fontWeight: 400, color: "white", margin: "0 0 14px 0", letterSpacing: -0.5, maxWidth: 440, lineHeight: 1.2, fontFamily: "'Clash Display', sans-serif" }}>
           You&apos;ve used your free planning check
         </h1>
         <p style={{ fontSize: 16, color: "rgba(255,255,255,0.55)", margin: "0 0 36px 0", maxWidth: 420, lineHeight: 1.7 }}>

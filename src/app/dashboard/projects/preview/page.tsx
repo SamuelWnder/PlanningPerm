@@ -31,7 +31,7 @@ function ScoreArc({ score }: { score: number }) {
           style={{ filter: `drop-shadow(0 0 10px ${color})`, transition: "stroke-dasharray 0.9s ease" }} />
       </svg>
       <p style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.55)", margin: "0 0 2px 0", letterSpacing: "0.08em", textTransform: "uppercase" }}>Score</p>
-      <p style={{ fontSize: 64, fontWeight: 700, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2 }}>
+      <p style={{ fontSize: 64, fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>
         {score}<span style={{ fontSize: 26, fontWeight: 400, color: "rgba(255,255,255,0.45)" }}>%</span>
       </p>
       <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", margin: "4px 0 0 0" }}>out of 100</p>
@@ -171,7 +171,7 @@ export default function PreviewPage() {
 
   if (noData) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(234,245,245)", gap: 16, fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif' }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(234,245,245)", gap: 16, fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif' }}>
         <AlertTriangle size={36} color="rgb(180,180,180)" />
         <p style={{ fontSize: 16, color: "rgb(60,80,90)" }}>No preview data found. Please start a new check.</p>
         <Link href="/dashboard/projects/new" style={{ padding: "12px 24px", borderRadius: 12, background: "rgb(11,29,40)", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
@@ -223,7 +223,7 @@ export default function PreviewPage() {
   const CARD = { background: "white", borderRadius: 24, padding: "28px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" };
 
   return (
-    <div style={{ fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
 
       <main>
         {/* ── Hero ── */}
@@ -247,7 +247,7 @@ export default function PreviewPage() {
                   <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)" }}>{project.council || "Local Planning Authority"}</span>
                 </div>
 
-                <h1 style={{ fontSize: 42, fontWeight: 700, color: "white", margin: "0 0 10px 0", letterSpacing: -1, lineHeight: 1.1 }}>
+                <h1 style={{ fontSize: 42, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: -1, lineHeight: 1.1, fontFamily: "'Clash Display', sans-serif" }}>
                   {project.address}
                 </h1>
                 <p style={{ fontSize: 17, color: "rgba(255,255,255,0.7)", margin: "0 0 24px 0", lineHeight: 1.6 }}>
@@ -285,7 +285,7 @@ export default function PreviewPage() {
               {/* Constraints */}
               <div style={CARD}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                  <h2 style={{ fontSize: 22, fontWeight: 700, color: "rgb(11,29,40)", margin: 0 }}>Site constraints</h2>
+                  <h2 style={{ fontSize: 22, fontWeight: 400, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Clash Display', sans-serif" }}>Site constraints</h2>
                   {hasConstraints ? (
                     <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(140,90,10)", background: "rgba(212,150,42,0.10)", border: "1px solid rgba(212,150,42,0.25)", borderRadius: 8, padding: "3px 10px" }}>Constraints detected</span>
                   ) : (
@@ -314,7 +314,7 @@ export default function PreviewPage() {
               {/* Locked: Risk factors */}
               <div style={{ ...CARD, position: "relative", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                  <h2 style={{ fontSize: 22, fontWeight: 700, color: "rgb(11,29,40)", margin: 0 }}>Risk factors</h2>
+                  <h2 style={{ fontSize: 22, fontWeight: 400, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Clash Display', sans-serif" }}>Risk factors</h2>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 13, fontWeight: 600, color: riskBadgeColor, background: riskBadgeBg, border: `1px solid ${riskBadgeColor}44`, borderRadius: 8, padding: "3px 10px" }}>
                       {riskBadgeText}
@@ -334,7 +334,7 @@ export default function PreviewPage() {
               {/* Locked: Comparable decisions */}
               <div style={{ ...CARD, position: "relative", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                  <h2 style={{ fontSize: 22, fontWeight: 700, color: "rgb(11,29,40)", margin: 0 }}>Comparable decisions</h2>
+                  <h2 style={{ fontSize: 22, fontWeight: 400, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Clash Display', sans-serif" }}>Comparable decisions</h2>
                   <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.9)", background: "rgb(11,29,40)", borderRadius: 8, padding: "3px 10px", display: "flex", alignItems: "center", gap: 5 }}>
                     <Lock size={11} strokeWidth={2.5} /> Locked
                   </span>
@@ -352,7 +352,7 @@ export default function PreviewPage() {
                 {/* Main CTA card */}
                 <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: "32px 28px", boxShadow: "rgba(0,0,0,0.2) 0px 8px 32px", marginBottom: 16 }}>
                   <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)", margin: "0 0 10px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Full report — £20</p>
-                  <h3 style={{ fontSize: 22, fontWeight: 700, color: "white", margin: "0 0 20px 0", lineHeight: 1.3 }}>
+                  <h3 style={{ fontSize: 22, fontWeight: 400, color: "white", margin: "0 0 20px 0", lineHeight: 1.3, fontFamily: "'Clash Display', sans-serif" }}>
                     Unlock your complete planning assessment
                   </h3>
 
@@ -396,7 +396,7 @@ export default function PreviewPage() {
                 {assessment.area_approval_rate !== null && (
                   <div style={{ background: "white", borderRadius: 20, padding: "20px 24px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", marginBottom: 16 }}>
                     <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.06em" }}>Area approval rate</p>
-                    <p style={{ fontSize: 32, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0", letterSpacing: -1 }}>
+                    <p style={{ fontSize: 32, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>
                       {assessment.area_approval_rate}%
                       <span style={{ fontSize: 15, fontWeight: 400, color: "rgb(100,120,130)", marginLeft: 6 }}>householder</span>
                     </p>

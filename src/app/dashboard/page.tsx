@@ -96,7 +96,7 @@ function ScoreDonut({ score, empty }: { score?: number; empty?: boolean }) {
       {empty ? (
         <p style={{ fontSize: 52, fontWeight: 700, color: "rgba(255,255,255,0.18)", margin: 0, lineHeight: 1, letterSpacing: -2 }}>—</p>
       ) : (
-        <p style={{ fontSize: 72, fontWeight: 700, color: "white", margin: 0, lineHeight: 1, letterSpacing: -3 }}>
+        <p style={{ fontSize: 72, fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -3, fontFamily: "'Clash Display', sans-serif" }}>
           {score}<span style={{ fontSize: 30, fontWeight: 400, color: "rgba(255,255,255,0.45)" }}>%</span>
         </p>
       )}
@@ -159,7 +159,7 @@ export default function PlanningPermHome() {
   const needsAttention = projects.filter((p) => p.assessment.score < 45).length;
 
   return (
-    <div style={{ fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
 
       <main>
         <div style={{ background: "rgb(234,245,245)", paddingBottom: 40 }}>
@@ -181,20 +181,20 @@ export default function PlanningPermHome() {
 
               {/* LEFT — welcome + status */}
               <div style={{ flex: "0 0 auto", maxWidth: 460 }}>
-                <p style={{ fontSize: 24, fontWeight: 500, color: "rgba(255,255,255,0.70)", margin: "0 0 6px 0" }}>Welcome back,</p>
-                <p style={{ fontSize: 88, fontWeight: 700, color: "white", margin: "0 0 24px 0", lineHeight: 1, letterSpacing: -4 }}>Samuel</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.50)", margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.14em" }}>Welcome back</p>
+                <p style={{ fontSize: 88, fontWeight: 400, color: "white", margin: "0 0 24px 0", lineHeight: 1, letterSpacing: -4, fontFamily: "'Clash Display', sans-serif" }}>Samuel</p>
 
                 {/* Stats row — only when projects exist */}
                 {hasProjects && (
                   <div style={{ display: "flex", gap: 32, marginBottom: 32 }}>
                     <div>
-                      <p style={{ fontSize: 40, fontWeight: 700, color: "white", margin: 0, lineHeight: 1 }}>{projects.length}</p>
-                      <p style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", margin: "5px 0 0 0" }}>Active projects</p>
+                      <p style={{ fontSize: 40, fontWeight: 400, color: "white", margin: 0, lineHeight: 1, fontFamily: "'Clash Display', sans-serif", letterSpacing: -1 }}>{projects.length}</p>
+                      <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", margin: "5px 0 0 0", fontWeight: 500 }}>Active projects</p>
                     </div>
                     <div style={{ width: 1, background: "rgba(255,255,255,0.15)" }} />
                     <div>
-                      <p style={{ fontSize: 40, fontWeight: 700, color: needsAttention > 0 ? "#D4922A" : "rgb(55,176,170)", margin: 0, lineHeight: 1 }}>{needsAttention}</p>
-                      <p style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", margin: "5px 0 0 0" }}>Need{needsAttention === 1 ? "s" : ""} attention</p>
+                      <p style={{ fontSize: 40, fontWeight: 400, color: needsAttention > 0 ? "#D4922A" : "rgb(55,176,170)", margin: 0, lineHeight: 1, fontFamily: "'Clash Display', sans-serif", letterSpacing: -1 }}>{needsAttention}</p>
+                      <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", margin: "5px 0 0 0", fontWeight: 500 }}>Need{needsAttention === 1 ? "s" : ""} attention</p>
                     </div>
                   </div>
                 )}
@@ -273,7 +273,7 @@ export default function PlanningPermHome() {
 
             {/* ── What's new ──────────────────────────────────────────────── */}
             <section style={{ padding: "32px 0 8px" }}>
-              <h2 style={{ fontSize: 28, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0" }}>What&apos;s new</h2>
+              <h2 style={{ fontSize: 28, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 16px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.5 }}>What&apos;s new</h2>
 
               <Card>
                 <div style={{ marginBottom: 10 }}>
@@ -287,7 +287,7 @@ export default function PlanningPermHome() {
                   href="/dashboard/projects/new"
                   style={{
                     display: "inline-flex", alignItems: "center", gap: 8,
-                    background: "rgb(11,29,40)",
+                    background: "#D4922A",
                     color: "white",
                     border: "none", borderRadius: 12, padding: "11px 20px",
                     fontSize: 15, fontWeight: 600, cursor: "pointer",
@@ -303,7 +303,7 @@ export default function PlanningPermHome() {
 
             {/* ── Your projects ───────────────────────────────────────────── */}
             <section style={{ padding: "20px 0 8px" }}>
-              <h2 style={{ fontSize: 28, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0" }}>Your projects</h2>
+              <h2 style={{ fontSize: 28, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 16px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.5 }}>Your projects</h2>
 
               {/* Check approval odds */}
               <DarkCard
@@ -350,7 +350,7 @@ export default function PlanningPermHome() {
 
             {/* ── Area Intelligence ────────────────────────────────────────── */}
             <section style={{ padding: "20px 0 32px" }}>
-              <h2 style={{ fontSize: 28, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Area Intelligence</h2>
+              <h2 style={{ fontSize: 28, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.5 }}>Area Intelligence</h2>
               <p style={{ fontSize: 16, color: "rgb(45,56,67)", margin: "0 0 16px 0" }}>See how projects like yours have fared nearby</p>
 
               {(() => {

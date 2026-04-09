@@ -100,7 +100,7 @@ export default function ProjectsPage() {
   const needsAttention = projects.filter((p) => p.assessment.score < 45).length;
 
   return (
-    <div style={{ fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
 
       <main>
         <div style={{ background: "rgb(234,245,245)", paddingBottom: 40 }}>
@@ -114,7 +114,7 @@ export default function ProjectsPage() {
               </Link>
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, marginBottom: 32 }}>
                 <div>
-                  <h1 style={{ fontSize: 44, fontWeight: 700, color: "white", margin: "0 0 10px 0", letterSpacing: -1 }}>Your projects</h1>
+                  <h1 style={{ fontSize: 44, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>Your projects</h1>
                   <p style={{ fontSize: 18, color: "rgba(255,255,255,0.55)", margin: 0 }}>
                     {projects.length} {projects.length === 1 ? "property" : "properties"} checked &nbsp;·&nbsp;
                     <span style={{ color: needsAttention > 0 ? "rgb(212,150,42)" : "rgb(55,176,170)" }}>
@@ -122,7 +122,7 @@ export default function ProjectsPage() {
                     </span>
                   </p>
                 </div>
-                <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgb(55,176,170)", color: "white", borderRadius: 12, padding: "13px 24px", fontSize: 16, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
+                <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 12, padding: "13px 24px", fontSize: 16, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 24px rgba(212,146,42,0.35)" }}>
                   <Plus size={17} strokeWidth={2.5} /> Check new property
                 </Link>
               </div>
@@ -175,7 +175,7 @@ export default function ProjectsPage() {
                       {hasUnpaidPreview ? (
                         <>
                           <p style={{ fontSize: 15, color: "rgb(130,150,160)", margin: "0 0 24px 0" }}>You have an unsaved report — unlock it to save it here.</p>
-                          <Link href="/dashboard/projects/preview" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgb(55,176,170)", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none", marginRight: 10 }}>
+                          <Link href="/dashboard/projects/preview" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none", marginRight: 10 }}>
                             View your preview
                           </Link>
                           <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgb(11,29,40)", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none" }}>
@@ -185,7 +185,7 @@ export default function ProjectsPage() {
                       ) : (
                         <>
                           <p style={{ fontSize: 15, color: "rgb(130,150,160)", margin: "0 0 24px 0" }}>Run your first planning check to get a real approval score.</p>
-                          <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgb(11,29,40)", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none" }}>
+                          <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none" }}>
                             <Plus size={16} strokeWidth={2.5} /> Check a property
                           </Link>
                         </>

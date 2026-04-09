@@ -67,7 +67,7 @@ function PaymentSuccessContent() {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", gap: 20, padding: 24, fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif', textAlign: "center" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", gap: 20, padding: 24, fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', textAlign: "center" }}>
       <div style={{ width: 64, height: 64, borderRadius: 18, background: "#D4922A", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 8 }}>
         <span style={{ fontSize: 20, fontWeight: 700, color: "white" }}>PP</span>
       </div>

@@ -39,7 +39,7 @@ function AuthCallbackContent() {
 
   if (error) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(234,245,245)", gap: 16, padding: 24, fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif' }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(234,245,245)", gap: 16, padding: 24, fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif' }}>
         <AlertTriangle size={36} color="rgb(200,60,60)" />
         <p style={{ fontSize: 16, color: "rgb(60,80,90)", textAlign: "center", maxWidth: 380 }}>{error}</p>
         <Link href="/dashboard/projects/new" style={{ padding: "12px 24px", borderRadius: 12, background: "rgb(11,29,40)", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
@@ -50,7 +50,7 @@ function AuthCallbackContent() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", gap: 20, padding: 24, fontFamily: '"Rethink Sans","Helvetica Neue",Arial,sans-serif' }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", gap: 20, padding: 24, fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif' }}>
       <div style={{ width: 60, height: 60, borderRadius: 16, background: "#D4922A", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <span style={{ fontSize: 18, fontWeight: 700, color: "white" }}>PP</span>
       </div>
