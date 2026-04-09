@@ -17,7 +17,7 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // Next.js inline scripts + Plausible
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://cdn.paddle.com",
       // Styles: self + inline (Tailwind generates inline)
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net https://api.fonts.coollabs.io",
       // Fonts
@@ -31,7 +31,8 @@ const securityHeaders = [
         "https://*.supabase.co",
         "https://api.anthropic.com",
         "https://api.os.uk",
-        "https://api.stripe.com",
+        "https://api.paddle.com",
+        "https://checkout.paddle.com",
         "https://www.planning.data.gov.uk",
         "https://services-eu1.arcgis.com",
         "https://environment.data.gov.uk",
@@ -41,9 +42,9 @@ const securityHeaders = [
       ].join(" "),
       // Videos in public/
       "media-src 'self'",
-      // iframes — Stripe payment element
-      "frame-src https://js.stripe.com https://hooks.stripe.com",
-      // Workers for Stripe.js
+      // iframes — Paddle checkout overlay
+      "frame-src https://checkout.paddle.com",
+      // Workers
       "worker-src 'self' blob:",
     ].join("; "),
   },

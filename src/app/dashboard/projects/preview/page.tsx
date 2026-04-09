@@ -267,23 +267,25 @@ export default function PreviewPage() {
               <ChevronLeft size={16} strokeWidth={2} /> Start over
             </Link>
 
-            <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: isMobile ? 20 : 40 }}>
+            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "space-between", gap: isMobile ? 24 : 40, textAlign: isMobile ? "center" : "left" }}>
+              <ScoreArc score={assessment.score} sizePx={isMobile ? 160 : 220} />
               <div style={{ flex: 1 }}>
-                {/* Preview badge */}
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(212,150,42,0.15)", border: "1px solid rgba(212,150,42,0.35)", borderRadius: 20, padding: "5px 14px", marginBottom: 16 }}>
-                  <Lock size={12} color="#D4922A" strokeWidth={2.5} />
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "#D4922A" }}>Free preview</span>
+                {/* Badges */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16, justifyContent: isMobile ? "center" : "flex-start" }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(212,150,42,0.15)", border: "1px solid rgba(212,150,42,0.35)", borderRadius: 20, padding: "5px 14px" }}>
+                    <Lock size={12} color="#D4922A" strokeWidth={2.5} />
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "#D4922A" }}>Free preview</span>
+                  </div>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.10)", borderRadius: 20, padding: "5px 14px" }}>
+                    <MapPin size={13} color="rgba(255,255,255,0.6)" strokeWidth={2} />
+                    <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)" }}>{project.council || "Local Planning Authority"}</span>
+                  </div>
                 </div>
 
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.10)", borderRadius: 20, padding: "5px 14px", marginBottom: 16, marginLeft: 8 }}>
-                  <MapPin size={13} color="rgba(255,255,255,0.6)" strokeWidth={2} />
-                  <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)" }}>{project.council || "Local Planning Authority"}</span>
-                </div>
-
-                <h1 style={{ fontSize: isMobile ? 26 : 42, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: isMobile ? -0.3 : -1, lineHeight: 1.1, fontFamily: "'Clash Display', sans-serif" }}>
+                <h1 style={{ fontSize: isMobile ? 22 : 42, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: isMobile ? -0.3 : -1, lineHeight: 1.15, fontFamily: "'Clash Display', sans-serif" }}>
                   {project.address}
                 </h1>
-                <p style={{ fontSize: 17, color: "rgba(255,255,255,0.7)", margin: "0 0 24px 0", lineHeight: 1.6 }}>
+                <p style={{ fontSize: 16, color: "rgba(255,255,255,0.7)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
                   {project.projectTypeLabel}
                 </p>
 
@@ -296,7 +298,6 @@ export default function PreviewPage() {
                   </span>
                 </div>
               </div>
-              <ScoreArc score={assessment.score} sizePx={isMobile ? 160 : 220} />
             </div>
           </div>
 
