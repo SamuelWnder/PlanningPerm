@@ -38,7 +38,7 @@ export default function TermsPage() {
           </p>
 
           <Section title="1. About these terms">
-            <p>These terms and conditions ("Terms") govern your use of the PlanningPerm platform operated by DueReady Ltd, a company registered in England and Wales ("we", "us", "our"). PlanningPerm is a trading name of DueReady Ltd.</p>
+            <p>These terms and conditions ("Terms") govern your use of the PlanningPerm platform operated by DueReady, a company registered in England and Wales ("we", "us", "our"). PlanningPerm is a trading name of DueReady.</p>
             <p>By accessing or using PlanningPerm, you agree to these Terms. If you do not agree, do not use the service.</p>
           </Section>
 
@@ -68,8 +68,8 @@ export default function TermsPage() {
 
           <Section title="5. Payments and refunds">
             <p>Paid reports are charged at £20 per report at the time of publication. Prices may change and will be displayed clearly before purchase.</p>
-            <p>Payments are processed by Stripe. We do not store your card details.</p>
-            <p><strong>Refund policy:</strong> Because planning documents are generated and delivered digitally upon payment, we are unable to offer refunds once a report has been generated. If you experience a technical failure that prevents delivery of your report, contact us at <a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a> and we will resolve the issue or issue a refund at our discretion.</p>
+            <p>Payments are processed by Paddle. We do not store your card details.</p>
+            <p><strong>Refund policy:</strong> You are entitled to a full refund within 30 days of purchase. To request a refund, contact us at <a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a> with your order details and we will process it promptly.</p>
           </Section>
 
           <Section title="6. Acceptable use">
@@ -83,7 +83,7 @@ export default function TermsPage() {
           </Section>
 
           <Section title="7. Intellectual property">
-            <p>The PlanningPerm platform, including its design, code, and branding, is owned by DueReady Ltd. You may not reproduce or distribute any part of the platform without our written consent.</p>
+            <p>The PlanningPerm platform, including its design, code, and branding, is owned by DueReady. You may not reproduce or distribute any part of the platform without our written consent.</p>
             <p>Planning documents generated for you are provided for your personal use in connection with your specific property. You may submit them to your local planning authority as part of an application.</p>
           </Section>
 
@@ -93,7 +93,7 @@ export default function TermsPage() {
           </Section>
 
           <Section title="9. Limitation of liability">
-            <p>To the maximum extent permitted by law, DueReady Ltd shall not be liable for:</p>
+            <p>To the maximum extent permitted by law, DueReady shall not be liable for:</p>
             <ul>
               <li>Any planning application being refused, delayed, or subject to conditions.</li>
               <li>Loss of profit, revenue, or business arising from use of the service.</li>
@@ -120,7 +120,7 @@ export default function TermsPage() {
           </Section>
 
           <Section title="14. Contact">
-            <p>DueReady Ltd (trading as PlanningPerm)<br />London, England<br /><a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a></p>
+            <p>DueReady (trading as PlanningPerm)<br />London, England<br /><a href={`mailto:${EMAIL}`} style={{ color: "#D4922A" }}>{EMAIL}</a></p>
           </Section>
 
         </div>
