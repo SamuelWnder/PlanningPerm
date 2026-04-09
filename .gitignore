@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE internal files (Cursor, Claude, Kiro etc.)
+.agents/
+.claude/
+.kiro/
+skills-lock.json
+*.pen
+AGENTS.md
+CLAUDE.md
+
+# Root-level video files (originals — served copies live in public/)
+/*.mp4

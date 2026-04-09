@@ -1,13 +1,24 @@
 /**
- * OS Places API integration for address geocoding.
- * Resolves a UK address string to UPRN, coordinates, and LPA code.
+ * Address lookup using:
+ *   - OS Places API (https://api.os.uk/search/places/v1) — full address autocomplete + UPRN
+ *   - Postcodes.io — free LPA/GSS code + lat/lng from postcode
  *
- * API docs: https://osdatahub.os.uk/docs/places/overview
- * Free tier: 1,000 transactions/day
+ * OS Places gives us real addresses and UPRNs.
+ * Postcodes.io maps the postcode to a GSS council code (our lpa_code).
  */
 
+const OS_BASE = "https://api.os.uk/search/places/v1";
+
+function getOsKey(): string {
+  const key = process.env.OS_PLACES_API_KEY;
+  if (!key) throw new Error("OS_PLACES_API_KEY is not set");
+  return key;
+}
+
+// ─── Shared types ─────────────────────────────────────────────────────────────
+
 export interface AddressMatch {
-  uprn: string;
+  uprn: string | null;
   address: string;
   postcode: string;
   lpa_code: string | null;
@@ -24,167 +35,213 @@ export interface AddressAutocompleteResult {
   uprn: string | null;
 }
 
-const OS_PLACES_BASE = "https://api.os.uk/search/places/v1";
+// ─── Internal OS Places types ──────────────────────────────────────────────────
 
-async function osRequest(endpoint: string, params: Record<string, string>) {
-  const apiKey = process.env.OS_PLACES_API_KEY;
-  if (!apiKey) throw new Error("OS_PLACES_API_KEY not configured");
-
-  const url = new URL(`${OS_PLACES_BASE}/${endpoint}`);
-  url.searchParams.set("key", apiKey);
-  for (const [k, v] of Object.entries(params)) {
-    url.searchParams.set(k, v);
-  }
-
-  const resp = await fetch(url.toString(), {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 3600 },
-  });
-
-  if (!resp.ok) {
-    throw new Error(`OS Places API error ${resp.status}: ${await resp.text()}`);
-  }
-
-  return resp.json();
+interface OsDpa {
+  UPRN: string;
+  ADDRESS: string;
+  POSTCODE: string;
+  POST_TOWN: string;
+  LOCAL_CUSTODIAN_CODE: number;
+  LOCAL_CUSTODIAN_CODE_DESCRIPTION: string;
+  X_COORDINATE: number;
+  Y_COORDINATE: number;
+  LNG: number;
+  LAT: number;
 }
 
+interface OsResult {
+  DPA?: OsDpa;
+}
+
+interface OsResponse {
+  results?: OsResult[];
+  header?: { totalresults: number };
+}
+
+// ─── OS Places: find (autocomplete) ──────────────────────────────────────────
+
 /**
- * Autocomplete address suggestions as the user types.
+ * Full address autocomplete — returns real addresses with UPRNs.
+ * Called as the user types in the address input.
  */
 export async function autocompleteAddress(
   query: string
 ): Promise<AddressAutocompleteResult[]> {
-  if (query.length < 3) return [];
+  if (query.trim().length < 4) return [];
 
   try {
-    const data = await osRequest("find", {
-      text: query,
-      maxresults: "10",
-      dataset: "DPA",
-      output_srs: "EPSG:4326",
+    const url = new URL(`${OS_BASE}/find`);
+    url.searchParams.set("query", query);
+    url.searchParams.set("maxresults", "8");
+    url.searchParams.set("output_srs", "WGS84");
+    url.searchParams.set("key", getOsKey());
+
+    const resp = await fetch(url.toString(), {
+      next: { revalidate: 0 }, // Don't cache — real-time search
     });
 
-    return (data.results || []).map((r: OsPlacesResult) => ({
-      text: r.DPA?.ADDRESS || "",
-      uprn: r.DPA?.UPRN || null,
-    }));
+    if (!resp.ok) return fallbackPostcodeAutocomplete(query);
+
+    const data: OsResponse = await resp.json();
+    return (data.results || [])
+      .filter((r) => r.DPA)
+      .map((r) => ({
+        text: r.DPA!.ADDRESS,
+        uprn: r.DPA!.UPRN,
+      }));
+  } catch {
+    return fallbackPostcodeAutocomplete(query);
+  }
+}
+
+// ─── OS Places: UPRN lookup ───────────────────────────────────────────────────
+
+/**
+ * Resolve a UPRN to a full AddressMatch with lat/lng and LPA code.
+ * Called when a user selects a suggestion that has a UPRN.
+ */
+export async function resolveUprn(uprn: string): Promise<AddressMatch | null> {
+  try {
+    const url = new URL(`${OS_BASE}/uprn`);
+    url.searchParams.set("uprn", uprn);
+    url.searchParams.set("output_srs", "WGS84");
+    url.searchParams.set("key", getOsKey());
+
+    const resp = await fetch(url.toString(), {
+      next: { revalidate: 86400 }, // UPRNs are stable
+    });
+
+    if (!resp.ok) return null;
+    const data: OsResponse = await resp.json();
+    const dpa = data.results?.[0]?.DPA;
+    if (!dpa) return null;
+
+    // Enrich with Postcodes.io for the GSS/LPA code + a coordinate sanity check
+    const postcodeData = await lookupPostcode(dpa.POSTCODE);
+
+    // Cross-check UPRN coordinates against the postcode centroid.
+    // OS Places occasionally stores incorrect coordinates for a UPRN (wrong lat/lng
+    // that can be several km out). If the UPRN point is more than ~500m from the
+    // postcode centroid, the postcode centroid is almost certainly more accurate.
+    let latitude = dpa.LAT;
+    let longitude = dpa.LNG;
+    if (postcodeData) {
+      const dLat = dpa.LAT - postcodeData.latitude;
+      const dLng = dpa.LNG - postcodeData.longitude;
+      const distanceDeg = Math.sqrt(dLat * dLat + dLng * dLng);
+      if (distanceDeg > 0.006) { // ~500m — clear data error, fall back to postcode centroid
+        latitude  = postcodeData.latitude;
+        longitude = postcodeData.longitude;
+      }
+    }
+
+    return {
+      uprn: dpa.UPRN,
+      address: dpa.ADDRESS,
+      postcode: dpa.POSTCODE,
+      lpa_code: postcodeData?.lpa_code ?? null,
+      lpa_name: postcodeData?.lpa_name ?? dpa.LOCAL_CUSTODIAN_CODE_DESCRIPTION ?? null,
+      latitude,
+      longitude,
+      easting: dpa.X_COORDINATE,
+      northing: dpa.Y_COORDINATE,
+      local_type: "address",
+    };
+  } catch {
+    return null;
+  }
+}
+
+// ─── Postcodes.io: postcode lookup ───────────────────────────────────────────
+
+interface PostcodesIoResult {
+  postcode: string;
+  latitude: number;
+  longitude: number;
+  eastings: number;
+  northings: number;
+  admin_district: string;
+  codes: {
+    admin_district: string;
+  };
+}
+
+/**
+ * Look up a UK postcode via Postcodes.io (free).
+ * Returns LPA GSS code + lat/lng. Used as a fallback and for LPA identification.
+ */
+export async function lookupPostcode(postcode: string): Promise<AddressMatch | null> {
+  const cleaned = postcode.replace(/\s+/g, "").toUpperCase();
+  if (cleaned.length < 5) return null;
+
+  try {
+    const resp = await fetch(
+      `https://api.postcodes.io/postcodes/${encodeURIComponent(cleaned)}`,
+      { next: { revalidate: 86400 } }
+    );
+
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    if (data.status !== 200 || !data.result) return null;
+
+    const r: PostcodesIoResult = data.result;
+    const lpaCode = r.codes?.admin_district || null;
+
+    return {
+      uprn: null,
+      address: postcode.toUpperCase(),
+      postcode: r.postcode,
+      lpa_code: lpaCode,
+      lpa_name: r.admin_district || null,
+      latitude: r.latitude,
+      longitude: r.longitude,
+      easting: r.eastings,
+      northing: r.northings,
+      local_type: "postcode",
+    };
+  } catch {
+    return null;
+  }
+}
+
+// ─── Fallback: Postcodes.io autocomplete ──────────────────────────────────────
+
+export async function autocompletePostcode(query: string): Promise<string[]> {
+  const cleaned = query.replace(/\s+/g, "").toUpperCase();
+  if (cleaned.length < 2) return [];
+
+  try {
+    const resp = await fetch(
+      `https://api.postcodes.io/postcodes/${encodeURIComponent(cleaned)}/autocomplete`,
+      { next: { revalidate: 3600 } }
+    );
+    if (!resp.ok) return [];
+    const data = await resp.json();
+    return data.result || [];
   } catch {
     return [];
   }
 }
 
-/**
- * Resolve a UPRN to full address details including LPA code.
- */
-export async function resolveUprn(uprn: string): Promise<AddressMatch | null> {
-  try {
-    const data = await osRequest("uprn", {
-      uprn,
-      dataset: "DPA",
-      output_srs: "EPSG:4326",
-    });
-
-    const result = data.results?.[0]?.DPA;
-    if (!result) return null;
-
-    // LOCAL_CUSTODIAN_CODE maps to LPA code in ONS format
-    // We need to map this to our lpa.code
-    const lpaCode = mapCustodianToLpaCode(result.LOCAL_CUSTODIAN_CODE);
-
-    return {
-      uprn: result.UPRN,
-      address: result.ADDRESS,
-      postcode: result.POSTCODE,
-      lpa_code: lpaCode,
-      lpa_name: result.LOCAL_CUSTODIAN_CODE_DESCRIPTION || null,
-      latitude: parseFloat(result.LAT),
-      longitude: parseFloat(result.LNG),
-      easting: parseFloat(result.X_COORDINATE),
-      northing: parseFloat(result.Y_COORDINATE),
-      local_type: result.LOCAL_TYPE || "",
-    };
-  } catch {
-    return null;
-  }
+async function fallbackPostcodeAutocomplete(
+  query: string
+): Promise<AddressAutocompleteResult[]> {
+  const postcodes = await autocompletePostcode(query);
+  return postcodes.map((pc) => ({ text: pc, uprn: null }));
 }
 
 /**
- * Full address lookup — takes a free-text address, returns best match.
+ * Convenience: resolve either a UPRN or a postcode string.
+ * Tries UPRN first if provided, falls back to postcode extraction.
  */
 export async function lookupAddress(address: string): Promise<AddressMatch | null> {
-  try {
-    const data = await osRequest("find", {
-      text: address,
-      maxresults: "1",
-      dataset: "DPA",
-      output_srs: "EPSG:4326",
-    });
-
-    const result = data.results?.[0]?.DPA;
-    if (!result) return null;
-
-    const lpaCode = mapCustodianToLpaCode(result.LOCAL_CUSTODIAN_CODE);
-
-    return {
-      uprn: result.UPRN,
-      address: result.ADDRESS,
-      postcode: result.POSTCODE,
-      lpa_code: lpaCode,
-      lpa_name: result.LOCAL_CUSTODIAN_CODE_DESCRIPTION || null,
-      latitude: parseFloat(result.LAT),
-      longitude: parseFloat(result.LNG),
-      easting: parseFloat(result.X_COORDINATE),
-      northing: parseFloat(result.Y_COORDINATE),
-      local_type: result.LOCAL_TYPE || "",
-    };
-  } catch {
-    return null;
-  }
+  const postcodeMatch = address.match(/[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}/i);
+  if (postcodeMatch) return lookupPostcode(postcodeMatch[0]);
+  return null;
 }
 
-/**
- * Map OS LOCAL_CUSTODIAN_CODE (numeric) to ONS GSS E-code used in our LPA table.
- * This mapping covers the top 20 LPAs we scrape.
- * Full mapping should be loaded from a lookup table in production.
- */
-function mapCustodianToLpaCode(custodianCode: string | number): string | null {
-  const code = String(custodianCode);
-  const MAP: Record<string, string> = {
-    "5990": "E09000033", // Westminster
-    "5100": "E09000012", // Hackney
-    "5210": "E09000022", // Lewisham
-    "5060": "E09000006", // Bromley
-    "5010": "E09000001", // City of London
-    "5110": "E09000011", // Greenwich
-    "4215": "E08000003", // Manchester
-    "4255": "E08000007", // Salford
-    "4605": "E08000025", // Birmingham
-    "4710": "E08000035", // Leeds
-    "4715": "E08000019", // Sheffield
-    "4315": "E08000012", // Liverpool
-    "2114": "E06000010", // Kingston upon Hull
-    "3100": "E07000178", // Oxford
-    "1500": "E07000008", // Cambridge
-    "0116": "E06000023", // Bristol
-    "1585": "E06000037", // Nottingham
-    "1110": "E07000086", // Exeter
-    "6815": "W06000015", // Cardiff
-    "9070": "S12000036", // Edinburgh
-  };
-  return MAP[code] || null;
-}
-
-interface OsPlacesResult {
-  DPA?: {
-    UPRN: string;
-    ADDRESS: string;
-    POSTCODE: string;
-    LOCAL_CUSTODIAN_CODE: string;
-    LOCAL_CUSTODIAN_CODE_DESCRIPTION?: string;
-    LAT: string;
-    LNG: string;
-    X_COORDINATE: string;
-    Y_COORDINATE: string;
-    LOCAL_TYPE?: string;
-  };
+export function isValidPostcode(postcode: string): boolean {
+  const cleaned = postcode.replace(/\s+/g, "").toUpperCase();
+  return /^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(cleaned);
 }

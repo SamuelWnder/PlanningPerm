@@ -1,26 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import { Rethink_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Rethink Sans — humanist geometric sans, works at all sizes
+const rethink = Rethink_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Planning Perm — AI Planning Permission Companion",
+  title: "PlanningPerm — Know Before You Build",
   description:
-    "Find out if your project will get planning permission before you apply. AI-powered feasibility assessments based on real planning data.",
+    "Real approval odds for your property based on your council's actual decision history. 20 site checks, AI-drafted documents, free in under 2 minutes.",
   openGraph: {
     title: "Planning Perm",
-    description:
-      "AI-powered planning permission guidance for UK homeowners.",
+    description: "AI-powered planning permission guidance for UK homeowners.",
     type: "website",
   },
 };
@@ -29,15 +25,20 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ClerkProvider>
-      <html
-        lang="en"
-        className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      >
-        <body className="min-h-full flex flex-col bg-[#FAFAF8] text-[#1A1F2E]">
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html
+      lang="en"
+      className={`${rethink.variable} h-full antialiased`}
+    >
+      <head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+        {/* Privacy-friendly analytics by Plausible */}
+        <script async src="https://plausible.io/js/pa-Qdczfs_XyMHR9ouVXG2b5.js"></script>
+        <script dangerouslySetInnerHTML={{ __html: `window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()` }} />
+      </head>
+      <body className="min-h-full flex flex-col bg-[#FAFAF8] text-[#1A1F2E]" style={{ fontFamily: "var(--font-sans)" }}>
+        {children}
+      </body>
+    </html>
   );
 }

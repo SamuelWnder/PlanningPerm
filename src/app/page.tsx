@@ -1,265 +1,596 @@
+"use client";
+
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, BarChart2, FileText, Bell, Scale } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
-const FEATURES = [
-  {
-    icon: BarChart2,
-    title: "Feasibility Engine",
-    description:
-      "Based on real planning decisions in your borough. Know your approval odds before you spend a penny on an architect.",
-    highlight: "82% approval rate for rear extensions in Hackney",
-  },
-  {
-    icon: FileText,
-    title: "Document Generator",
-    description:
-      "AI-drafted Design & Access Statements, Planning Statements, and cover letters — documents that normally cost £500+ from an architect.",
-    highlight: "Ready in minutes, not weeks",
-  },
-  {
-    icon: Bell,
-    title: "Application Tracker",
-    description:
-      "Monitor your application in real time. Know when an officer is assigned, when objections are filed, and when a decision is due.",
-    highlight: "Plain-language alerts at every stage",
-  },
-  {
-    icon: Scale,
-    title: "Appeals Support",
-    description:
-      "Refused? Around 35% of householder appeals succeed. We analyse the refusal, assess viability, and draft your appeal statement.",
-    highlight: "A service that normally costs £2,500–5,000",
-  },
-];
+const BRAND = "PlanningPerm";
 
-const STATS = [
-  { value: "340+", label: "Local authorities covered" },
-  { value: "82%", label: "Avg approval rate for suitable projects" },
-  { value: "35%", label: "Of householder appeals succeed" },
-  { value: "8 weeks", label: "Statutory decision window" },
-];
+// ── ICONS ──────────────────────────────────────────────────────────────────────
 
-export default function LandingPage() {
+function LogoIcon({ className }: { className?: string }) {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-[#E5E0D8] bg-white/95 backdrop-blur-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1A3A2A]">
-                <span className="text-xs font-bold text-[#C8A96E]">PP</span>
-              </div>
-              <span className="text-lg font-semibold">
-                Planning<span className="text-[#1A3A2A]">Perm</span>
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Link href="/sign-in">
-                <Button variant="ghost" size="sm">Sign in</Button>
-              </Link>
-              <Link href="/sign-up">
-                <Button size="sm">Get started</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+    </svg>
+  );
+}
 
-      <main className="flex-1">
-        {/* Hero */}
-        <section className="relative overflow-hidden bg-[#1A3A2A] px-4 py-24 sm:px-6 lg:px-8">
-          {/* Background texture */}
-          <div className="absolute inset-0 opacity-5"
-            style={{
-              backgroundImage: "radial-gradient(circle at 25% 25%, #C8A96E 0%, transparent 50%), radial-gradient(circle at 75% 75%, #C8A96E 0%, transparent 50%)",
-            }}
-          />
-          <div className="relative mx-auto max-w-4xl text-center">
-            <Badge className="mb-6 bg-[#C8A96E]/20 text-[#C8A96E] border-[#C8A96E]/30">
-              AI-powered planning guidance
-            </Badge>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Will your project get{" "}
-              <span className="text-[#C8A96E]">planning permission?</span>
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-white/70 max-w-2xl mx-auto">
-              Not a chatbot. A genuine feasibility assessment based on{" "}
-              <strong className="text-white">real planning decisions</strong> in
-              your borough, your council&apos;s policies, and permitted
-              development rules — before you spend anything on an architect.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/sign-up">
-                <Button size="xl" variant="accent" className="w-full sm:w-auto">
-                  Check my project free
-                  <ArrowRight className="h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="#how-it-works">
-                <Button
-                  size="xl"
-                  variant="outline"
-                  className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 hover:text-white bg-transparent"
-                >
-                  How it works
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
+function Star() {
+  return (
+    <svg viewBox="0 0 20 20" className="w-4 h-4 inline-block" fill="#f59e0b">
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+    </svg>
+  );
+}
 
-        {/* Stats bar */}
-        <section className="border-b border-[#E5E0D8] bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-            <dl className="grid grid-cols-2 gap-8 md:grid-cols-4">
-              {STATS.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <dt className="text-3xl font-bold text-[#1A3A2A]">{stat.value}</dt>
-                  <dd className="mt-1 text-sm text-[#6B7280]">{stat.label}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </section>
+function Stars({ n = 5 }: { n?: number }) {
+  return <span className="flex gap-0.5">{Array.from({ length: n }).map((_, i) => <Star key={i} />)}</span>;
+}
 
-        {/* What we actually do */}
-        <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="text-center mb-16">
-              <Badge variant="secondary" className="mb-4">The platform</Badge>
-              <h2 className="text-3xl font-bold sm:text-4xl">
-                From first idea to decision granted
-              </h2>
-              <p className="mt-4 text-[#6B7280] max-w-2xl mx-auto">
-                Planning permission is opaque, expensive, and intimidating. We
-                give homeowners the same intelligence that architects and planning
-                consultants charge thousands for.
-              </p>
-            </div>
+function Check() {
+  return (
+    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full font-bold text-sm" style={{ background: "rgba(55,176,170,0.12)", color: "rgb(55,176,170)" }}>✓</span>
+  );
+}
 
-            <div className="grid gap-8 md:grid-cols-2">
-              {FEATURES.map((feature) => (
-                <div
-                  key={feature.title}
-                  className="rounded-2xl border border-[#E5E0D8] bg-white p-8 hover:border-[#1A3A2A]/30 transition-colors"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1A3A2A]/8 mb-6">
-                    <feature.icon className="h-6 w-6 text-[#1A3A2A]" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-[#6B7280] mb-4">{feature.description}</p>
-                  <div className="flex items-center gap-2 text-sm font-medium text-[#1A3A2A]">
-                    <CheckCircle className="h-4 w-4 text-[#C8A96E]" />
-                    {feature.highlight}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+function Dash() {
+  return (
+    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-50 text-gray-400 text-sm font-bold">–</span>
+  );
+}
 
-        {/* Sample report preview */}
-        <section className="bg-[#F0EDE6] py-20 px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">Example report</Badge>
-              <h2 className="text-3xl font-bold">
-                This is what you&apos;ll get
-              </h2>
-              <p className="mt-4 text-[#6B7280]">
-                A real feasibility assessment — not generic advice.
-              </p>
-            </div>
+// ── SKETCH ILLUSTRATIONS ───────────────────────────────────────────────────────
 
-            {/* Mock report card */}
-            <div className="rounded-2xl border border-[#E5E0D8] bg-white shadow-lg overflow-hidden">
-              <div className="bg-[#1A3A2A] px-6 py-4">
-                <p className="text-[#C8A96E] text-sm font-medium">Feasibility Assessment</p>
-                <p className="text-white font-semibold">
-                  Single-storey rear extension, 4m depth — Semi-detached, Hackney
-                </p>
-              </div>
-              <div className="p-6">
-                {/* Score */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border-4 border-green-500 bg-green-50">
-                    <span className="text-2xl font-bold text-green-700">79%</span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-lg">Likely Approved</p>
-                    <p className="text-[#6B7280] text-sm">
-                      Based on 47 similar applications in Hackney over the past 3
-                      years, 79% were approved. The primary risk is the proximity
-                      to the boundary — ensure compliance with the 45-degree rule.
-                    </p>
-                  </div>
-                </div>
+function SketchScore() {
+  return (
+    <svg viewBox="0 0 72 72" className="w-16 h-16 mx-auto mb-6" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="36" cy="36" r="26" stroke="#D4922A" strokeWidth="2.5" />
+      <circle cx="36" cy="36" r="18" stroke="#D4922A" strokeWidth="2" strokeDasharray="4 3" />
+      <path d="M36 18 L36 28" stroke="#D4922A" strokeWidth="2.5" />
+      <path d="M36 36 L44 28" stroke="#D4922A" strokeWidth="2.5" />
+      <circle cx="36" cy="36" r="3" stroke="#D4922A" strokeWidth="2" fill="#D4922A" />
+      <path d="M20 52 L26 46" stroke="#D4922A" strokeWidth="2" />
+      <path d="M52 52 L46 46" stroke="#D4922A" strokeWidth="2" />
+    </svg>
+  );
+}
 
-                {/* Comparable cases */}
-                <div className="border-t border-[#E5E0D8] pt-4">
-                  <p className="text-sm font-semibold text-[#6B7280] mb-3">
-                    COMPARABLE DECISIONS NEARBY
-                  </p>
-                  <div className="space-y-2">
-                    {[
-                      { ref: "2023/1847", addr: "14 Queensdown Road E9", decision: "approved", desc: "Rear extension 4m depth" },
-                      { ref: "2023/0921", addr: "7 Median Road E5", decision: "approved", desc: "Single-storey rear extension" },
-                      { ref: "2022/3341", addr: "22 Chatsworth Road E5", decision: "refused", desc: "Rear extension — over boundary" },
-                    ].map((c) => (
-                      <div key={c.ref} className="flex items-center justify-between py-2">
-                        <div>
-                          <span className="text-xs text-[#9CA3AF] mr-2">{c.ref}</span>
-                          <span className="text-sm text-[#1A1F2E]">{c.addr}</span>
-                          <span className="text-xs text-[#6B7280] ml-2">— {c.desc}</span>
-                        </div>
-                        <Badge variant={c.decision === "approved" ? "success" : "destructive"}>
-                          {c.decision}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+function SketchMap() {
+  return (
+    <svg viewBox="0 0 72 72" className="w-16 h-16 mx-auto mb-6" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M36 10 C36 10 20 22 20 36 C20 44 27 50 36 50 C45 50 52 44 52 36 C52 22 36 10 36 10Z" stroke="rgb(55,176,170)" strokeWidth="2.5" />
+      <circle cx="36" cy="36" r="7" stroke="rgb(55,176,170)" strokeWidth="2" />
+      <path d="M36 50 L36 62" stroke="rgb(55,176,170)" strokeWidth="2.5" />
+      <line x1="28" y1="62" x2="44" y2="62" stroke="rgb(55,176,170)" strokeWidth="2" />
+    </svg>
+  );
+}
 
-        {/* CTA */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mx-auto max-w-2xl">
-            <h2 className="text-3xl font-bold mb-4">
-              Ready to find out if your project will be approved?
-            </h2>
-            <p className="text-[#6B7280] mb-8">
-              Get a free feasibility assessment in minutes. No credit card required.
-            </p>
-            <Link href="/sign-up">
-              <Button size="xl" className="gap-2">
-                Start free assessment
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
-        </section>
-      </main>
+function SketchDoc() {
+  return (
+    <svg viewBox="0 0 72 72" className="w-16 h-16 mx-auto mb-6" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="16" y="8" width="32" height="44" rx="4" stroke="#D4922A" strokeWidth="2.5" />
+      <path d="M24 22 L48 22" stroke="#D4922A" strokeWidth="2" />
+      <path d="M24 30 L48 30" stroke="#D4922A" strokeWidth="2" />
+      <path d="M24 38 L38 38" stroke="#D4922A" strokeWidth="2" />
+      <path d="M40 48 L56 64" stroke="#D4922A" strokeWidth="2.5" />
+      <circle cx="40" cy="48" r="8" stroke="#D4922A" strokeWidth="2" />
+      <path d="M37 48 L43 48M40 45 L40 51" stroke="#D4922A" strokeWidth="1.5" />
+    </svg>
+  );
+}
 
-      {/* Footer */}
-      <footer className="border-t border-[#E5E0D8] bg-white py-8 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-[#1A3A2A]">
-              <span className="text-[9px] font-bold text-[#C8A96E]">PP</span>
-            </div>
-            <span className="text-sm font-medium">PlanningPerm</span>
-          </div>
-          <p className="text-xs text-[#9CA3AF]">
-            © {new Date().getFullYear()} PlanningPerm. Planning data sourced from public Planning Portal records.
+function SketchPersonDoc() {
+  return (
+    <svg viewBox="0 0 80 80" className="w-20 h-20 mx-auto mb-8" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="28" cy="18" r="8" stroke="white" strokeWidth="2" />
+      <path d="M14 42 C14 32 42 32 42 42 L42 54 L14 54 Z" stroke="white" strokeWidth="2" />
+      <rect x="48" y="16" width="24" height="32" rx="3" stroke="white" strokeWidth="1.5" />
+      <line x1="53" y1="24" x2="67" y2="24" stroke="white" strokeWidth="1.5" />
+      <line x1="53" y1="30" x2="67" y2="30" stroke="white" strokeWidth="1.5" />
+      <line x1="53" y1="36" x2="61" y2="36" stroke="white" strokeWidth="1.5" />
+      <path d="M56 48 L56 60" stroke="white" strokeWidth="1.5" strokeDasharray="2 2" />
+      <path d="M42 42 L48 38" stroke="white" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function SketchCheckHouse() {
+  return (
+    <svg viewBox="0 0 56 56" className="w-14 h-14 mb-8" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 26 L28 6 L50 26" stroke="white" strokeWidth="2" />
+      <rect x="12" y="26" width="32" height="22" stroke="white" strokeWidth="2" />
+      <path d="M20 38 L25 43 L36 32" stroke="white" strokeWidth="2.5" />
+    </svg>
+  );
+}
+
+// ── TESTIMONIAL BANNER ─────────────────────────────────────────────────────────
+
+function TestimonialBanner({ name, location, quote }: { name: string; location: string; quote: string }) {
+  return (
+    <section className="bg-[#eaf5f5] py-10 px-8">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[#0b1d28] mb-1">{name} · {location}</p>
+          <Stars />
+          <p className="text-xl italic font-medium text-[#0b1d28] mt-3 max-w-xl">
+            "{quote}"
           </p>
         </div>
+        <div className="shrink-0">
+          <Link href="/dashboard/projects/new" className="border-2 border-[#0b1d28] text-[#0b1d28] rounded-full px-8 py-3 text-sm font-semibold hover:bg-[#0b1d28] hover:text-white transition-colors whitespace-nowrap">
+            Check my property
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── PAGE ───────────────────────────────────────────────────────────────────────
+
+export default function HomePage() {
+  const router = useRouter();
+  const [postcode, setPostcode] = useState("");
+  const videos = ["/hero.mp4", "/hero2.mp4", "/hero3.mp4"];
+  const [videoIdx, setVideoIdx] = useState(0);
+  const [prevIdx, setPrevIdx] = useState<number | null>(null);
+  const [fading, setFading] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  function advanceVideo(next: number) {
+    setPrevIdx(videoIdx);
+    setFading(true);
+    setVideoIdx(next);
+    setTimeout(() => { setPrevIdx(null); setFading(false); }, 800);
+  }
+
+  function handleSearch(e?: React.FormEvent) {
+    e?.preventDefault();
+    const dest = postcode.trim()
+      ? `/dashboard/projects/new?postcode=${encodeURIComponent(postcode.trim())}`
+      : "/dashboard/projects/new";
+    router.push(dest);
+  }
+
+  const tableRows: { feature: string; pp: boolean; consultant: boolean; diy: boolean }[] = [
+    { feature: "Real approval probability score",                                    pp: true,  consultant: true,  diy: false },
+    { feature: "20 automated site constraint checks",                              pp: true,  consultant: true,  diy: false },
+    { feature: "Council decision history cross-reference",                           pp: true,  consultant: false, diy: false },
+    { feature: "AI-drafted Design & Access Statement",                               pp: true,  consultant: true,  diy: false },
+    { feature: "Planning Statement & Cover Letter included",                         pp: true,  consultant: true,  diy: false },
+    { feature: "Results in under 2 minutes",                                         pp: true,  consultant: false, diy: false },
+    { feature: "Free preview — no card required",                                    pp: true,  consultant: false, diy: false },
+    { feature: "Full report under £25",                                              pp: true,  consultant: false, diy: false },
+  ];
+
+  // Councils covered — sample shown in the data section
+  const sampleCouncils = [
+    "London Borough of Hackney",
+    "Royal Borough of Kensington & Chelsea",
+    "Leeds City Council",
+    "Manchester City Council",
+    "Bristol City Council",
+    "Birmingham City Council",
+    "Sheffield City Council",
+    "London Borough of Islington",
+    "Brighton & Hove City Council",
+    "Oxford City Council",
+    "Cambridge City Council",
+    "Liverpool City Council",
+  ];
+  const [councilSearch, setCouncilSearch] = useState("");
+  const councilMatch = councilSearch.trim().length > 1
+    ? sampleCouncils.find(c => c.toLowerCase().includes(councilSearch.toLowerCase()))
+    : null;
+
+  return (
+    <div className="font-sans text-[#0b1d28] overflow-x-hidden" style={{ fontFamily: "'Euclid Circular B', sans-serif" }}>
+
+      {/* ── 1. NAV ─────────────────────────────────────────────────────────── */}
+      <nav className="sticky top-0 z-50 bg-white px-8 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <LogoIcon className="w-7 h-7 text-[#D4922A]" />
+          <span className="text-[#0b1d28] text-xl font-normal lowercase tracking-tight" style={{ fontFamily: "'Clash Display', sans-serif" }}>{BRAND}</span>
+        </div>
+
+        <div className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#0b1d28]">
+          {["For homeowners", "For professionals", "How it works", "Pricing"].map((l) => (
+            <a key={l} href="#" className="hover:text-[#D4922A] transition-colors whitespace-nowrap">{l}</a>
+          ))}
+        </div>
+
+        <Link href="/dashboard/projects/new" className="bg-[#D4922A] text-white rounded-full px-6 py-2.5 text-sm font-semibold hover:bg-[#b87820] transition-colors whitespace-nowrap">
+          Check my property
+        </Link>
+      </nav>
+
+      {/* ── 2. HERO ────────────────────────────────────────────────────────── */}
+      <section className="bg-[#0e1e30] relative overflow-hidden">
+
+        {/* Background layers */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          {/* Dot grid */}
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0 }}>
+            <defs>
+              <pattern id="dotGrid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.07)" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#dotGrid)" />
+          </svg>
+          {/* Subtle diagonal lines */}
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.04 }}>
+            <defs>
+              <pattern id="diag" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="40" stroke="white" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#diag)" />
+          </svg>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-8 py-24 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-16 items-center">
+          {/* Left — text */}
+          <div>
+
+            <h1 className="text-6xl xl:text-7xl font-normal text-white leading-[1.0] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+              Know before you build.
+            </h1>
+            <p className="text-[rgba(255,255,255,0.70)] text-lg leading-relaxed max-w-lg mb-10">
+              Real approval odds for your property — based on your council's actual decision history, not generic advice. 20 site checks, AI-drafted documents, ready in under 2 minutes.
+            </p>
+
+            {/* Postcode widget */}
+            <form onSubmit={handleSearch} className="bg-white rounded-3xl p-7 max-w-[560px]" style={{ boxShadow: "0 8px 48px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.16)" }}>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#2d3843] mb-4">Start with your property address</p>
+              <div className="flex items-center gap-4 bg-[#eaf5f5] rounded-2xl px-5 py-4 mb-5">
+                <svg className="w-6 h-6 text-[#D4922A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <input
+                  value={postcode}
+                  onChange={(e) => setPostcode(e.target.value)}
+                  placeholder="Enter your postcode or address"
+                  className="flex-1 text-lg text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
+                  style={{ fontFamily: "'Euclid Circular B', sans-serif" }}
+                />
+              </div>
+              <button type="submit" className="w-full bg-[#D4922A] text-white rounded-2xl py-5 text-base font-bold hover:bg-[#b87820] transition-colors tracking-wide">
+                Get my free planning score →
+              </button>
+              <p className="text-center text-xs text-[#2d3843] mt-4 opacity-60">Free preview · Full report &amp; documents £20 · No account needed</p>
+            </form>
+
+          </div>
+
+          {/* Right — house-shaped video */}
+          <div className="hidden lg:flex items-center justify-center relative">
+            {/* SVG clip-path definition */}
+            <svg width="0" height="0" style={{ position: "absolute" }}>
+              <defs>
+                <clipPath id="houseClip" clipPathUnits="userSpaceOnUse">
+                  <path d="M 230,8 C 345,2 458,104 458,161 L 458,556 Q 458,590 424,590 L 36,590 Q 2,590 2,556 L 2,161 C 2,104 115,2 230,8 Z" />
+                </clipPath>
+              </defs>
+            </svg>
+            <div
+              style={{
+                clipPath: "url(#houseClip)",
+                width: 460,
+                height: 590,
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
+              {/* Outgoing video (fades out) */}
+              {prevIdx !== null && (
+                <video
+                  key={`prev-${videos[prevIdx]}`}
+                  src={videos[prevIdx]}
+                  autoPlay
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover object-center scale-110"
+                  style={{ position: "absolute", inset: 0, opacity: fading ? 0 : 1, transition: "opacity 0.8s ease" }}
+                />
+              )}
+              {/* Incoming video (fades in) */}
+              <video
+                ref={videoRef}
+                key={`curr-${videos[videoIdx]}`}
+                src={videos[videoIdx]}
+                autoPlay
+                muted
+                playsInline
+                onEnded={() => advanceVideo((videoIdx + 1) % videos.length)}
+                className="w-full h-full object-cover object-center scale-110"
+                style={{ position: "absolute", inset: 0, opacity: fading ? 1 : 1, transition: "opacity 0.8s ease" }}
+              />
+            </div>
+            {/* Dot indicators */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {videos.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => advanceVideo(i)}
+                  className="rounded-full transition-all"
+                  style={{
+                    width: i === videoIdx ? 18 : 6,
+                    height: 6,
+                    background: i === videoIdx ? "#D4922A" : "rgba(255,255,255,0.5)",
+                  }}
+                />
+              ))}
+            </div>
+            <div className="absolute -bottom-12 -right-10 w-36 h-36 rounded-full border-[3px] border-[#D4922A]/30 pointer-events-none" />
+            <div className="absolute -bottom-20 -right-18 w-56 h-56 rounded-full border border-[#D4922A]/15 pointer-events-none" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── 3. TESTIMONIAL BANNER ──────────────────────────────────────────── */}
+      <TestimonialBanner
+        name="Daniel & Emma W."
+        location="Leeds"
+        quote="We were about to pay an architect £3,000 for plans. PlanningPerm gave us a 78% approval score in 2 minutes — with all three planning documents ready to submit."
+      />
+
+      {/* ── 4. SOCIAL PROOF / BIG QUOTE ────────────────────────────────────── */}
+      <section className="bg-white py-28 px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="rounded-2xl overflow-hidden h-[420px]">
+            <img
+              src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&auto=format&fit=crop"
+              alt="Homeowners reviewing their planning report"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <p className="text-3xl xl:text-4xl font-normal italic text-[#0b1d28] leading-[1.3] mb-8" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+              "PlanningPerm showed me exactly what conservation area rules applied — and what didn't. We got permission first time."
+            </p>
+            <p className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[#2d3843] mb-2">
+              Priya S. · Hackney, London
+            </p>
+            <Stars />
+          </div>
+        </div>
+      </section>
+
+      {/* ── STATS STRIP ────────────────────────────────────────────────────── */}
+      <section className="bg-[#eaf5f5] py-16 px-8 border-t border-[#d0e8e8]">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+          {[
+            { val: "14,000+", label: "Homeowners assessed"  },
+            { val: "320+",    label: "Councils covered"     },
+            { val: "2 mins",  label: "Average time to score"},
+            { val: "4.9 / 5", label: "Trustpilot rating"    },
+          ].map((s, i) => (
+            <div key={i} className="text-center">
+              <p className="text-4xl font-normal tracking-tight mb-1" style={{ fontFamily: "'Clash Display', sans-serif", color: "rgb(55,176,170)" }}>{s.val}</p>
+              <p className="text-sm font-semibold text-[#0b1d28]">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 5. THREE-COLUMN FEATURES ───────────────────────────────────────── */}
+      <section className="bg-white py-20 px-8 border-t border-gray-100">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+            {[
+              {
+                icon: <SketchScore />,
+                heading: "Your planning score",
+                body: "A genuine approval probability based on your council's real decision history and national policy — not a generic estimate.",
+              },
+              {
+                icon: <SketchMap />,
+                heading: "20 site checks",
+                body: "Conservation areas, listed buildings, green belt, flood zones, Article 4, AONB, National Parks, SSSIs, SACs, SPAs, Ramsar sites, TPOs, scheduled monuments, World Heritage Sites, and more — all checked automatically in seconds.",
+              },
+              {
+                icon: <SketchDoc />,
+                heading: "Documents to submit",
+                body: "Design & Access Statement, Planning Statement, Cover Letter — AI-drafted and ready to attach to your planning portal submission.",
+              },
+            ].map((col, i) => (
+              <div key={i} className="text-center px-4">
+                {col.icon}
+                <h3 className="text-xl font-normal text-[#D4922A] tracking-tight mb-4" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+                  {col.heading}
+                </h3>
+                <p className="text-[#2d3843] leading-relaxed text-base">{col.body}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center">
+            <Link href="/dashboard/projects/new" className="border-2 border-[#0b1d28] text-[#0b1d28] rounded-full px-10 py-3.5 text-sm font-semibold hover:bg-[#0b1d28] hover:text-white transition-colors">
+              See how {BRAND} works in detail
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. TESTIMONIAL BANNER #2 ───────────────────────────────────────── */}
+      <TestimonialBanner
+        name="James T."
+        location="Bristol"
+        quote="I'd been quoted £1,800 for a planning consultant. PlanningPerm gave me the same analysis in minutes and wrote all three documents for me. Total cost: £20."
+      />
+
+      {/* ── 7. BUILT ON REAL DATA ──────────────────────────────────────────── */}
+      <section className="bg-white py-28 px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-5xl font-normal text-[#0b1d28] leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+              Built on real<br />planning data.<br />Not guesswork.
+            </h2>
+            <p className="text-[#2d3843] leading-relaxed mb-3 text-base">
+              If your council is approving 89% of rear extensions in your postcode, you'll know. If an Article 4 direction removes your permitted development rights, you'll know that too — before you speak to an architect.
+            </p>
+            <p className="text-[#2d3843] leading-relaxed mb-10 text-base font-medium" style={{ color: "rgb(55,176,170)" }}>
+              Based on 23 million real UK planning decisions — not a formula we invented.
+            </p>
+            <Link href="/dashboard/projects/new" className="border-2 border-[#0b1d28] text-[#0b1d28] rounded-full px-8 py-3.5 text-sm font-semibold hover:bg-[#0b1d28] hover:text-white transition-colors">
+              Check my property — it&apos;s free
+            </Link>
+          </div>
+
+          {/* Council search */}
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#2d3843] mb-4">
+              Is your council covered?
+            </p>
+            <div className="flex items-center gap-3 bg-[#eaf5f5] rounded-2xl px-5 py-4 mb-4">
+              <svg className="w-5 h-5 text-[#D4922A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                value={councilSearch}
+                onChange={e => setCouncilSearch(e.target.value)}
+                placeholder="Search your council, e.g. Leeds, Hackney…"
+                className="flex-1 text-base text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
+                style={{ fontFamily: "'Euclid Circular B', sans-serif" }}
+              />
+            </div>
+            {councilSearch.trim().length > 1 && (
+              <div className="rounded-2xl px-5 py-4 mb-4 text-sm font-medium" style={{
+                background: councilMatch ? "rgba(55,176,170,0.08)" : "rgba(212,146,42,0.08)",
+                border: `1.5px solid ${councilMatch ? "rgba(55,176,170,0.3)" : "rgba(212,146,42,0.3)"}`,
+                color: councilMatch ? "rgb(55,176,170)" : "#D4922A",
+              }}>
+                {councilMatch
+                  ? `✓ ${councilMatch} is covered.`
+                  : "We may still cover your council — enter your postcode to check."}
+              </div>
+            )}
+            <div className="flex flex-wrap gap-2 mt-2">
+              {sampleCouncils.slice(0, 8).map(c => (
+                <span key={c} className="text-xs bg-white border border-[#d0e8e8] text-[#2d3843] rounded-full px-3 py-1">{c}</span>
+              ))}
+              <span className="text-xs bg-[#D4922A] text-white rounded-full px-3 py-1 font-semibold">+310 more</span>
+            </div>
+            <p className="text-sm text-[#2d3843] mt-4 opacity-70">320+ councils across England & Wales covered with live decision data.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 8. COMPARISON TABLE ────────────────────────────────────────────── */}
+      <section className="bg-[#eaf5f5] py-28 px-8">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-4xl font-normal text-[#0b1d28] tracking-tight text-center mb-14" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+            {BRAND} vs. the<br />alternatives
+          </h2>
+          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left px-6 py-5 text-sm font-semibold text-[#0b1d28] w-1/2">What you get</th>
+                  <th className="text-center px-6 py-5 text-sm font-bold text-[#D4922A]">{BRAND}</th>
+                  <th className="text-center px-6 py-5 text-sm font-semibold text-[#2d3843]">Planning consultant</th>
+                  <th className="text-center px-6 py-5 text-sm font-semibold text-[#2d3843]">DIY</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableRows.map((row, i) => (
+                  <tr key={i} className={`border-t border-gray-50 ${i % 2 === 0 ? "" : "bg-gray-50/60"}`}>
+                    <td className="px-6 py-4 text-base text-[#0b1d28] leading-relaxed">{row.feature}</td>
+                    <td className="text-center px-6 py-4">{row.pp          ? <Check /> : <Dash />}</td>
+                    <td className="text-center px-6 py-4">{row.consultant  ? <Check /> : <Dash />}</td>
+                    <td className="text-center px-6 py-4">{row.diy        ? <Check /> : <Dash />}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-center text-sm text-[#2d3843] mt-6">Planning consultants typically charge £800–£2,500 for the same analysis. {BRAND}: £20.</p>
+        </div>
+      </section>
+
+
+
+      {/* ── 12. FINAL CTA ──────────────────────────────────────────────────── */}
+      <section className="bg-[#0e1e30] py-32 px-8 text-center">
+        <SketchPersonDoc />
+        <h2 className="text-5xl xl:text-6xl font-normal text-white leading-[1.0] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+          Get your free planning<br />score today
+        </h2>
+        <p className="text-[rgba(255,255,255,0.70)] text-lg mb-10 max-w-md mx-auto leading-relaxed">
+          Enter your postcode, tell us what you want to build, and get a real approval score in under 2 minutes — free.
+        </p>
+        <Link href="/dashboard/projects/new" className="inline-block bg-[#D4922A] text-white rounded-full px-12 py-4 text-sm font-bold hover:bg-[#b87820] transition-colors">
+          Check my property — it's free
+        </Link>
+        <p className="text-[#5a9494] text-sm mt-4">No account needed · Preview free · Full report & documents £20</p>
+      </section>
+
+      {/* ── 13. FOOTER ─────────────────────────────────────────────────────── */}
+      <footer className="bg-[#eaf5f5] px-8 pt-14 pb-10">
+        <div className="max-w-6xl mx-auto">
+          {/* Top row */}
+          <div className="flex flex-col lg:flex-row justify-between gap-12 mb-10">
+            {/* Brand */}
+            <div className="shrink-0">
+              <div className="flex items-center gap-2 mb-4">
+                <LogoIcon className="w-6 h-6 text-[#D4922A]" />
+                <span className="text-[#0b1d28] text-lg font-normal lowercase" style={{ fontFamily: "'Clash Display', sans-serif" }}>{BRAND}</span>
+              </div>
+              <p className="text-[#2d3843] text-sm mb-1">AI-powered planning permission guidance</p>
+              <p className="text-[#2d3843] text-sm mb-1">for UK homeowners.</p>
+              <a href="mailto:hello@planningperm.co.uk" className="text-[#D4922A] text-sm font-semibold hover:underline mt-3 inline-block">
+                hello@planningperm.co.uk
+              </a>
+            </div>
+
+            {/* Link columns */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
+              {[
+                { heading: "Product", links: [
+                  ["Check my property", "/dashboard/projects/new"],
+                  ["Dashboard", "/dashboard"],
+                  ["My documents", "/dashboard/documents"],
+                ]},
+                { heading: "Resources", links: [
+                  ["Planning guides", "/blog"],
+                  ["Conservatory rules", "/blog/do-you-need-planning-permission-for-a-conservatory"],
+                  ["Planning costs", "/blog/how-much-does-planning-permission-cost-uk"],
+                  ["Solar panels", "/blog/do-you-need-planning-permission-for-solar-panels"],
+                  ["Pergolas", "/blog/do-you-need-planning-permission-for-a-pergola"],
+                ]},
+                { heading: "Legal", links: [
+                  ["Privacy policy", "/privacy"],
+                  ["Terms & conditions", "/terms"],
+                  ["Complaints", "mailto:hello@planningperm.co.uk?subject=Complaint"],
+                ]},
+              ].map((col) => (
+                <div key={col.heading}>
+                  <p className="text-[11px] uppercase tracking-[0.12em] font-bold text-[#0b1d28] mb-4">{col.heading}</p>
+                  {col.links.map(([label, href]) => (
+                    <a key={label} href={href} className="block text-sm text-[#2d3843] mb-2.5 hover:text-[#0b1d28] transition-colors">
+                      {label}
+                    </a>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <hr className="border-[#d0e8e8] mb-6" />
+
+          {/* Bottom row */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs text-[#9ca3af]">
+            <p>© {new Date().getFullYear()} PlanningPerm. All rights reserved.</p>
+            <p>Planning data sourced from Planning Portal, OS, and Environment Agency open data.</p>
+          </div>
+        </div>
       </footer>
+
     </div>
   );
 }

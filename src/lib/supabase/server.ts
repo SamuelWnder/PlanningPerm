@@ -1,53 +1,13 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import type { Database } from "@/types/database";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
-export async function createClient() {
-  const cookieStore = await cookies();
-
-  return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {
-            // Server component — cookies can't be set from here
-          }
-        },
-      },
-    }
-  );
-}
-
-export async function createServiceClient() {
-  const cookieStore = await cookies();
-
-  return createServerClient<Database>(
+/**
+ * Server-side admin client — uses the service role key.
+ * Only import this in API routes / server components, never in client components.
+ */
+export function createAdminClient() {
+  return createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
-          } catch {
-            // Server component
-          }
-        },
-      },
-    }
+    { auth: { autoRefreshToken: false, persistSession: false } }
   );
 }

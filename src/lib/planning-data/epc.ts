@@ -1,0 +1,134 @@
+/**
+ * Energy Performance Certificate (EPC) Register
+ * API by Open Data Communities / DLUHC
+ *
+ * Requires a free registered account at epc.opendatacommunities.org
+ * Set EPC_API_EMAIL and EPC_API_KEY in .env.local
+ *
+ * Used here to retrieve:
+ *   - Property type (house / flat / bungalow / maisonette)
+ *   - Construction date band (pre-1900, 1900–1929, … post-2012)
+ *   - Floor area (m²)
+ *   - Current EPC rating
+ *
+ * Construction date is especially valuable:
+ *   - Pre-1948 properties have different permitted development rights
+ *   - Pre-1919 properties in conservation areas face stricter scrutiny
+ *   - Helps pre-populate form fields and improve assessment accuracy
+ */
+
+const EPC_BASE = "https://epc.opendatacommunities.org/api/v1/domestic/search";
+
+export interface EpcResult {
+  found: boolean;
+  property_type: string | null;
+  built_form: string | null;       // detached / semi-detached / end-terrace / mid-terrace
+  construction_age_band: string | null; // e.g. "England and Wales: 1900-1929"
+  construction_year_min: number | null; // parsed lower bound
+  total_floor_area: number | null; // m²
+  current_energy_rating: string | null; // A–G
+  lodgement_date: string | null;  // date of most recent EPC
+  address: string | null;
+}
+
+function parseYearBand(band: string | null): number | null {
+  if (!band) return null;
+  const match = band.match(/(\d{4})/);
+  return match ? parseInt(match[1], 10) : null;
+}
+
+/**
+ * Look up EPC data for a property by address string.
+ * Returns null if EPC_API_EMAIL or EPC_API_KEY are not set.
+ */
+export async function getEpcData(address: string): Promise<EpcResult> {
+  const email  = process.env.EPC_API_EMAIL;
+  const apiKey = process.env.EPC_API_KEY;
+
+  const empty: EpcResult = {
+    found: false,
+    property_type: null,
+    built_form: null,
+    construction_age_band: null,
+    construction_year_min: null,
+    total_floor_area: null,
+    current_energy_rating: null,
+    lodgement_date: null,
+    address: null,
+  };
+
+  if (!email || !apiKey) {
+    // Credentials not configured — skip silently
+    return empty;
+  }
+
+  try {
+    const token = Buffer.from(`${email}:${apiKey}`).toString("base64");
+
+    // Search by address — EPC API does fuzzy address matching
+    // Strip country suffix and normalise for best results
+    const query = address.replace(/,?\s*(england|wales|uk|united kingdom)$/i, "").trim();
+
+    const params = new URLSearchParams({
+      address: query,
+      size: "5",
+    });
+
+    const resp = await fetch(`${EPC_BASE}?${params}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Basic ${token}`,
+      },
+      next: { revalidate: 86400 }, // EPC data changes slowly
+    });
+
+    if (!resp.ok) {
+      console.error(`[EPC] API error ${resp.status}`);
+      return empty;
+    }
+
+    const data = await resp.json() as {
+      rows?: Array<Record<string, string>>;
+    };
+
+    const rows = data.rows ?? [];
+    if (rows.length === 0) return empty;
+
+    // Take the most recent certificate (first row — API returns newest first)
+    const row = rows[0];
+
+    const ageBand = row["construction-age-band"] ?? null;
+
+    return {
+      found: true,
+      property_type:         row["property-type"] ?? null,
+      built_form:            row["built-form"] ?? null,
+      construction_age_band: ageBand,
+      construction_year_min: parseYearBand(ageBand),
+      total_floor_area:      row["total-floor-area"] ? parseFloat(row["total-floor-area"]) : null,
+      current_energy_rating: row["current-energy-rating"] ?? null,
+      lodgement_date:        row["lodgement-date"] ?? null,
+      address:               row["address"] ?? null,
+    };
+  } catch (err) {
+    console.error("[EPC] Lookup failed:", err);
+    return empty;
+  }
+}
+
+/**
+ * Human-readable description of the construction age band for UI display.
+ */
+export function describeAgeBand(band: string | null): string {
+  if (!band) return "Unknown age";
+  // Strip the "England and Wales: " prefix if present
+  return band.replace(/^(england and wales|scotland|northern ireland):\s*/i, "").trim();
+}
+
+/**
+ * Returns true if the property is likely pre-1948 based on the EPC age band.
+ * Pre-1948 properties have different permitted development rules for some works.
+ */
+export function isPreWar(yearMin: number | null): boolean {
+  return yearMin !== null && yearMin < 1948;
+}

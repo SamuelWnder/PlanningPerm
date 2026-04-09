@@ -76,6 +76,8 @@ export interface Database {
           feasibility_score: number | null;
           feasibility_report: Json | null;
           application_reference: string | null;
+          latitude: number | null;
+          longitude: number | null;
         };
         Insert: {
           id?: string;
@@ -95,6 +97,8 @@ export interface Database {
           feasibility_score?: number | null;
           feasibility_report?: Json | null;
           application_reference?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
         };
         Update: {
           id?: string;
@@ -114,6 +118,8 @@ export interface Database {
           feasibility_score?: number | null;
           feasibility_report?: Json | null;
           application_reference?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
         };
         Relationships: never[];
       };
@@ -406,6 +412,18 @@ export interface Database {
 }
 
 // Application-level types
+export interface ConstraintsDetected {
+  is_listed: boolean;
+  listed_grade: "I" | "II*" | "II" | null;
+  is_conservation: boolean;
+  conservation_name: string | null;
+  is_flood_risk: boolean;
+  flood_zone: "1" | "2" | "3a" | "3b" | null;
+  is_green_belt: boolean;
+  is_article_4: boolean;
+  is_aonb: boolean;
+}
+
 export interface FeasibilityReport {
   score: number;
   confidence: "high" | "medium" | "low";
@@ -413,6 +431,7 @@ export interface FeasibilityReport {
   key_risks: Risk[];
   comparable_cases: ComparableCase[];
   policy_notes: string[];
+  constraints_detected?: ConstraintsDetected | null;
   permitted_development: {
     likely_pd: boolean;
     pd_class: string | null;
@@ -420,6 +439,8 @@ export interface FeasibilityReport {
   };
   recommendation: string;
   generated_at: string;
+  jurisdiction?: "england" | "wales" | "scotland";
+  data_coverage_note?: string | null;
 }
 
 export interface Risk {
@@ -431,12 +452,13 @@ export interface Risk {
 
 export interface ComparableCase {
   reference: string;
-  address: string;
-  description: string;
+  address: string | null;
+  description: string | null;
   decision: PlanningDecision;
-  decision_date: string;
+  decision_date: string | null;
   similarity_score: number;
   notes?: string;
+  url?: string | null;
 }
 
 export interface LPA {

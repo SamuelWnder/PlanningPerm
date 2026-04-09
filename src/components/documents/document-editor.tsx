@@ -39,8 +39,8 @@ function ToolbarButton({
       className={cn(
         "p-1.5 rounded transition-colors",
         active
-          ? "bg-[#1A3A2A] text-white"
-          : "hover:bg-[#F0EDE6] text-[#374151]"
+          ? "bg-[#18181B] text-white"
+          : "hover:bg-[#F3F4F6] text-[#52525B]"
       )}
     >
       {children}
@@ -83,66 +83,56 @@ export function DocumentEditor({ document, onSave, onBack }: Props) {
   if (!editor) return null;
 
   return (
-    <div>
+    <div className="space-y-4" style={{ fontFamily: "var(--font-geist-sans)" }}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <Button variant="ghost" size="sm" className="gap-1 -ml-2" onClick={onBack}>
-          <ArrowLeft className="h-4 w-4" />
+      <div className="flex items-center justify-between">
+        <button
+          onClick={onBack}
+          className="flex items-center gap-1.5 text-[13px] font-medium text-[#71717A] hover:text-[#18181B] transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" strokeWidth={1.6} />
           Back to documents
-        </Button>
-        <div className="flex items-center gap-2">
+        </button>
+        <div className="flex items-center gap-3">
           {saved && (
-            <span className="text-sm text-green-600">Saved</span>
+            <span className="text-[13px] text-[#059669] font-medium">Saved</span>
           )}
-          <Button size="sm" onClick={handleSave} disabled={saving} className="gap-1">
-            {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3 w-3" />}
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="flex items-center gap-1.5 rounded-full bg-[#18181B] px-4 py-1.5 text-[13px] font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3 w-3" strokeWidth={1.6} />}
             Save
-          </Button>
+          </button>
         </div>
       </div>
 
-      <h2 className="text-xl font-semibold mb-4">{document.title}</h2>
+      <h2 className="text-[18px] font-semibold text-[#18181B]">{document.title}</h2>
 
       {/* Editor */}
-      <div className="rounded-xl border border-[#E5E0D8] bg-white overflow-hidden">
+      <div className="rounded-2xl border border-[rgba(226,232,240,0.8)] bg-white overflow-hidden"
+        style={{ boxShadow: "0 4px 24px -4px rgba(0,0,0,0.06)" }}>
         {/* Toolbar */}
-        <div className="flex items-center gap-1 border-b border-[#E5E0D8] px-3 py-2">
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            active={editor.isActive("bold")}
-          >
+        <div className="flex items-center gap-1 border-b border-[rgba(226,232,240,0.8)] bg-[#F9FAFB] px-4 py-2.5">
+          <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")}>
             <Bold className="h-4 w-4" />
           </ToolbarButton>
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            active={editor.isActive("italic")}
-          >
+          <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")}>
             <Italic className="h-4 w-4" />
           </ToolbarButton>
-          <div className="w-px h-5 bg-[#E5E0D8] mx-1" />
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            active={editor.isActive("heading", { level: 2 })}
-          >
+          <div className="w-px h-4 bg-[rgba(226,232,240,0.8)] mx-1" />
+          <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })}>
             <Heading2 className="h-4 w-4" />
           </ToolbarButton>
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-            active={editor.isActive("heading", { level: 3 })}
-          >
+          <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} active={editor.isActive("heading", { level: 3 })}>
             <Heading3 className="h-4 w-4" />
           </ToolbarButton>
-          <div className="w-px h-5 bg-[#E5E0D8] mx-1" />
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            active={editor.isActive("bulletList")}
-          >
+          <div className="w-px h-4 bg-[rgba(226,232,240,0.8)] mx-1" />
+          <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive("bulletList")}>
             <List className="h-4 w-4" />
           </ToolbarButton>
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            active={editor.isActive("orderedList")}
-          >
+          <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive("orderedList")}>
             <ListOrdered className="h-4 w-4" />
           </ToolbarButton>
         </div>

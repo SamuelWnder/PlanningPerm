@@ -1,0 +1,69 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getConstraintsAtPoint } from "@/lib/planning-data/mhclg";
+import { getNhleListedBuildings } from "@/lib/planning-data/historic-england";
+import { getEaFloodZone } from "@/lib/planning-data/ea-flood";
+import { getEpcData } from "@/lib/planning-data/epc";
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const lat     = searchParams.get("lat");
+  const lng     = searchParams.get("lng");
+  const address = searchParams.get("address") ?? "";
+
+  if (!lat || !lng) {
+    return NextResponse.json(
+      { error: "lat and lng query params are required" },
+      { status: 400 }
+    );
+  }
+
+  const latitude  = parseFloat(lat);
+  const longitude = parseFloat(lng);
+
+  if (isNaN(latitude) || isNaN(longitude)) {
+    return NextResponse.json(
+      { error: "Invalid coordinates" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    // Run all four sources in parallel
+    const [mhclg, nhle, eaFlood, epc] = await Promise.all([
+      getConstraintsAtPoint(latitude, longitude),
+      getNhleListedBuildings(latitude, longitude),
+      getEaFloodZone(latitude, longitude),
+      address ? getEpcData(address) : Promise.resolve(null),
+    ]);
+
+    const merged = {
+      ...mhclg,
+
+      // ── Listed building: NHLE is authoritative, overrides MHCLG ──
+      is_listed_building:    nhle.is_listed || mhclg.is_listed_building,
+      listed_building_grade: nhle.listed_grade ?? mhclg.listed_building_grade,
+      nhle_name:             nhle.listed_name,
+      nhle_entry:            nhle.listed_entry,
+      nhle_url:              nhle.listed_url,
+      nhle_nearby_listed:    nhle.nearby_listed,
+      nhle_source:           "historic-england",
+
+      // ── Flood zone: EA is authoritative, overrides MHCLG ──
+      is_flood_risk:  eaFlood.is_flood_risk,
+      flood_risk_zone: eaFlood.flood_zone,
+      is_flood_storage_area: eaFlood.is_flood_storage_area,
+      flood_source:   "environment-agency",
+
+      // ── EPC property data (enrichment, not a planning constraint) ──
+      epc: epc ?? null,
+    };
+
+    return NextResponse.json(merged);
+  } catch (err) {
+    console.error("Constraints lookup error:", err);
+    return NextResponse.json(
+      { error: "Failed to fetch constraints" },
+      { status: 500 }
+    );
+  }
+}
