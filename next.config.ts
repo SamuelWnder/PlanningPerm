@@ -17,9 +17,9 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // Next.js inline scripts + Plausible
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://cdn.paddle.com",
-      // Styles: self + inline (Tailwind generates inline)
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net https://api.fonts.coollabs.io",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://cdn.paddle.com https://public.profitwell.com",
+      // Styles: self + inline (Tailwind generates inline) + Paddle
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net https://api.fonts.coollabs.io https://cdn.paddle.com",
       // Fonts
       "font-src 'self' data: https://fonts.gstatic.com https://fonts.bunny.net https://api.fonts.coollabs.io",
       // Images: self + data URIs + OS Maps tiles
@@ -33,6 +33,7 @@ const securityHeaders = [
         "https://api.os.uk",
         "https://api.paddle.com",
         "https://checkout.paddle.com",
+        "https://cdn.paddle.com",
         "https://www.planning.data.gov.uk",
         "https://services-eu1.arcgis.com",
         "https://environment.data.gov.uk",
@@ -43,7 +44,7 @@ const securityHeaders = [
       // Videos in public/
       "media-src 'self'",
       // iframes — Paddle checkout overlay
-      "frame-src https://checkout.paddle.com",
+      "frame-src https://checkout.paddle.com https://buy.paddle.com",
       // Workers
       "worker-src 'self' blob:",
     ].join("; "),

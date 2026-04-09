@@ -32,14 +32,12 @@ function ScoreArc({ score, sizePx = 220 }: { score: number; sizePx?: number }) {
           strokeDasharray={`${filled} ${circ - filled}`}
           style={{ filter: `drop-shadow(0 0 10px ${color})`, transition: "stroke-dasharray 0.9s ease" }} />
       </svg>
-      <p style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.55)", margin: "0 0 2px 0", letterSpacing: "0.08em", textTransform: "uppercase" }}>Score</p>
-      <p style={{ fontSize: Math.round(size * 0.29), fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>
-        {score}<span style={{ fontSize: Math.round(size * 0.118), fontWeight: 400, color: "rgba(255,255,255,0.45)" }}>%</span>
+      <p style={{ fontSize: Math.round(size * 0.068), fontWeight: 600, color: "rgba(255,255,255,0.55)", margin: `0 0 ${Math.round(size * 0.02)}px 0`, letterSpacing: "0.08em", textTransform: "uppercase" }}>Score</p>
+      <p style={{ fontSize: Math.round(size * 0.27), fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>
+        {score}<span style={{ fontSize: Math.round(size * 0.11), fontWeight: 400, color: "rgba(255,255,255,0.45)" }}>%</span>
       </p>
-      <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", margin: "4px 0 0 0" }}>out of 100</p>
-      <div style={{ marginTop: 12, background: `${color}22`, borderRadius: 16000, padding: "6px 18px", border: `1px solid ${color}55` }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color, margin: 0 }}>{label}</p>
-      </div>
+      <p style={{ fontSize: Math.round(size * 0.068), color: "rgba(255,255,255,0.4)", margin: `${Math.round(size * 0.03)}px 0 0 0` }}>out of 100</p>
+      <p style={{ fontSize: Math.round(size * 0.075), fontWeight: 700, color, margin: `${Math.round(size * 0.05)}px 0 0 0` }}>{label}</p>
     </div>
   );
 }
