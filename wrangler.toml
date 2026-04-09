@@ -2,3 +2,11 @@ name = "planningperm"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
+
+# Public (non-sensitive) build-time variables — baked into the client bundle by Next.js.
+# Secrets (API keys etc.) stay as encrypted secrets in the Cloudflare dashboard.
+[vars]
+NEXT_PUBLIC_PADDLE_CLIENT_TOKEN = "live_902cd6a0d069338c8ce2f4986be"
+NEXT_PUBLIC_PADDLE_PRICE_ID     = "pri_01kns2g78p03k1aznfxq92287v"
+NEXT_PUBLIC_BASE_URL            = "https://planningperm.com"
+NEXT_PUBLIC_OS_PLACES_API_KEY   = "WAbe1pdmr7VBmnkPZCoGNSGujmEHuM5J"
