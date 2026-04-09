@@ -93,8 +93,14 @@ function LoadingScreen({ address }: { address: string }) {
 
         {/* Logo + address */}
         <div style={{ textAlign: "center" }}>
-          <div style={{ width: 56, height: 56, borderRadius: 16, background: "#D4922A", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", boxShadow: "0 0 32px rgba(212,146,42,0.35)" }}>
-            <span style={{ fontSize: 18, fontWeight: 700, color: "white", letterSpacing: -0.5 }}>PP</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, margin: "0 auto 20px" }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D4922A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 32, height: 32, filter: "drop-shadow(0 0 12px rgba(212,146,42,0.5))" }}>
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span style={{ fontSize: 22, fontWeight: 400, color: "white", letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif", textTransform: "lowercase" }}>
+              planningperm
+            </span>
           </div>
           <p style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.14em", margin: "0 0 10px 0" }}>
             Feasibility check
