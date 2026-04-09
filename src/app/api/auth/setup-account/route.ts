@@ -1,57 +1,67 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
 import { createAdminClient } from "@/lib/supabase/server";
 import type { StoredProject, AssessmentResult } from "@/lib/project-store";
 
-
-export const runtime = 'edge';
-
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) throw new Error("STRIPE_SECRET_KEY is not configured");
-  return new Stripe(key, { apiVersion: "2025-03-31.basil" });
-}
+export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
-  const stripe = getStripe();
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 
   try {
     const body = await req.json() as {
-      stripeSessionId: string;
+      paddleTransactionId: string;
       project: StoredProject;
       assessment: AssessmentResult;
     };
 
-    const { stripeSessionId, project, assessment } = body;
-    if (!stripeSessionId || !project || !assessment) {
+    const { paddleTransactionId, project, assessment } = body;
+    if (!paddleTransactionId || !project || !assessment) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // 1. Verify payment via Stripe
-    const session = await stripe.checkout.sessions.retrieve(stripeSessionId);
-    if (session.payment_status !== "paid") {
+    // 1. Verify payment via Paddle
+    const apiKey = process.env.PADDLE_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: "Paddle not configured" }, { status: 500 });
+    }
+
+    const paddleRes = await fetch(
+      `https://api.paddle.com/transactions/${paddleTransactionId}?include=customer`,
+      { headers: { Authorization: `Bearer ${apiKey}` } }
+    );
+
+    if (!paddleRes.ok) {
+      return NextResponse.json({ error: "Could not verify payment with Paddle" }, { status: 500 });
+    }
+
+    const { data: tx } = await paddleRes.json() as { data: PaddleTransaction };
+
+    if (tx.status !== "completed") {
       return NextResponse.json({ error: "Payment not verified" }, { status: 402 });
     }
 
-    const customerEmail = session.customer_details?.email ?? session.metadata?.email ?? null;
+    const customerEmail =
+      tx.customer?.email ??
+      tx.custom_data?.email ??
+      null;
+
     if (!customerEmail) {
-      return NextResponse.json({ error: "No email on Stripe session" }, { status: 400 });
+      return NextResponse.json({ error: "No email on Paddle transaction" }, { status: 400 });
     }
 
     const supabase = createAdminClient();
 
-    // 2. Save the project to Supabase (upsert by stripe_session_id to be idempotent)
+    // 2. Save project to Supabase (upsert by payment_id to be idempotent)
     const { data: savedProject, error: dbError } = await supabase
       .from("projects")
       .upsert(
         {
-          user_email:        customerEmail,
-          project_data:      project,
-          assessment_data:   assessment,
-          stripe_session_id: stripeSessionId,
+          user_email:   customerEmail,
+          project_data: project,
+          assessment_data: assessment,
+          payment_id:   paddleTransactionId,
         },
-        { onConflict: "stripe_session_id" }
+        { onConflict: "payment_id" }
       )
       .select("id")
       .single();
@@ -63,7 +73,7 @@ export async function POST(req: NextRequest) {
 
     const projectId = savedProject.id as string;
 
-    // 3. Generate a magic link via Supabase Auth admin API
+    // 3. Generate a magic link
     const redirectTo = `${BASE_URL}/auth/callback?projectId=${projectId}`;
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type: "magiclink",
@@ -76,10 +86,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Failed to generate magic link" }, { status: 500 });
     }
 
-    const magicLink = linkData.properties.action_link;
-
-    // 4. Send the email via Resend
-    await sendMagicLinkEmail({ email: customerEmail, magicLink, address: project.address });
+    // 4. Send magic link email
+    await sendMagicLinkEmail({
+      email: customerEmail,
+      magicLink: linkData.properties.action_link,
+      address: project.address,
+    });
 
     return NextResponse.json({ success: true, projectId });
   } catch (err) {
@@ -99,7 +111,6 @@ async function sendMagicLinkEmail({
 }) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) {
-    // In dev without Resend, just log the link
     console.log(`[setup-account] Magic link for ${email}:\n${magicLink}`);
     return;
   }
@@ -168,19 +179,25 @@ async function sendMagicLinkEmail({
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${resendKey}`,
+      Authorization: `Bearer ${resendKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from:    "PlanningPerm <onboarding@resend.dev>",
-      to:      email,
+      from: "PlanningPerm <onboarding@resend.dev>",
+      to: email,
       subject: `Your planning report for ${address}`,
       html,
     }),
   });
 
   if (!res.ok) {
-    const err = await res.text();
-    console.error("[setup-account] Resend error:", err);
+    console.error("[setup-account] Resend error:", await res.text());
   }
+}
+
+interface PaddleTransaction {
+  id: string;
+  status: string;
+  custom_data?: { address?: string; email?: string };
+  customer?: { id: string; email?: string };
 }

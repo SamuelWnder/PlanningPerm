@@ -9,51 +9,59 @@ import Link from "next/link";
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const router       = useRouter();
-  const [status, setStatus]    = useState<"verifying" | "saving" | "done" | "error">("verifying");
+  const [status, setStatus]       = useState<"verifying" | "saving" | "done" | "error">("verifying");
   const [projectId, setProjectId] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false);
   const [errorMsg, setErrorMsg]   = useState("");
 
   useEffect(() => {
-    const sessionId = searchParams.get("session_id");
-    if (!sessionId) { setStatus("error"); setErrorMsg("No session ID found."); return; }
+    // Accept transaction_id from URL param or from sessionStorage (set by Paddle eventCallback)
+    const transactionId =
+      searchParams.get("transaction_id") ??
+      sessionStorage.getItem("pp_transaction_id");
+
+    if (!transactionId) {
+      setStatus("error");
+      setErrorMsg("No transaction ID found. If you completed payment, please contact support.");
+      return;
+    }
 
     async function verify() {
       try {
-        // 1. Verify payment with Stripe
-        const verifyRes = await fetch(`/api/stripe/verify?session_id=${sessionId}`);
-        const verifyData = await verifyRes.json();
+        // 1. Verify payment with Paddle
+        const verifyRes = await fetch(`/api/paddle/verify?transaction_id=${transactionId}`);
+        const verifyData = await verifyRes.json() as { paid?: boolean; error?: string };
         if (!verifyData.paid) throw new Error(verifyData.error ?? "Payment not verified");
 
         // 2. Read preview data from sessionStorage
         setStatus("saving");
         const raw = sessionStorage.getItem("pp_preview_data");
-        if (!raw) throw new Error("Preview data not found in session.");
+        if (!raw) throw new Error("Preview data not found. Please contact support.");
 
         const { project, assessment } = JSON.parse(raw) as {
           project: StoredProject;
           assessment: AssessmentResult;
         };
 
-        // 3. Save to localStorage permanently (instant local access)
+        // 3. Save to localStorage (instant local access)
         const localProjectId = projectStore.save(project, assessment);
         setProjectId(localProjectId);
         sessionStorage.setItem("pp_latest_project_id", localProjectId);
 
-        // 4. Setup account in background: save to Supabase + send magic link email
-        //    Fire-and-forget — don't block the redirect on this
+        // 4. Setup account: save to Supabase + send magic link — fire-and-forget
         fetch("/api/auth/setup-account", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ stripeSessionId: sessionId, project, assessment }),
+          body: JSON.stringify({ paddleTransactionId: transactionId, project, assessment }),
         })
           .then((r) => r.json())
-          .then((d) => { if (d.success) setEmailSent(true); })
+          .then((d: { success?: boolean }) => { if (d.success) setEmailSent(true); })
           .catch((e) => console.error("[setup-account]", e));
 
         // 5. Clean up session data
         sessionStorage.removeItem("pp_preview_data");
         sessionStorage.removeItem("pp_new_project");
+        sessionStorage.removeItem("pp_transaction_id");
 
         setStatus("done");
       } catch (e) {
@@ -62,6 +70,7 @@ function PaymentSuccessContent() {
         setErrorMsg(e instanceof Error ? e.message : "Something went wrong.");
       }
     }
+
     verify();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -92,7 +101,6 @@ function PaymentSuccessContent() {
             </p>
           </div>
 
-          {/* Magic link notice */}
           <div style={{ background: "rgba(55,176,170,0.10)", border: "1.5px solid rgba(55,176,170,0.25)", borderRadius: 16, padding: "18px 24px", maxWidth: 400, width: "100%" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
               <Mail size={18} color="rgb(55,176,170)" strokeWidth={1.8} />

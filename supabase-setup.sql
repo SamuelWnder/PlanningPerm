@@ -10,12 +10,12 @@ drop table if exists public.projects cascade;
 
 -- Projects table: stores paid reports permanently
 create table public.projects (
-  id                uuid        primary key default gen_random_uuid(),
-  user_email        text        not null,
-  project_data      jsonb       not null,
-  assessment_data   jsonb       not null,
-  stripe_session_id text        unique,
-  created_at        timestamptz default now()
+  id              uuid        primary key default gen_random_uuid(),
+  user_email      text        not null,
+  project_data    jsonb       not null,
+  assessment_data jsonb       not null,
+  payment_id      text        unique,   -- Paddle transaction ID
+  created_at      timestamptz default now()
 );
 
 -- Index for quick lookup by email

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Home, FolderOpen, FileText, MapPin, Bell, User, ChevronLeft,
@@ -124,17 +125,28 @@ function LockedRow({ icon, label, sublabel }: { icon: React.ReactNode; label: st
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function PreviewPage() {
+  const router = useRouter();
   const [data, setData]         = useState<PreviewData | null>(null);
   const [noData, setNoData]     = useState(false);
   const [paying, setPaying]         = useState(false);
   const [name, setName]             = useState("");
   const [email, setEmail]           = useState("");
   const [emailSaved, setEmailSaved] = useState(false);
+  const paddleRef = useRef<import("@paddle/paddle-js").Paddle | undefined>(undefined);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("pp_preview_data");
     if (!raw) { setNoData(true); return; }
     try { setData(JSON.parse(raw)); } catch { setNoData(true); }
+  }, []);
+
+  useEffect(() => {
+    import("@paddle/paddle-js").then(({ initializePaddle }) => {
+      initializePaddle({
+        environment: "production",
+        token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? "",
+      }).then((instance) => { paddleRef.current = instance; });
+    });
   }, []);
 
   const handleEmailCapture = () => {
@@ -150,23 +162,41 @@ export default function PreviewPage() {
     setEmailSaved(true);
   };
 
-  const handlePay = async () => {
+  const handlePay = () => {
     if (!data || paying) return;
+    const paddle = paddleRef.current;
+    if (!paddle) { alert("Payment not ready yet. Please wait a moment and try again."); return; }
+
+    const capturedEmail = sessionStorage.getItem("pp_lead_email") ?? "";
+    const priceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID ?? "";
+
     setPaying(true);
-    try {
-      const res = await fetch("/api/stripe/create-checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: data.project.address }),
-      });
-      const { url, error } = await res.json();
-      if (error || !url) throw new Error(error ?? "No checkout URL");
-      window.location.href = url;
-    } catch (e) {
-      console.error(e);
-      setPaying(false);
-      alert("Could not start checkout. Please try again.");
-    }
+    paddle.Checkout.open({
+      items: [{ priceId, quantity: 1 }],
+      customData: { address: data.project.address, email: capturedEmail },
+      ...(capturedEmail ? { customer: { email: capturedEmail } } : {}),
+      settings: {
+        displayMode: "overlay",
+        theme: "dark",
+        locale: "en-GB",
+        successUrl: `${window.location.origin}/dashboard/projects/payment-success`,
+      },
+    });
+
+    paddle.Update({
+      eventCallback: (event) => {
+        if (event.name === "checkout.completed") {
+          const txId = (event.data as { transaction_id?: string })?.transaction_id;
+          if (txId) {
+            sessionStorage.setItem("pp_transaction_id", txId);
+            router.push(`/dashboard/projects/payment-success?transaction_id=${txId}`);
+          }
+        }
+        if (event.name === "checkout.closed") {
+          setPaying(false);
+        }
+      },
+    });
   };
 
   if (noData) {
