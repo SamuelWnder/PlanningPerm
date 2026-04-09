@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
   Home, FolderOpen, FileText, MapPin, Bell,
   User, ChevronLeft, ChevronRight, Plus,
@@ -85,6 +86,8 @@ export default function ProjectsPage() {
   const [projects, setProjects]         = useState<SavedProject[]>([]);
   const [search, setSearch]             = useState("");
   const [hasUnpaidPreview, setHasUnpaidPreview] = useState(false);
+  const { isMobile, isTablet }          = useBreakpoint();
+  const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
 
   useEffect(() => {
     setProjects(projectStore.getAll());
@@ -108,14 +111,14 @@ export default function ProjectsPage() {
           {/* ══ HERO ════════════════════════════════════════════════════════ */}
           <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 340 }}>
             <HeroBg />
-            <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: "40px 64px 56px" }}>
+            <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: `40px ${hPad} 56px` }}>
               <Link href="/dashboard" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 15, fontWeight: 500, marginBottom: 28 }}>
                 <ChevronLeft size={16} strokeWidth={2} /> Back to dashboard
               </Link>
-              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, marginBottom: 32 }}>
+              <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "flex-end", justifyContent: "space-between", gap: 16, marginBottom: 32 }}>
                 <div>
-                  <h1 style={{ fontSize: 44, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>Your projects</h1>
-                  <p style={{ fontSize: 18, color: "rgba(255,255,255,0.55)", margin: 0 }}>
+                  <h1 style={{ fontSize: isMobile ? 30 : 44, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>Your projects</h1>
+                  <p style={{ fontSize: isMobile ? 15 : 18, color: "rgba(255,255,255,0.55)", margin: 0 }}>
                     {projects.length} {projects.length === 1 ? "property" : "properties"} checked &nbsp;·&nbsp;
                     <span style={{ color: needsAttention > 0 ? "rgb(212,150,42)" : "rgb(55,176,170)" }}>
                       {needsAttention > 0 ? `${needsAttention} need${needsAttention === 1 ? "s" : ""} attention` : "All clear"}
@@ -135,7 +138,7 @@ export default function ProjectsPage() {
           </section>
 
           {/* ══ CONTENT ═════════════════════════════════════════════════════ */}
-          <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 64px" }}>
+          <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad}` }}>
 
             {/* Search */}
             <section style={{ padding: "32px 0 16px" }}>
@@ -202,11 +205,11 @@ export default function ProjectsPage() {
                     const needsAttn = score < 45;
                     return (
                       <Link key={p.id} href={`/dashboard/projects/${p.id}`} style={{ textDecoration: "none" }}>
-                        <div style={{ background: "white", borderRadius: 24, padding: "22px 28px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", display: "flex", alignItems: "center", gap: 22 }}>
+                          <div style={{ background: "white", borderRadius: 24, padding: isMobile ? "16px 18px" : "22px 28px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", display: "flex", alignItems: "center", gap: isMobile ? 14 : 22 }}>
                           <ScoreRing score={score} />
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap", marginBottom: 4 }}>
-                              <p style={{ fontSize: 19, fontWeight: 700, color: "rgb(11,29,40)", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 400 }}>{p.project.address}</p>
+                              <p style={{ fontSize: isMobile ? 15 : 19, fontWeight: 700, color: "rgb(11,29,40)", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: isMobile ? 180 : 400 }}>{p.project.address}</p>
                               <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: 0, whiteSpace: "nowrap" }}>{p.project.council}</p>
                             </div>
                             <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 10px 0" }}>{p.project.projectTypeLabel}</p>

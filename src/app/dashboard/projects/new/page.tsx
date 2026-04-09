@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, Suspense } from "react";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import Link from "next/link";
 import {
   Home, FolderOpen, FileText, MapPin, Bell, User,
@@ -252,6 +253,8 @@ function NewProjectContent() {
   const router       = useRouter();
   const searchParams = useSearchParams();
   const TOTAL_STEPS  = 5;
+  const { isMobile, isTablet } = useBreakpoint();
+  const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
 
   // Free-check gate
   const [gated, setGated] = useState<"loading" | "free" | "used">("loading");
@@ -534,7 +537,7 @@ function NewProjectContent() {
         {/* ══ HERO ════════════════════════════════════════════════════════ */}
         <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 240 }}>
           <HeroBg />
-          <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto", padding: "44px 64px 88px" }}>
+          <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto", padding: `${isMobile ? "24px" : "44px"} ${hPad} ${isMobile ? "56px" : "88px"}` }}>
             <Link href="/dashboard/projects" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 15, fontWeight: 500, marginBottom: 28 }}>
               <ChevronLeft size={16} strokeWidth={2} /> Back to projects
             </Link>
@@ -543,7 +546,7 @@ function NewProjectContent() {
                 <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.5)", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.1em" }}>
                   Step {step} of {TOTAL_STEPS}
                 </p>
-                <h1 style={{ fontSize: 36, fontWeight: 400, color: "white", margin: 0, letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif" }}>
+                <h1 style={{ fontSize: isMobile ? 24 : 36, fontWeight: 400, color: "white", margin: 0, letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif" }}>
                   {STEP_TITLES[step]}
                 </h1>
               </div>
@@ -558,7 +561,7 @@ function NewProjectContent() {
         </section>
 
         {/* ══ STEP CONTENT ════════════════════════════════════════════════ */}
-        <div style={{ maxWidth: 860, margin: "0 auto", padding: "40px 64px 80px" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto", padding: `${isMobile ? "24px" : "40px"} ${hPad} ${isMobile ? "48px" : "80px"}` }}>
 
           {/* ── Step 1: Address ─────────────────────────────────────────── */}
           {step === 1 && (
@@ -669,10 +672,10 @@ function NewProjectContent() {
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
               {/* Property type */}
-              <div style={{ ...CARD, padding: "28px 32px" }}>
+              <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                 <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What type of property is it?</p>
                 <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Affects permitted development rights and planning rules</p>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
                   {[
                     { id: "Detached house",    desc: "Free-standing on all sides" },
                     { id: "Semi-detached",      desc: "Shares one party wall" },
@@ -722,9 +725,9 @@ function NewProjectContent() {
 
           {/* ── Step 3: Project type ─────────────────────────────────────── */}
           {step === 3 && (
-            <div style={{ ...CARD, padding: "32px" }}>
+            <div style={{ ...CARD, padding: isMobile ? "20px" : "32px" }}>
               <p style={{ fontSize: 16, color: "rgb(100,120,130)", margin: "0 0 24px 0" }}>Select the type of work you&apos;re planning</p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
                 {PROJECT_TYPES.map((type) => {
                   const Icon = type.icon;
                   const selected = projectType === type.id;
@@ -775,10 +778,10 @@ function NewProjectContent() {
                     </div>
                   </div>
 
-                  <div style={{ ...CARD, padding: "28px 32px" }}>
+                  <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                     <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Approximate trunk diameter at chest height</p>
                     <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Helps determine the scale and significance of the tree</p>
-                    <div style={{ display: "flex", gap: 10 }}>
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                       {["Under 30cm", "30–60cm", "Over 60cm", "Not sure"].map((opt) => (
                         <PillBtn key={opt} label={opt} selected={treeDiameter === opt} onClick={() => setTreeDiameter(opt)} />
                       ))}
@@ -810,9 +813,9 @@ function NewProjectContent() {
                     </div>
                   </div>
 
-                  <div style={{ ...CARD, padding: "28px 32px" }}>
+                  <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                     <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the total floor area?</p>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 10 }}>
                       {typeConfig.sizes.map((opt) => (
                         <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} />
                       ))}
@@ -825,10 +828,10 @@ function NewProjectContent() {
               {!typeConfig.showTreeExtras && !typeConfig.showChangeExtras && (
                 <>
                   {typeConfig.showSize && (
-                    <div style={{ ...CARD, padding: "28px 32px" }}>
+                    <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                       <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>{typeConfig.sizeLabel}</p>
                       <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Approximate floor area in square metres</p>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+                      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 10 }}>
                         {typeConfig.sizes.map((opt) => (
                           <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} />
                         ))}
@@ -839,9 +842,9 @@ function NewProjectContent() {
                   {/* Garage extras: attachment + intended use */}
                   {typeConfig.showGarageExtras && (
                     <>
-                      <div style={{ ...CARD, padding: "28px 32px" }}>
+                      <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                         <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Attached or detached?</p>
-                        <div style={{ display: "flex", gap: 10 }}>
+                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                           {["Attached to the main house", "Detached structure"].map((opt) => (
                             <PillBtn key={opt} label={opt} selected={garageAttachment === opt} onClick={() => setGarageAttachment(opt)} />
                           ))}
@@ -910,8 +913,8 @@ function NewProjectContent() {
                 <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 20px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Your project summary</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                   {reviewRows.map((row, i, arr) => (
-                    <div key={i} style={{ display: "flex", gap: 20, padding: "14px 0", borderBottom: i < arr.length - 1 ? "1px solid rgb(240,246,246)" : "none" }}>
-                      <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(100,120,130)", margin: 0, width: 140, flexShrink: 0 }}>{row.label}</p>
+                    <div key={i} style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 2 : 20, padding: "14px 0", borderBottom: i < arr.length - 1 ? "1px solid rgb(240,246,246)" : "none" }}>
+                      <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(100,120,130)", margin: 0, width: isMobile ? "auto" : 140, flexShrink: 0 }}>{row.label}</p>
                       <p style={{ fontSize: 15, color: "rgb(11,29,40)", margin: 0, lineHeight: 1.5 }}>{row.value}</p>
                     </div>
                   ))}

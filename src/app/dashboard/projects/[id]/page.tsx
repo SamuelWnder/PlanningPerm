@@ -4,6 +4,7 @@ export const runtime = 'edge';
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import Link from "next/link";
 import {
   Home, FolderOpen, FileText, MapPin, Bell, User,
@@ -149,8 +150,8 @@ function PulsingDot() {
   );
 }
 
-function ScoreDonut({ score }: { score: number }) {
-  const size = 220; const r = 88;
+function ScoreDonut({ score, sizePx = 220 }: { score: number; sizePx?: number }) {
+  const size = sizePx; const r = Math.round(size * 0.4);
   const circ = 2 * Math.PI * r;
   const arc = 0.75;
   const filled = (score / 100) * arc * circ;
@@ -164,9 +165,9 @@ function ScoreDonut({ score }: { score: number }) {
         <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth={10} strokeDasharray={`${track} ${gap}`} />
         <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={10} strokeLinecap="round" strokeDasharray={`${filled} ${circ - filled}`} />
       </svg>
-      <p style={{ fontSize: 11, fontWeight: 500, color: "rgba(255,255,255,0.55)", margin: "0 0 2px 0", letterSpacing: "0.06em", textTransform: "uppercase" }}>Score</p>
-      <p style={{ fontSize: 52, fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>{score}</p>
-      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", margin: "2px 0 8px 0" }}>/ 100</p>
+      <p style={{ fontSize: Math.round(size * 0.05), fontWeight: 500, color: "rgba(255,255,255,0.55)", margin: "0 0 2px 0", letterSpacing: "0.06em", textTransform: "uppercase" }}>Score</p>
+      <p style={{ fontSize: Math.round(size * 0.236), fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>{score}</p>
+      <p style={{ fontSize: Math.round(size * 0.045), color: "rgba(255,255,255,0.4)", margin: "2px 0 8px 0" }}>/ 100</p>
       <div style={{ background: `${color}22`, borderRadius: 16000, padding: "5px 14px", border: `1px solid ${color}55` }}>
         <p style={{ fontSize: 12, fontWeight: 700, color, margin: 0 }}>{label}</p>
       </div>
@@ -243,7 +244,7 @@ function DocViewerModal({ name, html, onClose }: { name: string; html: string; o
 }
 
 // ── Lead capture ──────────────────────────────────────────────────────────────
-function LeadCapture({ address }: { address: string }) {
+function LeadCapture({ address, isMobile }: { address: string; isMobile?: boolean }) {
   const [name, setName]   = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -260,7 +261,7 @@ function LeadCapture({ address }: { address: string }) {
   const INPUT = { width: "100%", border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 10, padding: "11px 14px", fontSize: 15, color: "white", background: "rgba(255,255,255,0.07)", fontFamily: "inherit", outline: "none", boxSizing: "border-box" as const };
 
   return (
-    <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: "40px 48px", display: "flex", gap: 56, alignItems: "center", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" }}>
+    <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: isMobile ? "28px 20px" : "40px 48px", display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 56, alignItems: isMobile ? "stretch" : "center", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" }}>
       <div style={{ flex: 1 }}>
         <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)", margin: "0 0 10px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Get expert help</p>
         <h2 style={{ fontSize: 28, fontWeight: 400, color: "white", margin: "0 0 12px 0", letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif" }}>Speak to a planning consultant</h2>
@@ -268,7 +269,7 @@ function LeadCapture({ address }: { address: string }) {
           A qualified UK planning consultant will review your assessment and advise on the best route to approval. Free 15-minute call, no obligation.
         </p>
       </div>
-      <div style={{ flex: "0 0 360px" }}>
+      <div style={{ flex: isMobile ? "1 1 auto" : "0 0 360px" }}>
         {sent ? (
           <div style={{ textAlign: "center", padding: "24px 0" }}>
             <CheckCircle size={40} color="rgb(55,176,170)" strokeWidth={1.5} style={{ marginBottom: 16 }} />
@@ -327,6 +328,8 @@ function HeroBg() {
 export default function ProjectResultPage() {
   const { id } = useParams<{ id: string }>();
   const router   = useRouter();
+  const { isMobile, isTablet } = useBreakpoint();
+  const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
 
   const [saved, setSaved] = useState<SavedProject | null>(null);
   const [notFound, setNotFound] = useState(false);
@@ -515,8 +518,8 @@ export default function ProjectResultPage() {
           {/* ══ HERO ══════════════════════════════════════════════════════════ */}
           <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 360 }}>
             <HeroBg />
-            <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: "36px 64px 72px" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
+            <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: `${isMobile ? "24px" : "36px"} ${hPad} ${isMobile ? "56px" : "72px"}` }}>
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 28 }}>
                 <Link href="/dashboard/projects" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 15, fontWeight: 500 }}>
                   <ChevronLeft size={16} strokeWidth={2} /> Back to projects
                 </Link>
@@ -551,20 +554,20 @@ export default function ProjectResultPage() {
                   </button>
                 )}
               </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
+              <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: isMobile ? 20 : 40 }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.10)", borderRadius: 20, padding: "5px 14px", marginBottom: 16 }}>
                     <MapPin size={13} color="rgba(255,255,255,0.6)" strokeWidth={2} />
                     <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)" }}>{project.council || "Local Planning Authority"}</span>
                   </div>
-                  <h1 style={{ fontSize: 46, fontWeight: 400, color: "white", margin: "0 0 12px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>{project.address}</h1>
+                  <h1 style={{ fontSize: isMobile ? 26 : 46, fontWeight: 400, color: "white", margin: "0 0 12px 0", letterSpacing: isMobile ? -0.3 : -1, fontFamily: "'Clash Display', sans-serif" }}>{project.address}</h1>
                   <p style={{ fontSize: 17, color: "rgba(255,255,255,0.7)", margin: "0 0 24px 0", maxWidth: 520, lineHeight: 1.6 }}>{project.description || project.projectTypeLabel}</p>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 10, padding: "9px 16px" }}>
                     <Building2 size={15} color="rgba(255,255,255,0.5)" strokeWidth={1.8} />
                     <span style={{ fontSize: 15, color: "rgba(255,255,255,0.6)" }}>{project.projectTypeLabel}</span>
                   </div>
                 </div>
-                <ScoreDonut score={assessment.score} />
+                <ScoreDonut score={assessment.score} sizePx={isMobile ? 160 : 220} />
               </div>
             </div>
             <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, zIndex: 2, lineHeight: 0, pointerEvents: "none" }}>
@@ -575,8 +578,8 @@ export default function ProjectResultPage() {
           </section>
 
           {/* ══ CONTENT ═══════════════════════════════════════════════════════ */}
-          <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 64px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 20, marginTop: 32 }}>
+          <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad}` }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr" : "1fr 360px", gap: 20, marginTop: 32 }}>
 
               {/* LEFT */}
               <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -798,13 +801,13 @@ export default function ProjectResultPage() {
           </div>
 
           {/* ══ ASSESSMENT SUMMARY (full width) ════════════════════════════════ */}
-          <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 64px", marginTop: 20 }}>
+          <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad}`, marginTop: 20 }}>
             <div style={{ ...CARD, marginTop: 0 }}>
               <h2 style={{ fontSize: 24, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 20px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.3 }}>Assessment summary</h2>
 
               {/* Borough rate vs project score */}
               {assessment.area_approval_rate != null && (
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, marginBottom: 24 }}>
                   <div style={{ background: "rgba(55,176,170,0.07)", borderRadius: 14, padding: "18px 20px", border: "1px solid rgba(55,176,170,0.18)" }}>
                     <p style={{ fontSize: 12, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.07em" }}>Borough approval rate</p>
                     <p style={{ fontSize: 32, fontWeight: 400, color: "rgb(55,176,170)", margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>{assessment.area_approval_rate}%</p>
@@ -843,8 +846,8 @@ export default function ProjectResultPage() {
           </div>
 
           {/* ══ LEAD CAPTURE ═══════════════════════════════════════════════════ */}
-          <div id="lead-capture" style={{ maxWidth: 1280, margin: "32px auto 0", padding: "0 64px" }}>
-            <LeadCapture address={project.address} />
+          <div id="lead-capture" style={{ maxWidth: 1280, margin: "32px auto 0", padding: `0 ${hPad}` }}>
+            <LeadCapture address={project.address} isMobile={isMobile} />
           </div>
 
         </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
   Home, FolderOpen, FileText, MapPin, Bell,
   User, ChevronLeft, ChevronRight, Star,
@@ -45,9 +46,9 @@ function HeroBg() {
 }
 
 // ── Score donut ───────────────────────────────────────────────────────────────
-function ScoreDonut({ score, empty }: { score?: number; empty?: boolean }) {
-  const size = 300;
-  const r    = 128;
+function ScoreDonut({ score, empty, size: sizeProp }: { score?: number; empty?: boolean; size?: number }) {
+  const size = sizeProp ?? 300;
+  const r    = Math.round(size * 0.427);
   const circ = 2 * Math.PI * r;
   const arc  = 0.75;
   const track  = arc * circ;
@@ -147,6 +148,8 @@ function DarkCard({ children, href, style = {} }: { children: React.ReactNode; h
 export default function PlanningPermHome() {
   const [dot, setDot]             = useState(0);
   const [projects, setProjects]   = useState<SavedProject[]>([]);
+  const { isMobile, isTablet }    = useBreakpoint();
+  const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
 
   useEffect(() => {
     const loaded = projectStore.getAll();
@@ -165,7 +168,7 @@ export default function PlanningPermHome() {
         <div style={{ background: "rgb(234,245,245)", paddingBottom: 40 }}>
 
           {/* ══ HERO ════════════════════════════════════════════════════════ */}
-          <section style={{ height: 688, paddingTop: 68, position: "relative", overflow: "hidden" }}>
+          <section style={{ minHeight: isMobile ? 420 : 688, paddingTop: 68, position: "relative", overflow: "hidden" }}>
 
             <HeroBg />
 
@@ -177,23 +180,23 @@ export default function PlanningPermHome() {
             </div>
 
             {/* Content */}
-            <div style={{ position: "relative", zIndex: 3, height: "100%", maxWidth: 1280, margin: "0 auto", padding: "72px 64px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 48 }}>
+            <div style={{ position: "relative", zIndex: 3, maxWidth: 1280, margin: "0 auto", padding: `${isMobile ? "32px" : "72px"} ${hPad} 0`, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "space-between", gap: isMobile ? 32 : 48 }}>
 
               {/* LEFT — welcome + status */}
-              <div style={{ flex: "0 0 auto", maxWidth: 460 }}>
+              <div style={{ flex: "0 0 auto", maxWidth: isMobile ? "100%" : 460 }}>
                 <p style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.50)", margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.14em" }}>Welcome back</p>
-                <p style={{ fontSize: 88, fontWeight: 400, color: "white", margin: "0 0 24px 0", lineHeight: 1, letterSpacing: -4, fontFamily: "'Clash Display', sans-serif" }}>Samuel</p>
+                <p style={{ fontSize: isMobile ? 48 : 88, fontWeight: 400, color: "white", margin: "0 0 24px 0", lineHeight: 1, letterSpacing: isMobile ? -2 : -4, fontFamily: "'Clash Display', sans-serif" }}>Samuel</p>
 
                 {/* Stats row — only when projects exist */}
                 {hasProjects && (
                   <div style={{ display: "flex", gap: 32, marginBottom: 32 }}>
                     <div>
-                      <p style={{ fontSize: 40, fontWeight: 400, color: "white", margin: 0, lineHeight: 1, fontFamily: "'Clash Display', sans-serif", letterSpacing: -1 }}>{projects.length}</p>
+                      <p style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, color: "white", margin: 0, lineHeight: 1, fontFamily: "'Clash Display', sans-serif", letterSpacing: -1 }}>{projects.length}</p>
                       <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", margin: "5px 0 0 0", fontWeight: 500 }}>Active projects</p>
                     </div>
                     <div style={{ width: 1, background: "rgba(255,255,255,0.15)" }} />
                     <div>
-                      <p style={{ fontSize: 40, fontWeight: 400, color: needsAttention > 0 ? "#D4922A" : "rgb(55,176,170)", margin: 0, lineHeight: 1, fontFamily: "'Clash Display', sans-serif", letterSpacing: -1 }}>{needsAttention}</p>
+                      <p style={{ fontSize: isMobile ? 28 : 40, fontWeight: 400, color: needsAttention > 0 ? "#D4922A" : "rgb(55,176,170)", margin: 0, lineHeight: 1, fontFamily: "'Clash Display', sans-serif", letterSpacing: -1 }}>{needsAttention}</p>
                       <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", margin: "5px 0 0 0", fontWeight: 500 }}>Need{needsAttention === 1 ? "s" : ""} attention</p>
                     </div>
                   </div>
@@ -210,7 +213,7 @@ export default function PlanningPermHome() {
               </div>
 
               {/* RIGHT — score carousel / empty state */}
-              <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: isMobile ? 48 : 0 }}>
 
                 {hasProjects && currentProject ? (
                   <>
@@ -233,7 +236,7 @@ export default function PlanningPermHome() {
                         <ChevronLeft size={22} strokeWidth={2} />
                       </button>
 
-                      <ScoreDonut score={currentProject.assessment.score} />
+                      <ScoreDonut score={currentProject.assessment.score} size={isMobile ? 200 : 300} />
 
                       <button
                         onClick={() => setDot((d) => (d + 1) % projects.length)}
@@ -259,7 +262,7 @@ export default function PlanningPermHome() {
                   </>
                 ) : (
                   <Link href="/dashboard/projects/new" style={{ textDecoration: "none" }}>
-                    <ScoreDonut empty />
+                    <ScoreDonut empty size={isMobile ? 200 : 300} />
                   </Link>
                 )}
               </div>
@@ -269,7 +272,7 @@ export default function PlanningPermHome() {
           </section>
 
           {/* ══ CONTENT ═════════════════════════════════════════════════════ */}
-          <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 64px" }}>
+          <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad}` }}>
 
             {/* ── What's new ──────────────────────────────────────────────── */}
             <section style={{ padding: "32px 0 8px" }}>
@@ -362,10 +365,10 @@ export default function PlanningPermHome() {
 
                 return (
                   <Link href={hasProjects ? `/dashboard/projects/${projects[0].id}` : "/dashboard/projects/new"} style={{ textDecoration: "none" }}>
-                    <div style={{ borderRadius: 24, padding: 28, background: "linear-gradient(145deg,rgb(14,10,40) 0%,rgb(22,15,60) 45%,rgb(18,20,70) 100%)", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ borderRadius: 24, padding: isMobile ? 20 : 28, background: "linear-gradient(145deg,rgb(14,10,40) 0%,rgb(22,15,60) 45%,rgb(18,20,70) 100%)", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", position: "relative", overflow: "hidden", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: isMobile ? 20 : 0 }}>
                       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.10) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
 
-                      <div style={{ position: "relative", maxWidth: "55%" }}>
+                      <div style={{ position: "relative", maxWidth: isMobile ? "100%" : "55%" }}>
                         <div style={{ marginBottom: 12 }}>
                           <Pill bg="rgb(55,176,170)" icon={<MapPin size={10} strokeWidth={2.5} />}>AreaScore</Pill>
                         </div>

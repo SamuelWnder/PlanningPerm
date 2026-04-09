@@ -111,8 +111,8 @@ function SketchCheckHouse() {
 
 function TestimonialBanner({ name, location, quote }: { name: string; location: string; quote: string }) {
   return (
-    <section className="bg-[#eaf5f5] py-10 px-8">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <section className="bg-[#eaf5f5] py-10 px-4 sm:px-8">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
           <p className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[#0b1d28] mb-1">{name} · {location}</p>
           <Stars />
@@ -191,7 +191,7 @@ export default function HomePage() {
     <div className="font-sans text-[#0b1d28] overflow-x-hidden" style={{ fontFamily: "'Euclid Circular B', sans-serif" }}>
 
       {/* ── 1. NAV ─────────────────────────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 bg-white px-8 py-4 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-white px-4 sm:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <LogoIcon className="w-7 h-7 text-[#D4922A]" />
           <span className="text-[#0b1d28] text-xl font-normal lowercase tracking-tight" style={{ fontFamily: "'Clash Display', sans-serif" }}>{BRAND}</span>
@@ -237,11 +237,11 @@ export default function HomePage() {
           </svg>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-8 py-24 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-16 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 py-16 sm:py-24 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-16 items-center">
           {/* Left — text */}
           <div>
 
-            <h1 className="text-6xl xl:text-7xl font-normal text-white leading-[1.0] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+            <h1 className="text-3xl sm:text-5xl xl:text-7xl font-normal text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
               Know before you build.
             </h1>
             <p className="text-[rgba(255,255,255,0.70)] text-lg leading-relaxed max-w-lg mb-10">
@@ -345,9 +345,9 @@ export default function HomePage() {
       />
 
       {/* ── 4. SOCIAL PROOF / BIG QUOTE ────────────────────────────────────── */}
-      <section className="bg-white py-28 px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="rounded-2xl overflow-hidden h-[420px]">
+      <section className="bg-white py-16 sm:py-28 px-4 sm:px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="rounded-2xl overflow-hidden h-[280px] sm:h-[420px]">
             <img
               src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&auto=format&fit=crop"
               alt="Homeowners reviewing their planning report"
@@ -355,7 +355,7 @@ export default function HomePage() {
             />
           </div>
           <div>
-            <p className="text-3xl xl:text-4xl font-normal italic text-[#0b1d28] leading-[1.3] mb-8" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+            <p className="text-xl sm:text-3xl xl:text-4xl font-normal italic text-[#0b1d28] leading-[1.3] mb-8" style={{ fontFamily: "'Clash Display', sans-serif" }}>
               "PlanningPerm showed me exactly what conservation area rules applied — and what didn't. We got permission first time."
             </p>
             <p className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[#2d3843] mb-2">
@@ -367,8 +367,8 @@ export default function HomePage() {
       </section>
 
       {/* ── STATS STRIP ────────────────────────────────────────────────────── */}
-      <section className="bg-[#eaf5f5] py-16 px-8 border-t border-[#d0e8e8]">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="bg-[#eaf5f5] py-14 px-4 sm:px-8 border-t border-[#d0e8e8]">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { val: "14,000+", label: "Homeowners assessed"  },
             { val: "320+",    label: "Councils covered"     },
@@ -376,7 +376,7 @@ export default function HomePage() {
             { val: "4.9 / 5", label: "Trustpilot rating"    },
           ].map((s, i) => (
             <div key={i} className="text-center">
-              <p className="text-4xl font-normal tracking-tight mb-1" style={{ fontFamily: "'Clash Display', sans-serif", color: "rgb(55,176,170)" }}>{s.val}</p>
+              <p className="text-2xl sm:text-4xl font-normal tracking-tight mb-1" style={{ fontFamily: "'Clash Display', sans-serif", color: "rgb(55,176,170)" }}>{s.val}</p>
               <p className="text-sm font-semibold text-[#0b1d28]">{s.label}</p>
             </div>
           ))}
@@ -384,7 +384,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 5. THREE-COLUMN FEATURES ───────────────────────────────────────── */}
-      <section id="how-it-works" className="bg-white py-20 px-8 border-t border-gray-100">
+      <section id="how-it-works" className="bg-white py-16 sm:py-20 px-4 sm:px-8 border-t border-gray-100">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             {[
@@ -429,10 +429,10 @@ export default function HomePage() {
       />
 
       {/* ── 7. BUILT ON REAL DATA ──────────────────────────────────────────── */}
-      <section className="bg-white py-28 px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <section className="bg-white py-16 sm:py-28 px-4 sm:px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-5xl font-normal text-[#0b1d28] leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+            <h2 className="text-3xl sm:text-5xl font-normal text-[#0b1d28] leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
               Built on real<br />planning data.<br />Not guesswork.
             </h2>
             <p className="text-[#2d3843] leading-relaxed mb-3 text-base">
@@ -486,13 +486,13 @@ export default function HomePage() {
       </section>
 
       {/* ── 8. COMPARISON TABLE ────────────────────────────────────────────── */}
-      <section id="pricing" className="bg-[#eaf5f5] py-28 px-8">
+      <section id="pricing" className="bg-[#eaf5f5] py-16 sm:py-28 px-4 sm:px-8">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl font-normal text-[#0b1d28] tracking-tight text-center mb-14" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+          <h2 className="text-2xl sm:text-4xl font-normal text-[#0b1d28] tracking-tight text-center mb-10 sm:mb-14" style={{ fontFamily: "'Clash Display', sans-serif" }}>
             {BRAND} vs. the<br />alternatives
           </h2>
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            <table className="w-full">
+          <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
+            <table className="w-full min-w-[500px]">
               <thead>
                 <tr className="border-b border-gray-100">
                   <th className="text-left px-6 py-5 text-sm font-semibold text-[#0b1d28] w-1/2">What you get</th>
@@ -520,9 +520,9 @@ export default function HomePage() {
 
 
       {/* ── 12. FINAL CTA ──────────────────────────────────────────────────── */}
-      <section className="bg-[#0e1e30] py-32 px-8 text-center">
+      <section className="bg-[#0e1e30] py-20 sm:py-32 px-4 sm:px-8 text-center">
         <SketchPersonDoc />
-        <h2 className="text-5xl xl:text-6xl font-normal text-white leading-[1.0] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+        <h2 className="text-3xl sm:text-5xl xl:text-6xl font-normal text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
           Get your free planning<br />score today
         </h2>
         <p className="text-[rgba(255,255,255,0.70)] text-lg mb-10 max-w-md mx-auto leading-relaxed">
@@ -535,7 +535,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 13. FOOTER ─────────────────────────────────────────────────────── */}
-      <footer className="bg-[#eaf5f5] px-8 pt-14 pb-10">
+      <footer className="bg-[#eaf5f5] px-4 sm:px-8 pt-14 pb-10">
         <div className="max-w-6xl mx-auto">
           {/* Top row */}
           <div className="flex flex-col lg:flex-row justify-between gap-12 mb-10">

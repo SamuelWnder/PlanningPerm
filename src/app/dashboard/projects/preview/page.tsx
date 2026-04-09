@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
   Home, FolderOpen, FileText, MapPin, Bell, User, ChevronLeft,
   CheckCircle, AlertTriangle, XCircle, Building2, Zap, ShieldCheck,
@@ -13,8 +14,8 @@ import type { StoredProject, AssessmentResult } from "@/lib/project-store";
 type PreviewData = { project: StoredProject; assessment: AssessmentResult };
 
 // ── Score arc ────────────────────────────────────────────────────────────────
-function ScoreArc({ score }: { score: number }) {
-  const size = 220; const r = 88;
+function ScoreArc({ score, sizePx = 220 }: { score: number; sizePx?: number }) {
+  const size = sizePx; const r = Math.round(size * 0.4);
   const circ = 2 * Math.PI * r;
   const arc = 0.75;
   const filled = (score / 100) * arc * circ;
@@ -32,8 +33,8 @@ function ScoreArc({ score }: { score: number }) {
           style={{ filter: `drop-shadow(0 0 10px ${color})`, transition: "stroke-dasharray 0.9s ease" }} />
       </svg>
       <p style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.55)", margin: "0 0 2px 0", letterSpacing: "0.08em", textTransform: "uppercase" }}>Score</p>
-      <p style={{ fontSize: 64, fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>
-        {score}<span style={{ fontSize: 26, fontWeight: 400, color: "rgba(255,255,255,0.45)" }}>%</span>
+      <p style={{ fontSize: Math.round(size * 0.29), fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>
+        {score}<span style={{ fontSize: Math.round(size * 0.118), fontWeight: 400, color: "rgba(255,255,255,0.45)" }}>%</span>
       </p>
       <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", margin: "4px 0 0 0" }}>out of 100</p>
       <div style={{ marginTop: 12, background: `${color}22`, borderRadius: 16000, padding: "6px 18px", border: `1px solid ${color}55` }}>
@@ -133,6 +134,8 @@ export default function PreviewPage() {
   const [email, setEmail]           = useState("");
   const [emailSaved, setEmailSaved] = useState(false);
   const paddleRef = useRef<import("@paddle/paddle-js").Paddle | undefined>(undefined);
+  const { isMobile, isTablet }  = useBreakpoint();
+  const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
 
   useEffect(() => {
     const raw = sessionStorage.getItem("pp_preview_data");
@@ -259,12 +262,12 @@ export default function PreviewPage() {
         {/* ── Hero ── */}
         <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 340 }}>
           <HeroBg />
-          <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: "36px 64px 72px" }}>
+          <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: `${isMobile ? "24px" : "36px"} ${hPad} ${isMobile ? "56px" : "72px"}` }}>
             <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 15, fontWeight: 500, marginBottom: 28 }}>
               <ChevronLeft size={16} strokeWidth={2} /> Start over
             </Link>
 
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
+            <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: isMobile ? 20 : 40 }}>
               <div style={{ flex: 1 }}>
                 {/* Preview badge */}
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(212,150,42,0.15)", border: "1px solid rgba(212,150,42,0.35)", borderRadius: 20, padding: "5px 14px", marginBottom: 16 }}>
@@ -277,7 +280,7 @@ export default function PreviewPage() {
                   <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)" }}>{project.council || "Local Planning Authority"}</span>
                 </div>
 
-                <h1 style={{ fontSize: 42, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: -1, lineHeight: 1.1, fontFamily: "'Clash Display', sans-serif" }}>
+                <h1 style={{ fontSize: isMobile ? 26 : 42, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: isMobile ? -0.3 : -1, lineHeight: 1.1, fontFamily: "'Clash Display', sans-serif" }}>
                   {project.address}
                 </h1>
                 <p style={{ fontSize: 17, color: "rgba(255,255,255,0.7)", margin: "0 0 24px 0", lineHeight: 1.6 }}>
@@ -293,7 +296,7 @@ export default function PreviewPage() {
                   </span>
                 </div>
               </div>
-              <ScoreArc score={assessment.score} />
+              <ScoreArc score={assessment.score} sizePx={isMobile ? 160 : 220} />
             </div>
           </div>
 
@@ -306,8 +309,8 @@ export default function PreviewPage() {
         </section>
 
         {/* ── Content ── */}
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 64px 80px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 24, marginTop: 32 }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad} 80px` }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr" : "1fr 400px", gap: 24, marginTop: 32 }}>
 
             {/* LEFT */}
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -477,7 +480,7 @@ export default function PreviewPage() {
           </div>
 
           {/* Bottom banner */}
-          <div style={{ marginTop: 32, background: "white", borderRadius: 20, padding: "24px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
+          <div style={{ marginTop: 32, background: "white", borderRadius: 20, padding: isMobile ? "20px" : "24px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "space-between", gap: 16 }}>
             <div>
               <p style={{ fontSize: 16, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0" }}>Your full report is ready</p>
               <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: 0 }}>Risk factors, comparable decisions, cost estimate and planning documents — all generated for {project.address}</p>
