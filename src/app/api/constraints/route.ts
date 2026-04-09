@@ -4,6 +4,8 @@ import { getNhleListedBuildings } from "@/lib/planning-data/historic-england";
 import { getEaFloodZone } from "@/lib/planning-data/ea-flood";
 import { getEpcData } from "@/lib/planning-data/epc";
 
+
+export const runtime = 'edge';
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const lat     = searchParams.get("lat");

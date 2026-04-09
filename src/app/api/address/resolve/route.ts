@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { resolveUprn, lookupPostcode } from "@/lib/planning-data/os-places";
 
+
+export const runtime = 'edge';
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const uprn = searchParams.get("uprn");

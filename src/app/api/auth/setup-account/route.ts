@@ -3,6 +3,8 @@ import Stripe from "stripe";
 import { createAdminClient } from "@/lib/supabase/server";
 import type { StoredProject, AssessmentResult } from "@/lib/project-store";
 
+
+export const runtime = 'edge';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
   apiVersion: "2025-03-31.basil",
 });

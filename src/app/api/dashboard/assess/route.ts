@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { getLpaApprovalRate } from "@/lib/planning-data/lpa-rates";
 
+
+export const runtime = 'edge';
 interface ConstraintInput {
   is_listed: boolean;
   listed_grade: string | null;
