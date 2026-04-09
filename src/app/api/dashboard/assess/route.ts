@@ -83,18 +83,10 @@ function buildExtrasSection(body: Record<string, string | undefined>): string {
   return lines.length ? lines.join("\n") : "";
 }
 
-const ALLOWED_PROJECT_TYPES = new Set([
-  "single-storey-rear-extension", "two-storey-rear-extension", "side-extension",
-  "loft-conversion", "garage-conversion", "outbuilding", "conservatory",
-  "basement", "porch", "dormer-window", "solar-panels", "fence-wall",
-  "change-of-use", "new-build", "tree-works", "other",
-]);
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // Basic input validation — reject obviously malformed requests
     if (typeof body !== "object" || body === null) {
       return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
     }
@@ -104,11 +96,10 @@ export async function POST(req: NextRequest) {
     if (!address || typeof address !== "string" || address.length > 300) {
       return NextResponse.json({ error: "Invalid address" }, { status: 400 });
     }
-    if (projectType && !ALLOWED_PROJECT_TYPES.has(projectType)) {
-      return NextResponse.json({ error: "Invalid project type" }, { status: 400 });
-    }
-    // Clamp free-text description to prevent prompt injection with oversized inputs
-    const safeDescription = typeof description === "string" ? description.slice(0, 1000) : "";
+
+    // Clamp free-text fields to prevent prompt injection with oversized inputs
+    const safeProjectType   = typeof projectType   === "string" ? projectType.slice(0, 200)   : "";
+    const safeDescription   = typeof description   === "string" ? description.slice(0, 1000)  : "";
     const epc = constraints?.epc ?? null;
 
     // Look up real government approval rate first (MHCLG PS2, 2023–2024)
@@ -131,7 +122,7 @@ export async function POST(req: NextRequest) {
 PROJECT DETAILS:
 - Address: ${address}
 - Local Planning Authority: ${council ?? "not specified"}
-- Project type: ${projectType}
+- Project type: ${safeProjectType || "not specified"}
 - Size / scope: ${size ?? "not specified"}
 - Roof type: ${roof ?? "not specified"}
 - Materials: ${material ?? "not specified"}
