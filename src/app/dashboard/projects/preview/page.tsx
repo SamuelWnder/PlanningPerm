@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
-  Home, FolderOpen, FileText, MapPin, Bell, User, ChevronLeft,
+  MapPin, ChevronLeft,
   CheckCircle, AlertTriangle, XCircle, Building2, Zap, ShieldCheck,
-  Trees, Landmark, Lock, FileSignature, TrendingUp, ArrowRight,
+  Trees, Landmark, FileSignature, TrendingUp, ArrowRight,
 } from "lucide-react";
 import type { StoredProject, AssessmentResult } from "@/lib/project-store";
 
@@ -107,31 +106,13 @@ function HeroBg() {
   );
 }
 
-// ── Locked section teaser ────────────────────────────────────────────────────
-function LockedRow({ icon, label, sublabel }: { icon: React.ReactNode; label: string; sublabel?: string }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 0", borderBottom: "1px solid rgb(240,246,246)", filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
-      <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgb(234,245,245)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-        {icon}
-      </div>
-      <div>
-        <p style={{ fontSize: 15, fontWeight: 600, color: "rgb(11,29,40)", margin: 0 }}>{label}</p>
-        {sublabel && <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: "2px 0 0 0" }}>{sublabel}</p>}
-      </div>
-    </div>
-  );
-}
-
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function PreviewPage() {
-  const router = useRouter();
   const [data, setData]         = useState<PreviewData | null>(null);
   const [noData, setNoData]     = useState(false);
-  const [paying, setPaying]         = useState(false);
   const [name, setName]             = useState("");
   const [email, setEmail]           = useState("");
   const [emailSaved, setEmailSaved] = useState(false);
-  const paddleRef = useRef<import("@paddle/paddle-js").Paddle | undefined>(undefined);
   const { isMobile, isTablet }  = useBreakpoint();
   const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
 
@@ -139,15 +120,6 @@ export default function PreviewPage() {
     const raw = sessionStorage.getItem("pp_preview_data");
     if (!raw) { setNoData(true); return; }
     try { setData(JSON.parse(raw)); } catch { setNoData(true); }
-  }, []);
-
-  useEffect(() => {
-    import("@paddle/paddle-js").then(({ initializePaddle }) => {
-      initializePaddle({
-        environment: "production",
-        token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? "",
-      }).then((instance) => { paddleRef.current = instance; });
-    });
   }, []);
 
   const handleEmailCapture = () => {
@@ -163,47 +135,6 @@ export default function PreviewPage() {
     setEmailSaved(true);
   };
 
-  const handlePay = () => {
-    if (!data || paying) return;
-    const paddle = paddleRef.current;
-    if (!paddle) { alert("Payment not ready yet. Please wait a moment and try again."); return; }
-
-    const capturedEmail = sessionStorage.getItem("pp_lead_email") ?? "";
-    const priceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID ?? "";
-
-    if (!priceId) {
-      alert("Payments are not yet configured. Please contact support.");
-      return;
-    }
-
-    setPaying(true);
-    paddle.Checkout.open({
-      items: [{ priceId, quantity: 1 }],
-      customData: { address: data.project.address, email: capturedEmail },
-      ...(capturedEmail ? { customer: { email: capturedEmail } } : {}),
-      settings: {
-        displayMode: "overlay",
-        theme: "dark",
-        locale: "en-GB",
-        successUrl: `${window.location.origin}/dashboard/projects/payment-success`,
-      },
-    });
-
-    paddle.Update({
-      eventCallback: (event) => {
-        if (event.name === "checkout.completed") {
-          const txId = (event.data as { transaction_id?: string })?.transaction_id;
-          if (txId) {
-            sessionStorage.setItem("pp_transaction_id", txId);
-            router.push(`/dashboard/projects/payment-success?transaction_id=${txId}`);
-          }
-        }
-        if (event.name === "checkout.closed") {
-          setPaying(false);
-        }
-      },
-    });
-  };
 
   if (noData) {
     return (
@@ -227,27 +158,9 @@ export default function PreviewPage() {
     project.constraints.is_article_4    || project.constraints.is_aonb
   );
 
-  // Derive risk summary counts from real assessment data
   const highRisks   = assessment.risks?.filter((r) => r.severity === "high")   ?? [];
   const medRisks    = assessment.risks?.filter((r) => r.severity === "medium")  ?? [];
   const lowRisks    = assessment.risks?.filter((r) => r.severity === "low")     ?? [];
-  // Teaser rows for the locked section (real titles, blurred)
-  const riskTeaserRows = [...highRisks, ...medRisks, ...lowRisks].slice(0, 3).map((r) => ({
-    icon: r.severity === "high"
-      ? <AlertTriangle size={17} color="rgb(200,60,60)"    strokeWidth={1.8} />
-      : r.severity === "medium"
-        ? <AlertTriangle size={17} color="rgb(212,150,42)" strokeWidth={1.8} />
-        : <CheckCircle   size={17} color="rgb(55,176,170)" strokeWidth={1.8} />,
-    label: r.title,
-    sublabel: `${r.severity.charAt(0).toUpperCase() + r.severity.slice(1)} risk · Full details in report`,
-  }));
-  if (riskTeaserRows.length === 0) {
-    riskTeaserRows.push(
-      { icon: <AlertTriangle size={17} color="rgb(200,60,60)"    strokeWidth={1.8} />, label: "Heritage sensitivity identified", sublabel: "High risk · Full details in report" },
-      { icon: <AlertTriangle size={17} color="rgb(212,150,42)"   strokeWidth={1.8} />, label: "Design and materials compliance",   sublabel: "Medium risk · Full details in report" },
-      { icon: <CheckCircle   size={17} color="rgb(55,176,170)"   strokeWidth={1.8} />, label: "Permitted development threshold",   sublabel: "Low risk · Full details in report" },
-    );
-  }
   const riskBadgeColor = highRisks.length > 0 ? "rgb(200,60,60)" : medRisks.length > 0 ? "rgb(212,150,42)" : "rgb(55,176,170)";
   const riskBadgeBg    = highRisks.length > 0 ? "rgba(200,60,60,0.10)" : medRisks.length > 0 ? "rgba(212,150,42,0.10)" : "rgba(55,176,170,0.10)";
   const riskBadgeText  = highRisks.length > 0
@@ -275,9 +188,9 @@ export default function PreviewPage() {
               <div style={{ flex: 1 }}>
                 {/* Badges */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16, justifyContent: isMobile ? "center" : "flex-start" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(212,150,42,0.15)", border: "1px solid rgba(212,150,42,0.35)", borderRadius: 20, padding: "5px 14px" }}>
-                    <Lock size={12} color="#D4922A" strokeWidth={2.5} />
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "#D4922A" }}>Free preview</span>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(55,176,170,0.15)", border: "1px solid rgba(55,176,170,0.35)", borderRadius: 20, padding: "5px 14px" }}>
+                    <CheckCircle size={12} color="rgb(55,176,170)" strokeWidth={2.5} />
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)" }}>Full report — free during beta</span>
                   </div>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.10)", borderRadius: 20, padding: "5px 14px" }}>
                     <MapPin size={13} color="rgba(255,255,255,0.6)" strokeWidth={2} />
@@ -348,37 +261,34 @@ export default function PreviewPage() {
                 </p>
               </div>
 
-              {/* Locked: Risk factors */}
-              <div style={{ ...CARD, position: "relative", overflow: "hidden" }}>
+              {/* Risk factors — unlocked */}
+              <div style={CARD}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
                   <h2 style={{ fontSize: 22, fontWeight: 400, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Clash Display', sans-serif" }}>Risk factors</h2>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: riskBadgeColor, background: riskBadgeBg, border: `1px solid ${riskBadgeColor}44`, borderRadius: 8, padding: "3px 10px" }}>
-                      {riskBadgeText}
-                    </span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.9)", background: "rgb(11,29,40)", borderRadius: 8, padding: "3px 10px", display: "flex", alignItems: "center", gap: 5 }}>
-                      <Lock size={11} strokeWidth={2.5} /> Locked
-                    </span>
-                  </div>
-                </div>
-                {riskTeaserRows.map((r, i) => (
-                  <LockedRow key={i} icon={r.icon} label={r.label} sublabel={r.sublabel} />
-                ))}
-                {/* Gradient overlay */}
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 80, background: "linear-gradient(transparent, white)", borderRadius: "0 0 24px 24px" }} />
-              </div>
-
-              {/* Locked: Comparable decisions */}
-              <div style={{ ...CARD, position: "relative", overflow: "hidden" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                  <h2 style={{ fontSize: 22, fontWeight: 400, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Clash Display', sans-serif" }}>Comparable decisions</h2>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.9)", background: "rgb(11,29,40)", borderRadius: 8, padding: "3px 10px", display: "flex", alignItems: "center", gap: 5 }}>
-                    <Lock size={11} strokeWidth={2.5} /> Locked
+                  <span style={{ fontSize: 13, fontWeight: 600, color: riskBadgeColor, background: riskBadgeBg, border: `1px solid ${riskBadgeColor}44`, borderRadius: 8, padding: "3px 10px" }}>
+                    {riskBadgeText}
                   </span>
                 </div>
-                <LockedRow icon={<TrendingUp size={17} color="rgb(55,176,170)" strokeWidth={1.8} />} label="Similar application approved nearby" sublabel="0.3 miles away · 2023" />
-                <LockedRow icon={<TrendingUp size={17} color="rgb(200,60,60)" strokeWidth={1.8} />} label="Refused application — same conservation area" sublabel="0.6 miles away · 2022" />
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 80, background: "linear-gradient(transparent, white)", borderRadius: "0 0 24px 24px" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+                  {[...highRisks, ...medRisks, ...lowRisks].map((r, i, arr) => (
+                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "14px 0", borderBottom: i < arr.length - 1 ? "1px solid rgb(240,246,246)" : "none" }}>
+                      <div style={{ width: 36, height: 36, borderRadius: 10, background: r.severity === "high" ? "rgba(200,60,60,0.08)" : r.severity === "medium" ? "rgba(212,150,42,0.08)" : "rgba(55,176,170,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        {r.severity === "high"
+                          ? <AlertTriangle size={17} color="rgb(200,60,60)"    strokeWidth={1.8} />
+                          : r.severity === "medium"
+                            ? <AlertTriangle size={17} color="rgb(212,150,42)" strokeWidth={1.8} />
+                            : <CheckCircle   size={17} color="rgb(55,176,170)" strokeWidth={1.8} />}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ fontSize: 15, fontWeight: 600, color: "rgb(11,29,40)", margin: "0 0 3px 0" }}>{r.title}</p>
+                        <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: 0, lineHeight: 1.5 }}>{r.detail}</p>
+                      </div>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: r.severity === "high" ? "rgb(200,60,60)" : r.severity === "medium" ? "rgb(212,150,42)" : "rgb(55,176,170)", background: r.severity === "high" ? "rgba(200,60,60,0.08)" : r.severity === "medium" ? "rgba(212,150,42,0.08)" : "rgba(55,176,170,0.08)", borderRadius: 6, padding: "3px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>
+                        {r.severity}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -386,21 +296,25 @@ export default function PreviewPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <div style={{ position: "sticky", top: 96 }}>
 
-                {/* Main CTA card */}
+                {/* Beta access card */}
                 <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: "32px 28px", boxShadow: "rgba(0,0,0,0.2) 0px 8px 32px", marginBottom: 16 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)", margin: "0 0 10px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Full report — £20</p>
-                  <h3 style={{ fontSize: 22, fontWeight: 400, color: "white", margin: "0 0 20px 0", lineHeight: 1.3, fontFamily: "'Clash Display', sans-serif" }}>
-                    Unlock your complete planning assessment
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(55,176,170,0.15)", border: "1px solid rgba(55,176,170,0.3)", borderRadius: 20, padding: "5px 14px", marginBottom: 14 }}>
+                    <CheckCircle size={12} color="rgb(55,176,170)" strokeWidth={2.5} />
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)" }}>Beta — full access free</span>
+                  </div>
+                  <h3 style={{ fontSize: 22, fontWeight: 400, color: "white", margin: "0 0 12px 0", lineHeight: 1.3, fontFamily: "'Clash Display', sans-serif" }}>
+                    Your complete planning assessment
                   </h3>
+                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
+                    We&apos;re in early access — full reports are free while we refine the product. Paid plans launch soon.
+                  </p>
 
-                  {/* What's included */}
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {[
-                      { icon: <AlertTriangle size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Full risk factor breakdown" },
-                      { icon: <TrendingUp size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Comparable council decisions" },
-                      { icon: <FileSignature size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Planning documents (D&A, Statement)" },
-                      { icon: <Building2 size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Cost estimate to permission" },
-                      { icon: <ArrowRight size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Architect referrals if needed" },
+                      { icon: <AlertTriangle size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Full risk factor breakdown — included" },
+                      { icon: <FileSignature size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Planning documents — coming soon" },
+                      { icon: <Building2    size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Cost estimate — coming soon" },
+                      { icon: <ArrowRight   size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Architect referrals — coming soon" },
                     ].map((item, i) => (
                       <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                         <div style={{ width: 24, height: 24, borderRadius: 6, background: "rgba(55,176,170,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -410,23 +324,6 @@ export default function PreviewPage() {
                       </div>
                     ))}
                   </div>
-
-                  <button
-                    onClick={handlePay}
-                    disabled={paying}
-                    style={{
-                      width: "100%", background: paying ? "rgba(212,150,42,0.5)" : "#D4922A",
-                      color: "white", border: "none", borderRadius: 14, padding: "16px 24px",
-                      fontSize: 17, fontWeight: 700, cursor: paying ? "not-allowed" : "pointer",
-                      boxShadow: paying ? "none" : "0 0 24px rgba(212,150,42,0.4)",
-                      transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                    }}
-                  >
-                    {paying ? "Redirecting to payment…" : <>Unlock full report — £20 <ArrowRight size={17} strokeWidth={2.5} /></>}
-                  </button>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", textAlign: "center", margin: "12px 0 0 0" }}>
-                    Secure payment via Stripe · One-time fee
-                  </p>
                 </div>
 
                 {/* Approval rate teaser */}
@@ -483,19 +380,16 @@ export default function PreviewPage() {
 
           </div>
 
-          {/* Bottom banner */}
+          {/* Bottom info banner */}
           <div style={{ marginTop: 32, background: "white", borderRadius: 20, padding: isMobile ? "20px" : "24px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "space-between", gap: 16 }}>
             <div>
-              <p style={{ fontSize: 16, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0" }}>Your full report is ready</p>
-              <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: 0 }}>Risk factors, comparable decisions, cost estimate and planning documents — all generated for {project.address}</p>
+              <p style={{ fontSize: 16, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0" }}>planningperm is in early access</p>
+              <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: 0 }}>Full reports are free during beta. Paid plans with additional features — documents, comparables, and architect referrals — launch soon.</p>
             </div>
-            <button
-              onClick={handlePay}
-              disabled={paying}
-              style={{ flexShrink: 0, background: paying ? "rgba(11,29,40,0.5)" : "rgb(11,29,40)", color: "white", border: "none", borderRadius: 12, padding: "13px 28px", fontSize: 15, fontWeight: 700, cursor: paying ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}
-            >
-              {paying ? "Redirecting…" : "Unlock for £20"}
-            </button>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(55,176,170,0.08)", border: "1.5px solid rgba(55,176,170,0.25)", borderRadius: 12, padding: "10px 18px", flexShrink: 0, whiteSpace: "nowrap" }}>
+              <CheckCircle size={15} color="rgb(55,176,170)" strokeWidth={2} />
+              <span style={{ fontSize: 14, fontWeight: 600, color: "rgb(30,100,95)" }}>Free during beta</span>
+            </div>
           </div>
 
         </div>
