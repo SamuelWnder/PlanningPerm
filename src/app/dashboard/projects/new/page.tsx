@@ -610,42 +610,52 @@ function NewProjectContent() {
                           <span style={{ fontSize: 13 }}>Checking planning constraints…</span>
                         </div>
                       )}
-                      {constraints && !constraintsLoading && (
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-                          {[
-                            { show: constraints.is_listed,              label: `Listed building${constraints.listed_grade ? ` (Grade ${constraints.listed_grade})` : ""}${constraints.nhle_name ? ` — ${constraints.nhle_name}` : ""}`, severe: true  },
-                            { show: constraints.is_conservation,        label: constraints.conservation_name || "Conservation area",                                        severe: false },
-                            { show: constraints.is_locally_listed,      label: "Locally listed building",                                                                  severe: false },
-                            { show: constraints.is_heritage_at_risk,    label: "Heritage at risk",                                                                         severe: false },
-                            { show: constraints.is_green_belt,          label: "Green belt",                                                                               severe: true  },
-                            { show: constraints.is_flood_risk,          label: `Flood zone ${constraints.flood_zone || ""}`.trim(),                                        severe: false },
-                            { show: constraints.is_article_4,           label: "Article 4 direction",                                                                      severe: false },
-                            { show: constraints.is_aonb,                label: "AONB",                                                                                     severe: false },
-                            { show: constraints.is_national_park,       label: constraints.national_park_name || "National Park",                                          severe: false },
-                            { show: constraints.is_tree_preservation,   label: "Tree Preservation Order",                                                                  severe: false },
-                            { show: constraints.is_ancient_woodland,    label: "Ancient woodland",                                                                         severe: true  },
-                            { show: constraints.is_scheduled_monument,  label: "Scheduled monument",                                                                       severe: true  },
-                            { show: constraints.is_archaeological_priority, label: "Archaeological priority area",                                                         severe: false },
-                            { show: constraints.is_sssi,                label: constraints.sssi_name || "SSSI",                                                            severe: true  },
-                            { show: constraints.is_sac,                 label: constraints.sac_name || "Special Area of Conservation",                                    severe: true  },
-                            { show: constraints.is_spa,                 label: constraints.spa_name || "Special Protection Area",                                         severe: true  },
-                            { show: constraints.is_ramsar,              label: constraints.ramsar_name || "Ramsar site",                                                   severe: true  },
-                            { show: constraints.is_historic_park,       label: constraints.historic_park_name || "Registered Historic Park",                               severe: false },
-                            { show: constraints.is_world_heritage_site, label: constraints.world_heritage_site_name || "World Heritage Site",                             severe: true  },
-                            { show: constraints.is_world_heritage_buffer && !constraints.is_world_heritage_site, label: "WHS buffer zone",                                severe: false },
-                            { show: constraints.is_local_nature_reserve ?? false, label: "Local Nature Reserve",                                              severe: false },
-                          ].filter((c) => c.show).map((c, i) => (
-                            <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 5, background: c.severe ? "rgba(200,60,50,0.08)" : "rgba(212,150,42,0.10)", border: `1px solid ${c.severe ? "rgba(200,60,50,0.25)" : "rgba(212,150,42,0.25)"}`, borderRadius: 8, padding: "3px 10px", fontSize: 12, fontWeight: 600, color: c.severe ? "rgb(160,40,30)" : "rgb(140,90,10)" }}>
-                              <AlertTriangle size={11} strokeWidth={2} />{c.label}
+                      {constraints && !constraintsLoading && (() => {
+                        const found = [
+                          constraints.is_listed     && (constraints.nhle_name ? `${constraints.nhle_name}${constraints.listed_grade ? ` (Grade ${constraints.listed_grade})` : ""}` : `Listed building${constraints.listed_grade ? ` (Grade ${constraints.listed_grade})` : ""}`),
+                          constraints.is_conservation && (constraints.conservation_name || "Conservation area"),
+                          constraints.is_green_belt  && "Green belt",
+                          constraints.is_flood_risk  && `Flood Zone ${constraints.flood_zone || ""}`.trim(),
+                          constraints.is_scheduled_monument && "Scheduled monument",
+                          constraints.is_ancient_woodland   && "Ancient woodland",
+                          constraints.is_sssi        && (constraints.sssi_name || "SSSI"),
+                          constraints.is_world_heritage_site && (constraints.world_heritage_site_name || "World Heritage Site"),
+                          constraints.is_aonb        && "AONB",
+                          constraints.is_national_park && (constraints.national_park_name || "National Park"),
+                          constraints.is_article_4   && "Article 4 direction",
+                          constraints.is_historic_park && (constraints.historic_park_name || "Registered Historic Park"),
+                          constraints.is_locally_listed && "Locally listed building",
+                          constraints.is_heritage_at_risk && "Heritage at risk",
+                          constraints.is_tree_preservation && "Tree Preservation Order",
+                          constraints.is_archaeological_priority && "Archaeological priority area",
+                          constraints.is_local_nature_reserve && "Local Nature Reserve",
+                        ].filter(Boolean) as string[];
+
+                        const hasSevere = constraints.is_listed || constraints.is_green_belt || constraints.is_scheduled_monument || constraints.is_ancient_woodland || constraints.is_sssi || constraints.is_world_heritage_site;
+                        const first = found[0];
+                        const extra = found.length - 1;
+
+                        if (found.length === 0) {
+                          return (
+                            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(55,176,170,0.10)", border: "1px solid rgba(55,176,170,0.25)", borderRadius: 8, padding: "4px 12px", fontSize: 13, fontWeight: 600, color: "rgb(30,110,105)" }}>
+                              <Check size={12} strokeWidth={2.5} /> No major constraints detected
                             </span>
-                          ))}
-                          {!constraints.is_listed && !constraints.is_conservation && !constraints.is_green_belt && !constraints.is_flood_risk && !constraints.is_aonb && !constraints.is_national_park && !constraints.is_sssi && !constraints.is_sac && !constraints.is_spa && !constraints.is_ramsar && !constraints.is_scheduled_monument && !constraints.is_world_heritage_site && (
-                            <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "rgba(55,176,170,0.10)", border: "1px solid rgba(55,176,170,0.25)", borderRadius: 8, padding: "3px 10px", fontSize: 12, fontWeight: 600, color: "rgb(30,110,105)" }}>
-                              <Check size={11} strokeWidth={2.5} /> No major constraints detected
-                            </span>
-                          )}
-                        </div>
-                      )}
+                          );
+                        }
+
+                        const bg     = hasSevere ? "rgba(200,60,50,0.08)"  : "rgba(212,150,42,0.10)";
+                        const border = hasSevere ? "rgba(200,60,50,0.25)"  : "rgba(212,150,42,0.25)";
+                        const color  = hasSevere ? "rgb(160,40,30)"        : "rgb(140,90,10)";
+
+                        return (
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: bg, border: `1px solid ${border}`, borderRadius: 8, padding: "4px 12px", fontSize: 13, fontWeight: 600, color }}>
+                            <AlertTriangle size={12} strokeWidth={2} />
+                            {found.length === 1
+                              ? first
+                              : `${first} +${extra} more constraint${extra > 1 ? "s" : ""} detected`}
+                          </span>
+                        );
+                      })()}
                     </div>
                   </div>
                 )}
