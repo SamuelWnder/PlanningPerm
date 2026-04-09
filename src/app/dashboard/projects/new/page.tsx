@@ -535,21 +535,19 @@ function NewProjectContent() {
 
       <main>
         {/* ══ HERO ════════════════════════════════════════════════════════ */}
-        <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 240 }}>
+        <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: isMobile ? 260 : 300 }}>
           <HeroBg />
-          <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto", padding: `${isMobile ? "24px" : "44px"} ${hPad} ${isMobile ? "56px" : "88px"}` }}>
-            <Link href="/dashboard/projects" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 15, fontWeight: 500, marginBottom: 28 }}>
-              <ChevronLeft size={16} strokeWidth={2} /> Back to projects
+          <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto", padding: `${isMobile ? "20px" : "44px"} ${hPad} ${isMobile ? "96px" : "104px"}` }}>
+            <Link href="/dashboard/projects" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 14, fontWeight: 500, marginBottom: isMobile ? 16 : 28 }}>
+              <ChevronLeft size={15} strokeWidth={2} /> Back to projects
             </Link>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 20 }}>
-              <div>
-                <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.5)", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-                  Step {step} of {TOTAL_STEPS}
-                </p>
-                <h1 style={{ fontSize: isMobile ? 24 : 36, fontWeight: 400, color: "white", margin: 0, letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif" }}>
-                  {STEP_TITLES[step]}
-                </h1>
-              </div>
+            <div style={{ marginBottom: isMobile ? 16 : 20 }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.5)", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                Step {step} of {TOTAL_STEPS}
+              </p>
+              <h1 style={{ fontSize: isMobile ? 22 : 36, fontWeight: 400, color: "white", margin: 0, letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif", lineHeight: 1.15 }}>
+                {STEP_TITLES[step]}
+              </h1>
             </div>
             <ProgressBar step={step} total={TOTAL_STEPS} />
           </div>
