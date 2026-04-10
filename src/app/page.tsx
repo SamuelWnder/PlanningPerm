@@ -275,7 +275,6 @@ export default function HomePage() {
           <div className="w-full max-w-7xl mx-auto px-5 sm:px-14 lg:px-20 pt-10 pb-28">
             <div className="max-w-[680px]">
 
-              <p className="text-[rgba(255,255,255,0.55)] text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] mb-3 sm:mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>UK planning permission · instant AI assessment</p>
               <h1 className="text-[2.4rem] sm:text-5xl xl:text-[64px] text-white leading-[1.06] tracking-tight mb-4 sm:mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}>
                 Will your project<br />get approved?
               </h1>
