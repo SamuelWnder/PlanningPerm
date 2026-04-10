@@ -383,7 +383,6 @@ export default function HomePage() {
           <div className="mb-8 sm:mb-10 px-4 sm:px-0">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0b1d28] mb-3 flex items-center gap-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Everything you need, in 2 minutes
-              <span style={{ color: "#D4922A", fontSize: "0.85em" }}>✦</span>
             </h2>
             <p className="text-[#6b7280] text-base max-w-md" style={{ fontFamily: "'Inter', sans-serif" }}>
               From your address to a full planning assessment — no architect, no waiting, no jargon.
@@ -579,29 +578,20 @@ export default function HomePage() {
               Check my property — it&apos;s free
             </Link>
           </div>
-          {/* Visual: score gauge card */}
-          <div className="rounded-2xl sm:rounded-3xl overflow-hidden flex items-center justify-center" style={{ background: "linear-gradient(155deg, #b86d10 0%, #0b1d28 110%)", minHeight: 340 }}>
-            <svg viewBox="0 0 280 260" fill="none" className="w-full h-full" style={{ maxHeight: 380 }}>
-              <circle cx="140" cy="138" r="96" stroke="rgba(255,255,255,0.07)" strokeWidth="2"/>
-              <circle cx="140" cy="138" r="74" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
-              {/* Arc track */}
-              <circle cx="140" cy="138" r="96" stroke="rgba(255,255,255,0.14)" strokeWidth="16" strokeLinecap="round"
-                strokeDasharray="452 603" transform="rotate(135 140 138)"/>
-              {/* Arc fill 74% */}
-              <circle cx="140" cy="138" r="96" stroke="white" strokeWidth="16" strokeLinecap="round"
-                strokeDasharray="335 603" transform="rotate(135 140 138)"/>
-              {/* Score */}
-              <text x="140" y="128" fill="white" fontSize="56" fontWeight="800" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif">74</text>
-              <text x="140" y="152" fill="rgba(255,255,255,0.6)" fontSize="17" textAnchor="middle" fontFamily="Inter, sans-serif">% likely approved</text>
-              {/* Council label */}
-              <rect x="94" y="172" width="92" height="26" rx="13" fill="rgba(212,146,42,0.25)" stroke="rgba(212,146,42,0.5)" strokeWidth="1"/>
-              <text x="140" y="189" fill="#D4922A" fontSize="12" fontWeight="700" textAnchor="middle" fontFamily="Inter, sans-serif">Camden Council</text>
-              {/* Tick marks */}
-              {[0,1,2,3,4].map(n => {
-                const a = (135 + n * 67.5) * Math.PI / 180;
-                return <line key={n} x1={140 + 108*Math.cos(a)} y1={138 + 108*Math.sin(a)} x2={140 + 116*Math.cos(a)} y2={138 + 116*Math.sin(a)} stroke="rgba(255,255,255,0.2)" strokeWidth="2"/>;
-              })}
-            </svg>
+          {/* Visual: questions list card */}
+          <div className="rounded-2xl sm:rounded-3xl px-8 sm:px-10 py-10 sm:py-12 flex flex-col justify-center gap-4" style={{ background: "linear-gradient(155deg, #0f2235 0%, #0b1d28 100%)", minHeight: 340 }}>
+            {[
+              { text: "Do I need planning permission for a loft conversion?", weight: "800", opacity: 1,    size: "text-base sm:text-lg" },
+              { text: "Can I build a rear extension without planning?",        weight: "600", opacity: 0.65, size: "text-sm sm:text-base" },
+              { text: "Is my house in a conservation area?",                   weight: "700", opacity: 0.85, size: "text-sm sm:text-base" },
+              { text: "What are the rules for a garage conversion?",           weight: "400", opacity: 0.45, size: "text-xs sm:text-sm"   },
+              { text: "How likely is my council to approve this?",             weight: "700", opacity: 0.75, size: "text-sm sm:text-base" },
+              { text: "Do I need a planning statement?",                       weight: "400", opacity: 0.35, size: "text-xs sm:text-sm"   },
+            ].map((q, i) => (
+              <p key={i} className={`${q.size} leading-snug text-white`} style={{ fontWeight: q.weight, opacity: q.opacity, fontFamily: "'Inter', sans-serif" }}>
+                {q.text}
+              </p>
+            ))}
           </div>
         </div>
       </section>
