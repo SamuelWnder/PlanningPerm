@@ -545,19 +545,20 @@ export default function HomePage() {
       </section>
 
       {/* ── REVIEW ─────────────────────────────────────────────────────────── */}
-      <section className="bg-white pb-6 px-4 sm:px-16 lg:px-32">
-        <div className="rounded-2xl sm:rounded-3xl px-8 sm:px-12 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12" style={{ background: "rgb(234,245,245)", border: "1.5px solid rgb(210,236,236)" }}>
-          <div className="flex-1">
-            <div className="flex gap-0.5 mb-4">
-              {[1,2,3,4,5].map(n => <Star key={n} />)}
-            </div>
-            <p className="text-[#0b1d28] text-lg sm:text-xl leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
-              &ldquo;We were about to pay an architect £3,000 for plans. PlanningPerm gave us a 78% approval score in 2 minutes — with all three planning documents ready to submit.&rdquo;
-            </p>
+      <section className="bg-white px-4 sm:px-16 lg:px-32 py-16 sm:py-24 border-t border-gray-100">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="flex justify-center gap-1 mb-6">
+            {[1,2,3,4,5].map(n => <Star key={n} />)}
           </div>
-          <div className="shrink-0">
-            <p className="text-sm font-semibold text-[#0b1d28]" style={{ fontFamily: "'Inter', sans-serif" }}>Daniel & Emma W.</p>
-            <p className="text-xs text-[#6b7280] mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>Leeds</p>
+          <p className="text-2xl sm:text-3xl xl:text-4xl font-extrabold text-[#0b1d28] leading-[1.18] tracking-tight mb-8" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            &ldquo;We were about to pay an architect £3,000 for plans. PlanningPerm gave us a 78% approval score in 2 minutes — with all three planning documents ready to submit.&rdquo;
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-[#0b1d28] flex items-center justify-center text-white text-xs font-bold" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>D</div>
+            <div className="text-left">
+              <p className="text-sm font-semibold text-[#0b1d28]" style={{ fontFamily: "'Inter', sans-serif" }}>Daniel & Emma W.</p>
+              <p className="text-xs text-[#6b7280]" style={{ fontFamily: "'Inter', sans-serif" }}>Leeds</p>
+            </div>
           </div>
         </div>
       </section>
