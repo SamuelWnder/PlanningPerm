@@ -586,19 +586,19 @@ function NewProjectContent() {
           {/* ── Step 1: Address ─────────────────────────────────────────── */}
           {step === 1 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <div style={{ ...CARD, padding: "32px" }}>
-                <p style={{ fontSize: 16, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>
+              <div style={{ ...CARD, padding: isMobile ? "20px" : "32px" }}>
+                <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>
                   Enter the full address or postcode of the property you want to check
                 </p>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, background: "rgb(248,250,250)", borderRadius: 14, padding: "0 18px", marginBottom: suggestions.length > 0 ? 0 : 16 }}>
-                  <Search size={20} color="rgb(130,150,160)" strokeWidth={1.8} style={{ flexShrink: 0 }} />
+                <div style={{ display: "flex", alignItems: "center", gap: 10, background: "rgb(248,250,250)", borderRadius: 14, padding: "0 14px", marginBottom: suggestions.length > 0 ? 0 : 16 }}>
+                  <Search size={18} color="rgb(130,150,160)" strokeWidth={1.8} style={{ flexShrink: 0 }} />
                   <input
                     value={addressQuery}
                     onChange={(e) => handleAddressInput(e.target.value)}
                     placeholder="Start typing your address or postcode…"
                     autoComplete="off"
                     autoFocus
-                    style={{ flex: 1, border: "none", outline: "none", fontSize: 17, color: "rgb(11,29,40)", background: "transparent", padding: "18px 0", fontFamily: "inherit" }}
+                    style={{ flex: 1, minWidth: 0, border: "none", outline: "none", fontSize: isMobile ? 15 : 17, color: "rgb(11,29,40)", background: "transparent", padding: "16px 0", fontFamily: "inherit" }}
                   />
                   {addressLoading && <Loader2 size={18} color="rgb(130,150,160)" style={{ flexShrink: 0, animation: "spin 1s linear infinite" }} />}
                 </div>
@@ -952,7 +952,7 @@ function NewProjectContent() {
           {step === 5 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
-              <div style={{ ...CARD, padding: "32px" }}>
+              <div style={{ ...CARD, padding: isMobile ? "20px" : "32px" }}>
                 <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 20px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Your project summary</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                   {reviewRows.map((row, i, arr) => (
@@ -964,7 +964,7 @@ function NewProjectContent() {
                 </div>
               </div>
 
-              <div style={{ ...CARD, padding: "28px 32px" }}>
+              <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                 <p style={{ fontSize: 17, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0" }}>What happens when you run the check</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {[
