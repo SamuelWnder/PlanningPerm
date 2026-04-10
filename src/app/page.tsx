@@ -342,6 +342,40 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── COUNCILS TICKER ────────────────────────────────────────────────── */}
+      <div className="bg-white pt-6 pb-2 overflow-hidden">
+        <div className="flex items-center gap-4 mb-3 px-4 sm:px-16 lg:px-32">
+          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#9ca3af] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif" }}>320+ councils covered</span>
+          <div className="flex-1 h-px bg-gray-100" />
+        </div>
+        <div className="relative">
+          {/* Fade edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, white, transparent)" }} />
+          <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, white, transparent)" }} />
+          {/* Scrolling track */}
+          <div className="flex gap-6 w-max" style={{ animation: "councilScroll 35s linear infinite" }}>
+            {[
+              "London Borough of Hackney", "Leeds City Council", "Manchester City Council",
+              "Royal Borough of Kensington & Chelsea", "Bristol City Council",
+              "Birmingham City Council", "Sheffield City Council", "Brighton & Hove",
+              "Oxford City Council", "Cambridge City Council", "Liverpool City Council",
+              "London Borough of Islington", "Southwark Council", "Tower Hamlets",
+              "Wandsworth Council", "Richmond upon Thames", "Lambeth Council",
+              "Hertsmere Borough Council", "Elmbridge Borough Council", "Guildford Borough Council",
+              "London Borough of Hackney", "Leeds City Council", "Manchester City Council",
+              "Royal Borough of Kensington & Chelsea", "Bristol City Council",
+              "Birmingham City Council", "Sheffield City Council", "Brighton & Hove",
+              "Oxford City Council", "Cambridge City Council", "Liverpool City Council",
+              "London Borough of Islington", "Southwark Council", "Tower Hamlets",
+            ].map((c, i) => (
+              <span key={i} className="text-sm font-medium text-[#6b7280] whitespace-nowrap py-2 px-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ── 3. FEATURE CARDS ───────────────────────────────────────────────── */}
       <section className="bg-white pt-10 sm:pt-14 pb-6 px-2 sm:px-16 lg:px-32">
         <div className="w-full">

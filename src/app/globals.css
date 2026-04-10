@@ -51,6 +51,11 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes councilScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 @keyframes videoFadeOut {
   from { opacity: 1; }
   to   { opacity: 0; }
