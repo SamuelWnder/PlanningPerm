@@ -256,11 +256,11 @@ export default function HomePage() {
             <div className="w-full max-w-7xl mx-auto px-6 sm:px-14 lg:px-20 pt-8 pb-24">
             <div className="max-w-[720px]">
 
-              <p className="text-[rgba(255,255,255,0.55)] text-sm font-semibold uppercase tracking-[0.15em] mb-4">UK planning permission · instant AI assessment</p>
-              <h1 className="text-4xl sm:text-5xl xl:text-[64px] font-normal text-white leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+              <p className="text-[rgba(255,255,255,0.55)] text-sm font-semibold uppercase tracking-[0.15em] mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>UK planning permission · instant AI assessment</p>
+              <h1 className="text-4xl sm:text-5xl xl:text-[64px] text-white leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}>
                 Will your project<br />get approved?
               </h1>
-              <p className="text-[rgba(255,255,255,0.68)] text-base leading-relaxed max-w-[480px] mb-8">
+              <p className="text-[rgba(255,255,255,0.68)] text-base leading-relaxed max-w-[480px] mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
                 Find out before you spend a penny on architects. Real approval odds, 20 automated site checks, and AI-drafted planning documents — in under 2 minutes.
               </p>
 
@@ -278,12 +278,12 @@ export default function HomePage() {
                     onChange={(e) => setPostcode(e.target.value)}
                     placeholder="Enter your postcode or address"
                     className="flex-1 py-3 pr-2 text-base text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
-                    style={{ fontFamily: "'Euclid Circular B', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   />
                   <button
                     type="submit"
                     className="bg-[#D4922A] text-white font-bold whitespace-nowrap hover:bg-[#b87820] transition-colors shrink-0"
-                    style={{ padding: "14px 24px", borderRadius: 100, fontSize: 15 }}
+                    style={{ padding: "14px 24px", borderRadius: 100, fontSize: 15, fontFamily: "'Inter', sans-serif" }}
                   >
                     Get free score →
                   </button>
