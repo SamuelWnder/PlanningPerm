@@ -326,62 +326,19 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Bottom bar — arrows + dots left · trust badges right */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between px-5 sm:px-14 lg:px-20 pb-5 sm:pb-8">
-
-          {/* Left: prev / dots / next */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => advanceVideo((videoIdx - 1 + videos.length) % videos.length)}
-              aria-label="Previous"
-              className="flex items-center justify-center rounded-full transition-colors hover:bg-white/20"
-              style={{ width: 38, height: 38, border: "1.5px solid rgba(255,255,255,0.28)", background: "rgba(255,255,255,0.08)", backdropFilter: "blur(4px)" }}
-            >
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M8.5 1.5L3.5 6.5l5 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <div className="flex items-center gap-1.5">
-              {videos.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => advanceVideo(i)}
-                  className="rounded-full transition-all duration-300"
-                  style={{ width: i === videoIdx ? 20 : 6, height: 6, background: i === videoIdx ? "white" : "rgba(255,255,255,0.38)" }}
-                  aria-label={`Video ${i + 1}`}
-                />
-              ))}
+        {/* Trust badges — bottom right, desktop only */}
+        <div className="hidden sm:flex absolute bottom-0 right-0 z-10 items-end gap-2 px-5 sm:px-14 lg:px-20 pb-5 sm:pb-8">
+          {[
+            { val: "320+",  label: "councils covered" },
+            { val: "4.9 ★", label: "avg rating"       },
+            { val: "2 min", label: "to your score"    },
+          ].map((b) => (
+            <div key={b.val} className="flex items-center gap-1.5 px-3 py-2 rounded-xl"
+              style={{ background: "rgba(255,255,255,0.10)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)", border: "1px solid rgba(255,255,255,0.16)" }}>
+              <span className="text-sm font-bold text-white">{b.val}</span>
+              <span className="text-xs text-white/55">{b.label}</span>
             </div>
-            <button
-              onClick={() => advanceVideo((videoIdx + 1) % videos.length)}
-              aria-label="Next"
-              className="flex items-center justify-center rounded-full transition-colors hover:bg-white/20"
-              style={{ width: 38, height: 38, border: "1.5px solid rgba(255,255,255,0.28)", background: "rgba(255,255,255,0.08)", backdropFilter: "blur(4px)" }}
-            >
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M4.5 1.5l5 5-5 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Right: trust badges (desktop only) */}
-          <div className="hidden sm:flex items-center gap-2">
-            {[
-              { val: "320+",   label: "councils covered" },
-              { val: "4.9 ★",  label: "avg rating"       },
-              { val: "2 min",  label: "to your score"    },
-            ].map((b) => (
-              <div
-                key={b.val}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl"
-                style={{ background: "rgba(255,255,255,0.10)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)", border: "1px solid rgba(255,255,255,0.16)" }}
-              >
-                <span className="text-sm font-bold text-white">{b.val}</span>
-                <span className="text-xs text-white/55">{b.label}</span>
-              </div>
-            ))}
-          </div>
-
+          ))}
         </div>
       </section>
 
