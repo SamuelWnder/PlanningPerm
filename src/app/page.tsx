@@ -279,7 +279,7 @@ export default function HomePage() {
               <h1 className="text-[2.4rem] sm:text-5xl xl:text-[64px] text-white leading-[1.06] tracking-tight mb-4 sm:mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}>
                 Will your project<br />get approved?
               </h1>
-              <p className="text-[rgba(255,255,255,0.68)] text-sm sm:text-base font-semibold leading-relaxed max-w-[440px] mb-7 sm:mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <p className="text-[rgba(255,255,255,0.68)] text-base sm:text-lg font-semibold leading-relaxed max-w-[480px] mb-7 sm:mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
                 Real approval odds, 20 automated site checks, and AI-drafted documents — before you spend a penny on architects.
               </p>
 
