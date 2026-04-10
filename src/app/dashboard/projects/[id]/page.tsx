@@ -512,32 +512,67 @@ export default function ProjectResultPage() {
                   </button>
                 )}
               </div>
-              <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: isMobile ? 20 : 40 }}>
+              <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "center", justifyContent: "space-between", gap: isMobile ? 20 : 40, textAlign: isMobile ? "center" : "left" }}>
+                <ScoreDonut score={assessment.score} sizePx={isMobile ? 160 : 220} />
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.10)", borderRadius: 20, padding: "5px 14px", marginBottom: 16 }}>
                     <MapPin size={13} color="rgba(255,255,255,0.6)" strokeWidth={2} />
                     <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)" }}>{project.council || "Local Planning Authority"}</span>
                   </div>
-                  <h1 style={{ fontSize: isMobile ? 26 : 46, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{project.address}</h1>
-                  <p style={{ fontSize: 17, color: "rgba(255,255,255,0.7)", margin: "0 0 24px 0", maxWidth: 520, lineHeight: 1.6 }}>{project.description || project.projectTypeLabel}</p>
+                  <h1 style={{ fontSize: isMobile ? 22 : 46, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{project.address}</h1>
+                  <p style={{ fontSize: isMobile ? 15 : 17, color: "rgba(255,255,255,0.7)", margin: "0 0 24px 0", lineHeight: 1.6 }}>{project.description || project.projectTypeLabel}</p>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 10, padding: "9px 16px" }}>
                     <Building2 size={15} color="rgba(255,255,255,0.5)" strokeWidth={1.8} />
                     <span style={{ fontSize: 15, color: "rgba(255,255,255,0.6)" }}>{project.projectTypeLabel}</span>
                   </div>
                 </div>
-                <ScoreDonut score={assessment.score} sizePx={isMobile ? 160 : 220} />
               </div>
-            </div>
-            <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, zIndex: 2, lineHeight: 0, pointerEvents: "none" }}>
-              <svg viewBox="0 0 1440 80" preserveAspectRatio="none" width="100%" height="80">
-                <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(248,250,250)" />
-              </svg>
             </div>
           </section>
 
           {/* ══ CONTENT ═══════════════════════════════════════════════════════ */}
           <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad}` }}>
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr" : "1fr 360px", gap: 20, marginTop: 32 }}>
+
+            {/* ── Mobile-only: verdict + next steps appear first ────────────── */}
+            {isMobile && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 24, marginBottom: 4 }}>
+                {/* Verdict */}
+                <div style={{ ...CARD, background: "rgb(11,29,40)" }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.5)", margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Overall verdict</p>
+                  <p style={{ fontSize: 24, fontWeight: 700, color: sc, margin: "0 0 12px 0", lineHeight: 1.2, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.5 }}>{scoreVerdict}</p>
+                  <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
+                    {assessment.score >= 65
+                      ? "Your project aligns well with local planning policy. Address the minor issues and your application is well-positioned."
+                      : assessment.score >= 45
+                      ? "Your project has merit but faces real risks. Carefully address each issue before submitting."
+                      : "Significant policy conflicts detected. A pre-application meeting with the council is strongly recommended."}
+                  </p>
+                  <button onClick={() => { const el = document.getElementById("lead-capture"); el?.scrollIntoView({ behavior: "smooth" }); }} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: sc, color: "white", borderRadius: 12, padding: "13px 18px", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 600, width: "100%" }}>
+                    Get professional advice <ArrowRight size={16} strokeWidth={2} />
+                  </button>
+                </div>
+                {/* Next steps */}
+                <div style={CARD}>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Recommended next steps</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                    {[
+                      "Review each risk flag and constraint below",
+                      "Download your planning documents",
+                      assessment.score < 55 ? "Book a pre-application meeting with the council" : "Submit your application via the Planning Portal",
+                    ].map((s, i) => (
+                      <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <div style={{ width: 28, height: 28, borderRadius: "50%", background: "rgb(226,240,240)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "rgb(55,176,170)" }}>{i + 1}</span>
+                        </div>
+                        <p style={{ fontSize: 15, color: "rgb(45,56,67)", margin: 0 }}>{s}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr" : "1fr 360px", gap: 20, marginTop: isMobile ? 12 : 32 }}>
 
               {/* LEFT */}
               <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -651,8 +686,8 @@ export default function ProjectResultPage() {
               {/* RIGHT */}
               <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
-                {/* Verdict */}
-                <div style={{ ...CARD, background: "rgb(11,29,40)" }}>
+                {/* Verdict — hidden on mobile (shown above the grid instead) */}
+                <div style={{ ...CARD, background: "rgb(11,29,40)", display: isMobile ? "none" : undefined }}>
                   <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.5)", margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Overall verdict</p>
                   <p style={{ fontSize: 28, fontWeight: 400, color: sc, margin: "0 0 12px 0", lineHeight: 1.2, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.5 }}>{scoreVerdict}</p>
                   <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
@@ -709,8 +744,8 @@ export default function ProjectResultPage() {
                   </div>
                 </div>
 
-                {/* Next steps */}
-                <div style={CARD}>
+                {/* Next steps — hidden on mobile (shown above the grid instead) */}
+                <div style={{ ...CARD, display: isMobile ? "none" : undefined }}>
                   <h3 style={{ fontSize: 20, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Recommended next steps</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                     {[
