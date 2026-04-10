@@ -265,8 +265,8 @@ export default function HomePage() {
 
               {/* Search form */}
               <form onSubmit={handleSearch} className="max-w-[580px]">
-                <div className="flex items-center rounded-2xl overflow-hidden" style={{ background: "white", boxShadow: "0 8px 40px rgba(0,0,0,0.22)" }}>
-                  <div className="flex items-center pl-5 pr-2 shrink-0">
+                <div className="flex items-center p-1.5" style={{ background: "white", borderRadius: 100, boxShadow: "0 8px 40px rgba(0,0,0,0.22)" }}>
+                  <div className="flex items-center pl-4 pr-2 shrink-0">
                     <svg className="w-5 h-5 shrink-0" style={{ color: "#D4922A" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                       <circle cx="12" cy="10" r="3" />
@@ -276,18 +276,18 @@ export default function HomePage() {
                     value={postcode}
                     onChange={(e) => setPostcode(e.target.value)}
                     placeholder="Enter your postcode or address"
-                    className="flex-1 py-5 pr-2 text-base text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
+                    className="flex-1 py-3 pr-2 text-base text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
                     style={{ fontFamily: "'Euclid Circular B', sans-serif" }}
                   />
                   <button
                     type="submit"
-                    className="bg-[#D4922A] text-white font-bold whitespace-nowrap hover:bg-[#b87820] transition-colors"
-                    style={{ padding: "18px 26px", borderRadius: "0 14px 14px 0", fontSize: 15 }}
+                    className="bg-[#D4922A] text-white font-bold whitespace-nowrap hover:bg-[#b87820] transition-colors shrink-0"
+                    style={{ padding: "14px 24px", borderRadius: 100, fontSize: 15 }}
                   >
                     Get free score →
                   </button>
                 </div>
-                <p className="text-[rgba(255,255,255,0.45)] text-xs mt-3 pl-1">Free during beta · No account needed</p>
+                <p className="text-[rgba(255,255,255,0.45)] text-xs mt-3 pl-5">Free during beta · No account needed</p>
               </form>
 
             </div>
