@@ -547,18 +547,18 @@ export default function HomePage() {
 
       {/* ── REVIEW ─────────────────────────────────────────────────────────── */}
       <section className="bg-white pb-6 px-2 sm:px-16 lg:px-32">
-        <div className="rounded-2xl sm:rounded-3xl px-8 sm:px-12 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12" style={{ background: "linear-gradient(135deg, #0b1d28 0%, #0d2d3d 100%)" }}>
+        <div className="rounded-2xl sm:rounded-3xl px-8 sm:px-12 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12" style={{ background: "rgb(234,245,245)", border: "1.5px solid rgb(210,236,236)" }}>
           <div className="flex-1">
             <div className="flex gap-0.5 mb-4">
               {[1,2,3,4,5].map(n => <Star key={n} />)}
             </div>
-            <p className="text-white text-lg sm:text-xl leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <p className="text-[#0b1d28] text-lg sm:text-xl leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
               &ldquo;We were about to pay an architect £3,000 for plans. PlanningPerm gave us a 78% approval score in 2 minutes — with all three planning documents ready to submit.&rdquo;
             </p>
           </div>
           <div className="shrink-0">
-            <p className="text-sm font-semibold text-white/80" style={{ fontFamily: "'Inter', sans-serif" }}>Daniel & Emma W.</p>
-            <p className="text-xs text-white/40 mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>Leeds</p>
+            <p className="text-sm font-semibold text-[#0b1d28]" style={{ fontFamily: "'Inter', sans-serif" }}>Daniel & Emma W.</p>
+            <p className="text-xs text-[#6b7280] mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>Leeds</p>
           </div>
         </div>
       </section>
