@@ -213,7 +213,7 @@ export default function HomePage() {
       </nav>
 
       {/* ── 2. HERO ────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden mx-2 sm:mx-3" style={{ minHeight: "88vh", borderRadius: "20px" }}>
+      <section className="relative overflow-hidden mx-3 sm:mx-6 lg:mx-10" style={{ minHeight: "88vh", borderRadius: "24px" }}>
 
         {/* Video background */}
         {prevIdx !== null && (
@@ -253,7 +253,7 @@ export default function HomePage() {
 
         {/* Text content */}
         <div className="relative z-10 flex items-center" style={{ minHeight: "88vh" }}>
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 pt-8 pb-32">
+            <div className="w-full max-w-7xl mx-auto px-6 sm:px-14 lg:px-20 pt-10 pb-36">
             <div className="max-w-[600px]">
 
               <h1 className="text-5xl sm:text-6xl xl:text-7xl font-normal text-white leading-[1.02] tracking-tight mb-5" style={{ fontFamily: "'Clash Display', sans-serif" }}>
@@ -295,7 +295,7 @@ export default function HomePage() {
         </div>
 
         {/* Bottom bar — arrows + dots left · trust badges right */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between px-4 sm:px-10 lg:px-16 pb-7">
+          <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between px-6 sm:px-14 lg:px-20 pb-8">
 
           {/* Left: prev / dots / next */}
           <div className="flex items-center gap-3">
