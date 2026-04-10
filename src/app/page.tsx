@@ -254,17 +254,18 @@ export default function HomePage() {
         {/* Text content */}
         <div className="relative z-10 flex items-center" style={{ minHeight: "88vh" }}>
             <div className="w-full max-w-7xl mx-auto px-6 sm:px-14 lg:px-20 pt-8 pb-24">
-            <div className="max-w-[600px]">
+            <div className="max-w-[720px]">
 
-              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-normal text-white leading-[1.02] tracking-tight mb-5" style={{ fontFamily: "'Clash Display', sans-serif" }}>
-                Know before<br />you build.
+              <p className="text-[rgba(255,255,255,0.55)] text-sm font-semibold uppercase tracking-[0.15em] mb-4">UK planning permission · instant AI assessment</p>
+              <h1 className="text-6xl sm:text-7xl xl:text-[96px] font-normal text-white leading-[1.0] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+                Will your project<br />get approved?
               </h1>
-              <p className="text-[rgba(255,255,255,0.68)] text-lg leading-relaxed max-w-[480px] mb-8">
-                Real approval odds for your property — based on your council&apos;s actual decision history. 20 site checks, AI-drafted documents, ready in under 2 minutes.
+              <p className="text-[rgba(255,255,255,0.68)] text-xl leading-relaxed max-w-[520px] mb-10">
+                Find out before you spend a penny on architects. Real approval odds, 20 automated site checks, and AI-drafted planning documents — in under 2 minutes.
               </p>
 
               {/* Search form */}
-              <form onSubmit={handleSearch} className="max-w-[580px]">
+              <form onSubmit={handleSearch} className="max-w-[620px]">
                 <div className="flex items-center p-1.5" style={{ background: "white", borderRadius: 100, boxShadow: "0 8px 40px rgba(0,0,0,0.22)" }}>
                   <div className="flex items-center pl-4 pr-2 shrink-0">
                     <svg className="w-5 h-5 shrink-0" style={{ color: "#D4922A" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
