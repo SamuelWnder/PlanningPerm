@@ -232,7 +232,7 @@ export default function HomePage() {
       )}
 
       {/* ── 2. HERO ────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden mx-2 sm:mx-10 lg:mx-20 mt-4 sm:mt-8" style={{ minHeight: "clamp(520px, 82vh, 92vh)", borderRadius: "20px" }}>
+      <section className="relative overflow-hidden mx-2 sm:mx-10 lg:mx-20 mt-3 sm:mt-4" style={{ minHeight: "clamp(520px, 82vh, 92vh)", borderRadius: "20px" }}>
 
         {/* Video background */}
         {prevIdx !== null && (
@@ -341,6 +341,11 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* ── Disclaimer line ────────────────────────────────────────────────── */}
+      <p className="text-center text-xs text-[#9ca3af] px-4 mt-3 mb-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+        AI-generated assessment for guidance only. Always verify with your local planning authority before submitting an application.
+      </p>
 
       {/* ── 3. TESTIMONIAL BANNER ──────────────────────────────────────────── */}
       <TestimonialBanner
