@@ -563,6 +563,80 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── HOW IT WORKS ───────────────────────────────────────────────── */}
+      <section id="how-it-works" className="bg-white px-4 sm:px-16 lg:px-32 py-16 sm:py-24 border-t border-gray-100">
+        <div className="mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1d28] mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            How it works
+          </h2>
+          <p className="text-[#6b7280] text-base max-w-md" style={{ fontFamily: "'Inter', sans-serif" }}>
+            From your address to a full planning assessment in under 2 minutes.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 relative">
+          {/* Connecting line — desktop only */}
+          <div className="hidden sm:block absolute top-[52px] left-[calc(16.66%+24px)] right-[calc(16.66%+24px)] h-px" style={{ background: "linear-gradient(to right, #d0e8e8, #d0e8e8)" }} />
+
+          {[
+            {
+              step: "01",
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+              ),
+              title: "Enter your address",
+              desc: "Type your postcode or full address. We look up your property, council, and any EPC data automatically.",
+            },
+            {
+              step: "02",
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                </svg>
+              ),
+              title: "Answer a few questions",
+              desc: "Tell us what you want to build. Takes 60–90 seconds. We pre-fill what we already know from your property.",
+            },
+            {
+              step: "03",
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                </svg>
+              ),
+              title: "Get your full report",
+              desc: "Instant approval score, 20 site checks, and AI-drafted documents — ready to download and submit.",
+            },
+          ].map((s, i) => (
+            <div key={i} className="flex flex-col sm:items-start gap-5 pb-10 sm:pb-0 sm:pr-12">
+              {/* Step number + icon in a circle */}
+              <div className="flex items-center gap-4 sm:flex-col sm:items-start sm:gap-4">
+                <div className="relative shrink-0">
+                  <div className="w-[52px] h-[52px] rounded-full flex items-center justify-center text-[#D4922A] z-10 relative" style={{ background: "rgba(212,146,42,0.10)", border: "1.5px solid rgba(212,146,42,0.25)" }}>
+                    {s.icon}
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-[#D4922A] tracking-widest sm:hidden" style={{ fontFamily: "'Inter', sans-serif" }}>{s.step}</span>
+              </div>
+              <div>
+                <p className="hidden sm:block text-xs font-bold text-[#D4922A] tracking-[0.18em] mb-3 uppercase" style={{ fontFamily: "'Inter', sans-serif" }}>{s.step}</p>
+                <h3 className="text-lg sm:text-xl font-extrabold text-[#0b1d28] mb-2 leading-snug" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{s.title}</h3>
+                <p className="text-sm text-[#6b7280] leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 sm:mt-14">
+          <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-7 py-3.5 text-sm font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Start my assessment — it&apos;s free
+          </Link>
+        </div>
+      </section>
+
       {/* ── BLOG POSTS ─────────────────────────────────────────────────── */}
       <section className="bg-white px-4 sm:px-16 lg:px-32 py-16 sm:py-20 border-t border-gray-100">
         <div className="flex items-center justify-between mb-8 sm:mb-10">
