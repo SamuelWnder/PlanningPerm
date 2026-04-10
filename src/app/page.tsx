@@ -578,20 +578,41 @@ export default function HomePage() {
               Check my property — it&apos;s free
             </Link>
           </div>
-          {/* Visual: questions list card */}
-          <div className="rounded-2xl sm:rounded-3xl px-8 sm:px-10 py-10 sm:py-12 flex flex-col justify-center gap-4" style={{ background: "linear-gradient(155deg, #0f2235 0%, #0b1d28 100%)", minHeight: 340 }}>
-            {[
-              { text: "Do I need planning permission for a loft conversion?", weight: "800", opacity: 1,    size: "text-base sm:text-lg" },
-              { text: "Can I build a rear extension without planning?",        weight: "600", opacity: 0.65, size: "text-sm sm:text-base" },
-              { text: "Is my house in a conservation area?",                   weight: "700", opacity: 0.85, size: "text-sm sm:text-base" },
-              { text: "What are the rules for a garage conversion?",           weight: "400", opacity: 0.45, size: "text-xs sm:text-sm"   },
-              { text: "How likely is my council to approve this?",             weight: "700", opacity: 0.75, size: "text-sm sm:text-base" },
-              { text: "Do I need a planning statement?",                       weight: "400", opacity: 0.35, size: "text-xs sm:text-sm"   },
-            ].map((q, i) => (
-              <p key={i} className={`${q.size} leading-snug text-white`} style={{ fontWeight: q.weight, opacity: q.opacity, fontFamily: "'Inter', sans-serif" }}>
-                {q.text}
-              </p>
-            ))}
+          {/* Visual: search suggestions UI */}
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden" style={{ background: "linear-gradient(160deg, #0f2438 0%, #0b1d28 100%)", minHeight: 340 }}>
+            {/* Search bar */}
+            <div className="px-5 sm:px-7 pt-7 pb-5">
+              <div className="flex items-center gap-3 rounded-2xl px-4 py-3.5" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.11)" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="2" strokeLinecap="round" className="shrink-0">
+                  <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <span className="text-sm text-white/50 flex-1" style={{ fontFamily: "'Inter', sans-serif" }}>Do I need planning permission for…</span>
+                <span className="w-px h-4 bg-white/60 rounded-full animate-pulse" />
+              </div>
+            </div>
+
+            {/* Suggestion rows */}
+            <div className="px-3 sm:px-5 pb-6 flex flex-col">
+              {[
+                { text: "Do I need planning permission for a loft conversion?", tag: "Loft",       tagColor: "rgba(212,146,42,0.9)",  tagBg: "rgba(212,146,42,0.15)", bold: true  },
+                { text: "Can I build a rear extension without planning?",        tag: "Extension",  tagColor: "rgb(55,176,170)",       tagBg: "rgba(55,176,170,0.12)", bold: true  },
+                { text: "Is my house in a conservation area?",                   tag: "Site check", tagColor: "rgba(180,130,255,0.9)", tagBg: "rgba(150,100,255,0.12)", bold: false },
+                { text: "What are the permitted development rules for a garage?", tag: null,        tagColor: "",                      tagBg: "",                      bold: false },
+                { text: "How likely is my council to approve this?",             tag: null,        tagColor: "",                      tagBg: "",                      bold: false },
+              ].map((q, i) => (
+                <div key={i} className="flex items-center gap-3 px-2 py-3 rounded-xl transition-colors" style={{ borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.05)" : "none", opacity: 1 - i * 0.13 }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2" strokeLinecap="round" className="shrink-0">
+                    <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                  </svg>
+                  <p className="flex-1 text-sm text-white leading-snug" style={{ fontWeight: q.bold ? 600 : 400, fontFamily: "'Inter', sans-serif" }}>{q.text}</p>
+                  {q.tag && (
+                    <span className="text-xs px-2.5 py-1 rounded-full shrink-0 font-medium" style={{ background: q.tagBg, color: q.tagColor, fontFamily: "'Inter', sans-serif" }}>
+                      {q.tag}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
