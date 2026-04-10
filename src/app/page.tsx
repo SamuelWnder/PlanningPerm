@@ -512,7 +512,7 @@ export default function HomePage() {
                 key={i}
                 href="/dashboard/projects/new"
                 className="group relative rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-end"
-                style={{ height: "62vh", minHeight: 400, textDecoration: "none", background: card.bg }}
+                style={{ height: "48vh", minHeight: 340, textDecoration: "none", background: card.bg }}
               >
                 {/* Illustration — fills upper 60% of card */}
                 <div className="absolute inset-x-0 top-0 bottom-[30%] flex items-center justify-center p-5 pointer-events-none">
