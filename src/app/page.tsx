@@ -257,10 +257,10 @@ export default function HomePage() {
             <div className="max-w-[720px]">
 
               <p className="text-[rgba(255,255,255,0.55)] text-sm font-semibold uppercase tracking-[0.15em] mb-4">UK planning permission · instant AI assessment</p>
-              <h1 className="text-6xl sm:text-7xl xl:text-[96px] font-normal text-white leading-[1.0] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+              <h1 className="text-4xl sm:text-5xl xl:text-[64px] font-normal text-white leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
                 Will your project<br />get approved?
               </h1>
-              <p className="text-[rgba(255,255,255,0.68)] text-xl leading-relaxed max-w-[520px] mb-10">
+              <p className="text-[rgba(255,255,255,0.68)] text-base leading-relaxed max-w-[480px] mb-8">
                 Find out before you spend a penny on architects. Real approval odds, 20 automated site checks, and AI-drafted planning documents — in under 2 minutes.
               </p>
 
