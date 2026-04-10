@@ -1,20 +1,39 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/ArticleLayout";
 
+const SLUG = "do-you-need-planning-permission-for-solar-panels";
+const TITLE = "Do You Need Planning Permission for Solar Panels in the UK?";
+const DESC = "Solar panels on most homes don't need planning permission, but there are important exceptions for listed buildings, flat roofs, and conservation areas. Here's the full picture.";
+
 export const metadata: Metadata = {
-  title: "Do You Need Planning Permission for Solar Panels in the UK? — PlanningPerm",
-  description: "Solar panels on most homes don't need planning permission, but there are important exceptions for listed buildings, flat roofs, and conservation areas. Here's the full picture.",
+  title: TITLE,
+  description: DESC,
+  keywords: ["planning permission solar panels", "solar panels permitted development", "do I need planning permission for solar panels", "solar panels conservation area", "solar panels listed building planning"],
+  authors: [{ name: "PlanningPerm", url: "https://planningperm.com" }],
+  alternates: { canonical: `https://planningperm.com/blog/${SLUG}` },
   openGraph: {
-    title: "Do You Need Planning Permission for Solar Panels in the UK?",
-    description: "Solar panels on most homes don't need planning permission, but listed buildings, flat roofs, and conservation areas have different rules.",
+    title: TITLE,
+    description: DESC,
     type: "article",
+    url: `https://planningperm.com/blog/${SLUG}`,
+    publishedTime: "2025-04-01T00:00:00Z",
+    authors: ["PlanningPerm"],
+    tags: ["solar panels", "planning permission", "permitted development", "renewable energy UK"],
   },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 
 const related = [
   { title: "Planning permission for a conservatory", href: "/blog/do-you-need-planning-permission-for-a-conservatory", readTime: "6 min" },
   { title: "How much does planning permission cost?", href: "/blog/how-much-does-planning-permission-cost-uk", readTime: "7 min" },
   { title: "Planning permission for a pergola", href: "/blog/do-you-need-planning-permission-for-a-pergola", readTime: "5 min" },
+];
+
+const faq = [
+  { question: "Do I need planning permission for solar panels in England?", answer: "No, in most cases solar panels on a house roof in England do not need planning permission. They are permitted development as long as they do not protrude more than 200mm from the roof surface, are not on a listed building, and are not on a roof that faces a highway. Solar panels on the ground in your garden may also be permitted development if they are below 4m in height and not in a conservation area." },
+  { question: "Do solar panels need planning permission in a conservation area?", answer: "In a conservation area, solar panels on a roof that faces a road or public space are not permitted development and will require planning permission. Panels on rear-facing roofs are generally still permitted development. For listed buildings, you will need both listed building consent and planning permission regardless of where the panels are located." },
+  { question: "Can I install solar panels on a flat roof without planning permission?", answer: "Solar panels on a flat roof are generally permitted development in England as long as they do not protrude more than 1 metre above the roof surface and are set back from the roof edge. The same restrictions for conservation areas and listed buildings apply." },
+  { question: "Do ground-mounted solar panels need planning permission?", answer: "Ground-mounted solar panels are permitted development in England if they are no more than 4 metres high, the array is no larger than 9m², you have no more than one standalone installation, and they are not in a conservation area or on designated land. If your installation exceeds these limits, you will need planning permission." },
 ];
 
 export default function SolarPanelsArticle() {
@@ -24,7 +43,10 @@ export default function SolarPanelsArticle() {
       description="Solar panels on most homes don't need planning permission. But there are important exceptions — especially for listed buildings, flat roofs, and conservation areas."
       readTime="5 min"
       published="April 2025"
+      slug={SLUG}
+      datePublished="2025-04-01"
       related={related}
+      faq={faq}
     >
       <div className="answer-box">
         <p><strong>Short answer:</strong> No, most solar panel installations in England do <em>not</em> need planning permission. They are permitted development. The main exceptions are listed buildings, certain conservation areas, and installations that project too far above the roofline.</p>

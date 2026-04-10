@@ -1,20 +1,39 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/ArticleLayout";
 
+const SLUG = "how-much-does-planning-permission-cost-uk";
+const TITLE = "How Much Does Planning Permission Cost in the UK? (2025)";
+const DESC = "A full breakdown of planning permission costs in England and Wales — council fees, architect fees, planning consultant fees, and hidden costs most homeowners miss.";
+
 export const metadata: Metadata = {
-  title: "How Much Does Planning Permission Cost in the UK? (2025) — PlanningPerm",
-  description: "A full breakdown of planning permission costs in England and Wales — council fees, architect fees, planning consultant fees, and hidden costs most homeowners miss.",
+  title: TITLE,
+  description: DESC,
+  keywords: ["planning permission cost UK", "how much does planning permission cost", "planning application fee 2025", "planning consultant fees", "architect fees planning permission", "lawful development certificate cost"],
+  authors: [{ name: "PlanningPerm", url: "https://planningperm.com" }],
+  alternates: { canonical: `https://planningperm.com/blog/${SLUG}` },
   openGraph: {
-    title: "How Much Does Planning Permission Cost in the UK? (2025)",
-    description: "Council fees, architect costs, planning consultant fees, and hidden costs — a complete breakdown for homeowners.",
+    title: TITLE,
+    description: DESC,
     type: "article",
+    url: `https://planningperm.com/blog/${SLUG}`,
+    publishedTime: "2025-04-01T00:00:00Z",
+    authors: ["PlanningPerm"],
+    tags: ["planning permission", "planning costs", "UK housing", "planning application"],
   },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 
 const related = [
   { title: "Planning permission for a conservatory", href: "/blog/do-you-need-planning-permission-for-a-conservatory", readTime: "6 min" },
   { title: "Planning permission for solar panels", href: "/blog/do-you-need-planning-permission-for-solar-panels", readTime: "5 min" },
   { title: "Planning permission for a pergola", href: "/blog/do-you-need-planning-permission-for-a-pergola", readTime: "5 min" },
+];
+
+const faq = [
+  { question: "How much does planning permission cost in England in 2025?", answer: "For a householder planning application in England (extensions, loft conversions, outbuildings), the council fee is £258. A Lawful Development Certificate (LDC) costs £103. These are government-set fees. On top of this, you may need to pay for architect drawings (£500–£2,000), a planning consultant (£500–£3,000+), and a planning statement or design & access statement." },
+  { question: "Do I need to pay for a planning application if I'm just checking?", answer: "No. You only pay the council fee when you formally submit a planning application. You can get a pre-application assessment from your council (usually £50–£300) or use a tool like PlanningPerm to check your approval odds for free before committing to an application." },
+  { question: "What is a Lawful Development Certificate and how much does it cost?", answer: "A Lawful Development Certificate (LDC) is formal confirmation from your council that your project is lawful under permitted development rights. It costs £103 in England and provides legal protection if you sell the property. It's not required, but many homeowners get one for peace of mind." },
+  { question: "Can I get planning permission for free?", answer: "The council application fee is mandatory and cannot be waived for most applications. However, you can reduce total costs by using permitted development rights (no application needed), applying for a Lawful Development Certificate (£103 vs £258), or using AI tools like PlanningPerm to avoid paying a planning consultant for straightforward projects." },
 ];
 
 export default function CostArticle() {
@@ -24,7 +43,10 @@ export default function CostArticle() {
       description="From council fees to architect costs and consultant fees, here's a complete breakdown of what planning permission actually costs in England and Wales in 2025."
       readTime="7 min"
       published="April 2025"
+      slug={SLUG}
+      datePublished="2025-04-01"
       related={related}
+      faq={faq}
     >
       <div className="answer-box">
         <p><strong>Short answer:</strong> The council fee for a typical householder application in England is <strong>£528</strong> (from December 2024). On top of that, most homeowners spend £1,500–£3,500 on architect drawings and £0–£2,000 on a planning consultant. Total cost to permission: typically <strong>£2,000–£5,000</strong> for a standard extension.</p>

@@ -1,10 +1,17 @@
 import Link from "next/link";
 import PublicNav from "@/components/PublicNav";
 
+const BASE = "https://planningperm.com";
+
 interface RelatedArticle {
   title: string;
   href: string;
   readTime: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
 }
 
 interface ArticleLayoutProps {
@@ -12,8 +19,12 @@ interface ArticleLayoutProps {
   description: string;
   readTime: string;
   published: string;
+  slug: string;
+  datePublished: string;
+  dateModified?: string;
   children: React.ReactNode;
   related?: RelatedArticle[];
+  faq?: FaqItem[];
 }
 
 export default function ArticleLayout({
@@ -21,11 +32,62 @@ export default function ArticleLayout({
   description,
   readTime,
   published,
+  slug,
+  datePublished,
+  dateModified,
   children,
   related = [],
+  faq = [],
 }: ArticleLayoutProps) {
+  const url = `${BASE}/blog/${slug}`;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "description": description,
+    "url": url,
+    "datePublished": datePublished,
+    "dateModified": dateModified ?? datePublished,
+    "author": {
+      "@type": "Organization",
+      "name": "PlanningPerm",
+      "url": BASE,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "PlanningPerm",
+      "url": BASE,
+    },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": url },
+    "inLanguage": "en-GB",
+    "about": { "@type": "Thing", "name": "Planning Permission", "description": "UK residential planning permission rules and permitted development rights" },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home",   "item": BASE },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": `${BASE}/blog` },
+      { "@type": "ListItem", "position": 3, "name": title,    "item": url },
+    ],
+  };
+
+  const faqSchema = faq.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faq.map(({ question, answer }) => ({
+      "@type": "Question",
+      "name": question,
+      "acceptedAnswer": { "@type": "Answer", "text": answer },
+    })),
+  } : null;
   return (
-    <div style={{ fontFamily: "'Euclid Circular B', 'Helvetica Neue', Arial, sans-serif", background: "#eaf5f5", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "#eaf5f5", minHeight: "100vh" }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <PublicNav />
 

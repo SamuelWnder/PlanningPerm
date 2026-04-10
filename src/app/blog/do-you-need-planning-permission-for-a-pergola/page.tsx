@@ -1,20 +1,39 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/ArticleLayout";
 
+const SLUG = "do-you-need-planning-permission-for-a-pergola";
+const TITLE = "Do You Need Planning Permission for a Pergola?";
+const DESC = "Pergolas often fall under permitted development, but height, size, and proximity to boundaries are easy to get wrong. Find out exactly what the rules say for your garden.";
+
 export const metadata: Metadata = {
-  title: "Do You Need Planning Permission for a Pergola? — PlanningPerm",
-  description: "Pergolas often fall under permitted development, but height, size, and proximity to boundaries are easy to get wrong. Find out exactly what the rules say for your garden.",
+  title: TITLE,
+  description: DESC,
+  keywords: ["planning permission pergola", "pergola permitted development", "do I need planning permission for a pergola", "garden structure planning rules", "pergola height limit UK"],
+  authors: [{ name: "PlanningPerm", url: "https://planningperm.com" }],
+  alternates: { canonical: `https://planningperm.com/blog/${SLUG}` },
   openGraph: {
-    title: "Do You Need Planning Permission for a Pergola?",
-    description: "Pergolas often fall under permitted development, but height, size, and proximity to boundaries matter. Find out exactly what the rules say.",
+    title: TITLE,
+    description: DESC,
     type: "article",
+    url: `https://planningperm.com/blog/${SLUG}`,
+    publishedTime: "2025-04-01T00:00:00Z",
+    authors: ["PlanningPerm"],
+    tags: ["pergola", "garden structures", "planning permission", "permitted development"],
   },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 
 const related = [
   { title: "Planning permission for a conservatory", href: "/blog/do-you-need-planning-permission-for-a-conservatory", readTime: "6 min" },
   { title: "How much does planning permission cost?", href: "/blog/how-much-does-planning-permission-cost-uk", readTime: "7 min" },
   { title: "Planning permission for solar panels", href: "/blog/do-you-need-planning-permission-for-solar-panels", readTime: "5 min" },
+];
+
+const faq = [
+  { question: "Do I need planning permission for a pergola in England?", answer: "Most pergolas in England do not need planning permission under permitted development rights, as long as they are in the garden (not in front of the house), do not exceed 2.5 metres in height if within 2 metres of a boundary, do not exceed 4 metres in height overall (3 metres with a flat roof), and the total area of all outbuildings including the pergola does not exceed 50% of the garden. Pergolas in conservation areas or attached to listed buildings have additional restrictions." },
+  { question: "How tall can a pergola be without planning permission?", answer: "In England, a pergola can be up to 4 metres tall without planning permission if it has a dual-pitched roof, or 3 metres for any other roof type. However, if the pergola is within 2 metres of a property boundary, the maximum height is 2.5 metres. These limits apply under permitted development rights." },
+  { question: "Does a pergola count as an outbuilding for planning purposes?", answer: "Yes, for planning purposes a pergola is treated as an outbuilding or garden structure. This means it counts towards the 50% garden coverage rule — the total area of all outbuildings, sheds, and garden structures combined must not exceed 50% of the land around the original house." },
+  { question: "Do I need planning permission for a pergola in a conservation area?", answer: "In a conservation area, you cannot build an outbuilding or garden structure (including a pergola) on any side of the house that faces a road or public space without planning permission. Structures in the rear garden may still be permitted development, but the same height and size limits apply." },
 ];
 
 export default function PergolaArticle() {
@@ -24,7 +43,10 @@ export default function PergolaArticle() {
       description="Pergolas often fall under permitted development, but the rules on height, size, and proximity to boundaries are easy to get wrong. Find out exactly what applies to your property."
       readTime="5 min"
       published="April 2025"
+      slug={SLUG}
+      datePublished="2025-04-01"
       related={related}
+      faq={faq}
     >
       <div className="answer-box">
         <p><strong>Short answer:</strong> Most pergolas in England do <em>not</em> need planning permission under permitted development rights — but only if they stay within strict height and size limits. The key rules to watch are the 2.5 metre height limit near boundaries and the overall garden coverage limit.</p>

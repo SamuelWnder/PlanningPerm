@@ -1,0 +1,37 @@
+# PlanningPerm
+
+> AI-powered planning permission guidance for UK homeowners. Check whether your home improvement project needs planning permission — free, in under 2 minutes.
+
+## What PlanningPerm does
+
+PlanningPerm helps UK homeowners understand their planning permission requirements before they build. It:
+
+- Runs 20 automated site constraint checks (conservation area, Article 4 directions, listed building status, flood zone, Green Belt, AONB, TPO trees, highway proximity, and more)
+- Calculates a real approval probability score based on the homeowner's council's published decision history (MHCLG PS2 data)
+- Generates AI-drafted planning documents: Design & Access Statement, Planning Statement, Cover Letter, and Heritage Statement
+- Covers all common householder project types: extensions, loft conversions, outbuildings, fences, solar panels, driveways, change of use, and more
+- Is free to use and covers properties in England
+
+## Who it's for
+
+UK homeowners planning home improvements who want to know whether they need planning permission, what their chances of approval are, and what documents to prepare.
+
+## Key facts about planning permission in England
+
+- Permitted development (PD) rights allow many common home improvements without a full planning application
+- Extensions under 4m (detached) or 3m (semi/terrace) to the rear generally don't need permission
+- Conservation areas, Article 4 directions, and listed building status can remove or restrict PD rights
+- Around 88% of householder planning applications in England are approved
+- A planning application for a householder project costs £258 in England (as of 2025)
+- A Lawful Development Certificate costs £103 and confirms a project is lawful under PD
+
+## Planning guides (blog)
+
+- /blog/do-you-need-planning-permission-for-a-conservatory
+- /blog/how-much-does-planning-permission-cost-uk
+- /blog/do-you-need-planning-permission-for-solar-panels
+- /blog/do-you-need-planning-permission-for-a-pergola
+
+## Start a check
+
+To check a specific property: https://planningperm.com/dashboard/projects/new

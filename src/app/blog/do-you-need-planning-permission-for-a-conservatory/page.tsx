@@ -1,20 +1,39 @@
 import type { Metadata } from "next";
 import ArticleLayout from "@/components/ArticleLayout";
 
+const SLUG = "do-you-need-planning-permission-for-a-conservatory";
+const TITLE = "Do You Need Planning Permission for a Conservatory?";
+const DESC = "Most conservatories fall under permitted development rights. Find out the exact size limits, rules for listed buildings and conservation areas, and when you do need to apply.";
+
 export const metadata: Metadata = {
-  title: "Do You Need Planning Permission for a Conservatory? — PlanningPerm",
-  description: "Most conservatories fall under permitted development rights. Find out the exact size limits, rules for listed buildings and conservation areas, and when you do need to apply.",
+  title: TITLE,
+  description: DESC,
+  keywords: ["planning permission conservatory", "conservatory permitted development", "do I need planning permission for a conservatory", "conservatory planning rules UK", "rear extension planning permission"],
+  authors: [{ name: "PlanningPerm", url: "https://planningperm.com" }],
+  alternates: { canonical: `https://planningperm.com/blog/${SLUG}` },
   openGraph: {
-    title: "Do You Need Planning Permission for a Conservatory?",
-    description: "Most conservatories fall under permitted development rights. Find out the exact size limits and when you need to apply.",
+    title: TITLE,
+    description: DESC,
     type: "article",
+    url: `https://planningperm.com/blog/${SLUG}`,
+    publishedTime: "2025-04-01T00:00:00Z",
+    authors: ["PlanningPerm"],
+    tags: ["planning permission", "conservatory", "permitted development", "UK housing"],
   },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 
 const related = [
   { title: "How much does planning permission cost?", href: "/blog/how-much-does-planning-permission-cost-uk", readTime: "7 min" },
   { title: "Planning permission for solar panels", href: "/blog/do-you-need-planning-permission-for-solar-panels", readTime: "5 min" },
   { title: "Planning permission for a pergola", href: "/blog/do-you-need-planning-permission-for-a-pergola", readTime: "5 min" },
+];
+
+const faq = [
+  { question: "Do I need planning permission for a conservatory in England?", answer: "Most conservatories in England do not need planning permission if they meet permitted development size limits: no more than 8m beyond the rear wall of a detached home (6m for semi-detached or terraced), maximum height of 4m, and covering no more than 50% of garden land. However, if your home is listed, in a conservation area, or an Article 4 direction applies, you will likely need permission." },
+  { question: "What size conservatory can I build without planning permission?", answer: "Under permitted development in England, a conservatory on a detached house can extend up to 8 metres beyond the original rear wall. For semi-detached or terraced houses, the limit is 6 metres. The maximum height is 4 metres, or 3 metres at the eaves if within 2 metres of a boundary. Extensions between 4–8m (detached) or 3–6m (semi/terrace) require prior approval under the Neighbour Consultation Scheme." },
+  { question: "Do I need planning permission for a conservatory in a conservation area?", answer: "If your property is in a conservation area, permitted development rights are more restricted. Side extensions are generally not permitted under PD in conservation areas, and your local planning authority will need to approve the design and materials. You should check with your council or use a planning checker tool before proceeding." },
+  { question: "Does a conservatory need Building Regulations approval?", answer: "Most conservatories are exempt from Building Regulations if they are at ground level, under 30m² in floor area, separated from the main house by a wall or door, and have an independent heating system. If the conservatory is fully integrated with no separating wall or is over 30m², Building Regulations approval will be required." },
 ];
 
 export default function ConservatoryArticle() {
@@ -24,7 +43,10 @@ export default function ConservatoryArticle() {
       description="Most conservatories fall under permitted development, but size, location, and conservation area rules all affect whether you need permission. Here's what the rules actually say."
       readTime="6 min"
       published="April 2025"
+      slug={SLUG}
+      datePublished="2025-04-01"
       related={related}
+      faq={faq}
     >
       <div className="answer-box">
         <p><strong>Short answer:</strong> Most conservatories in England do <em>not</em> need planning permission, as long as they meet the permitted development size and height limits. However, if your home is listed, in a conservation area, or has already had extensions, you may need to apply.</p>

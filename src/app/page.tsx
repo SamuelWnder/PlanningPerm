@@ -187,8 +187,48 @@ export default function HomePage() {
     ? sampleCouncils.find(c => c.toLowerCase().includes(councilSearch.toLowerCase()))
     : null;
 
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://planningperm.com/#organization",
+        "name": "PlanningPerm",
+        "url": "https://planningperm.com",
+        "description": "AI-powered planning permission guidance for UK homeowners. Real approval odds, 20 automated site checks, and AI-drafted planning documents.",
+        "areaServed": { "@type": "Country", "name": "United Kingdom" },
+        "knowsAbout": ["planning permission", "permitted development", "UK planning law", "householder applications"],
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://planningperm.com/#website",
+        "url": "https://planningperm.com",
+        "name": "PlanningPerm",
+        "publisher": { "@id": "https://planningperm.com/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": { "@type": "EntryPoint", "urlTemplate": "https://planningperm.com/dashboard/projects/new?postcode={search_term_string}" },
+          "query-input": "required name=search_term_string",
+        },
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://planningperm.com/#app",
+        "name": "PlanningPerm Planning Permission Checker",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "description": "Check whether your home improvement project needs planning permission. Automated checks against 20 site constraints, real council approval rates, and AI-drafted planning documents.",
+      },
+    ],
+  };
+
   return (
     <div className="text-[#0b1d28]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+      />
 
       {/* ── 1. NAV ─────────────────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-white px-4 sm:px-8 py-3.5 flex items-center justify-between">
