@@ -618,16 +618,18 @@ export default function HomePage() {
       </section>
 
       {/* ── FINAL CTA ──────────────────────────────────────────────────── */}
-      <section className="bg-[#0e1e30] py-20 sm:py-32 px-4 sm:px-8 text-center">
-        <h2 className="text-4xl sm:text-6xl xl:text-[72px] font-extrabold text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          Get your free planning<br />score today
-        </h2>
-        <p className="text-white/60 text-lg mb-10 max-w-md mx-auto leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
-          Enter your postcode, tell us what you want to build, and get a real approval score in under 2 minutes.
-        </p>
-        <Link href="/dashboard/projects/new" className="inline-block bg-[#D4922A] text-white rounded-full px-12 py-4 text-sm font-bold hover:bg-[#b87820] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
-          Check my property — it&apos;s free
-        </Link>
+      <section className="bg-white px-2 sm:px-10 lg:px-20 py-6 pb-10">
+        <div className="text-center py-20 sm:py-28 px-6 sm:px-12" style={{ background: "linear-gradient(140deg, #0f2438 0%, #0b1d28 100%)", borderRadius: 20 }}>
+          <h2 className="text-4xl sm:text-6xl xl:text-[72px] font-extrabold text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Get your free planning<br />score today
+          </h2>
+          <p className="text-white/60 text-lg mb-10 max-w-md mx-auto leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Enter your postcode, tell us what you want to build, and get a real approval score in under 2 minutes.
+          </p>
+          <Link href="/dashboard/projects/new" className="inline-block bg-[#D4922A] text-white rounded-full px-12 py-4 text-sm font-bold hover:bg-[#b87820] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+            Check my property — it&apos;s free
+          </Link>
+        </div>
       </section>
 
       {/* ── 13. FOOTER ─────────────────────────────────────────────────────── */}
