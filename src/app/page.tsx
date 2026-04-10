@@ -320,7 +320,6 @@ export default function HomePage() {
                     Get free score →
                   </button>
                 </div>
-                <p className="text-[rgba(255,255,255,0.4)] text-xs mt-3 pl-1" style={{ fontFamily: "'Inter', sans-serif" }}>Free during beta · No account needed</p>
               </form>
 
             </div>
