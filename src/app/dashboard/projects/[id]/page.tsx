@@ -513,7 +513,7 @@ export default function ProjectResultPage() {
                 )}
               </div>
               <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "center", justifyContent: "space-between", gap: isMobile ? 20 : 40, textAlign: isMobile ? "center" : "left" }}>
-                <ScoreDonut score={assessment.score} sizePx={isMobile ? 160 : 220} />
+                <ScoreDonut score={assessment.score} sizePx={isMobile ? 220 : 260} />
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.10)", borderRadius: 20, padding: "5px 14px", marginBottom: 16 }}>
                     <MapPin size={13} color="rgba(255,255,255,0.6)" strokeWidth={2} />
