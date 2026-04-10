@@ -7,20 +7,24 @@ const BASE_URL = "https://planningperm.com";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "PlanningPerm — Know Before You Build",
+    default: "PlanningPerm — Free UK Planning Permission Checker",
     template: "%s — PlanningPerm",
   },
   description:
-    "Check if your home improvement needs planning permission. Real approval odds from your council's decision history, 20 automated site checks, and AI-drafted planning documents. Free in under 2 minutes.",
+    "Find out in 2 minutes whether your extension, loft conversion or outbuilding needs planning permission. Free approval score, 20 automated site checks, and ready-to-submit planning documents — based on your council's real decision data.",
   keywords: [
-    "planning permission",
     "do I need planning permission",
+    "planning permission checker UK",
     "planning permission UK",
-    "permitted development",
-    "planning permission checker",
-    "planning application UK",
-    "planning permission cost",
+    "permitted development rights",
     "householder planning permission",
+    "planning permission extension",
+    "planning permission loft conversion",
+    "planning permission cost UK",
+    "planning application UK",
+    "conservation area planning permission",
+    "planning permission outbuilding",
+    "free planning permission check",
   ],
   authors: [{ name: "PlanningPerm", url: BASE_URL }],
   creator: "PlanningPerm",
@@ -41,9 +45,9 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: BASE_URL,
     siteName: "PlanningPerm",
-    title: "PlanningPerm — Know Before You Build",
+    title: "PlanningPerm — Free UK Planning Permission Checker",
     description:
-      "Check if your home improvement needs planning permission. Real approval odds, 20 site checks, and AI-drafted documents — free in under 2 minutes.",
+      "Find out in 2 minutes whether your project needs planning permission. Free approval score, 20 site checks, and AI-drafted documents — based on your council's real decisions.",
     images: [
       {
         url: "/og-image.png",
@@ -55,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "PlanningPerm — Know Before You Build",
+    title: "PlanningPerm — Free UK Planning Permission Checker",
     description:
-      "Check if your home improvement needs planning permission. Real approval odds, 20 site checks, free in under 2 minutes.",
+      "Find out in 2 minutes whether your extension or loft needs planning permission. Free score + AI-drafted documents based on real council decisions.",
     images: ["/og-image.png"],
     creator: "@planningperm",
   },
