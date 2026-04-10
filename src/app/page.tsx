@@ -213,127 +213,143 @@ export default function HomePage() {
       </nav>
 
       {/* ── 2. HERO ────────────────────────────────────────────────────────── */}
-      <section className="bg-[#0e1e30] relative overflow-hidden">
+      <section className="relative overflow-hidden" style={{ minHeight: "88vh", borderRadius: "0 0 36px 36px" }}>
 
-        {/* Background layers */}
-        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          {/* Dot grid */}
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0 }}>
+        {/* Video background */}
+        {prevIdx !== null && (
+          <video
+            key={`prev-${videos[prevIdx]}`}
+            src={videos[prevIdx]}
+            autoPlay muted playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: fading ? 0 : 1, transition: "opacity 0.8s ease", transform: "scale(1.04)" }}
+          />
+        )}
+        <video
+          ref={videoRef}
+          key={`curr-${videos[videoIdx]}`}
+          src={videos[videoIdx]}
+          autoPlay muted playsInline
+          onEnded={() => advanceVideo((videoIdx + 1) % videos.length)}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ transform: "scale(1.04)" }}
+        />
+
+        {/* Gradient overlay — heavier on left for text legibility */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(108deg, rgba(8,18,28,0.84) 0%, rgba(8,18,28,0.62) 45%, rgba(8,18,28,0.28) 100%)" }} />
+        {/* Bottom fade so controls sit on a readable surface */}
+        <div className="absolute bottom-0 left-0 right-0 h-40" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55), transparent)" }} />
+        {/* Subtle dot grid texture */}
+        <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.05 }} aria-hidden="true">
+          <svg width="100%" height="100%">
             <defs>
               <pattern id="dotGrid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-                <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.07)" />
+                <circle cx="1" cy="1" r="1" fill="white" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#dotGrid)" />
           </svg>
-          {/* Subtle diagonal lines */}
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.04 }}>
-            <defs>
-              <pattern id="diag" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y1="0" x2="0" y2="40" stroke="white" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#diag)" />
-          </svg>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-8 py-14 sm:py-24 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-16 items-center">
-          {/* Left — text */}
-          <div className="text-center sm:text-left">
+        {/* Text content */}
+        <div className="relative z-10 flex items-center" style={{ minHeight: "88vh" }}>
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 pt-8 pb-32">
+            <div className="max-w-[600px]">
 
-            <h1 className="text-4xl sm:text-5xl xl:text-7xl font-normal text-white leading-[1.05] tracking-tight mb-5" style={{ fontFamily: "'Clash Display', sans-serif" }}>
-              Know before<br className="sm:hidden" /> you build.
-            </h1>
-            <p className="text-[rgba(255,255,255,0.70)] text-base sm:text-lg leading-relaxed max-w-lg mb-8 mx-auto sm:mx-0">
-              Real approval odds for your property — based on your council's actual decision history. 20 site checks, AI-drafted documents, ready in under 2 minutes.
-            </p>
+              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-normal text-white leading-[1.02] tracking-tight mb-5" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+                Know before<br />you build.
+              </h1>
+              <p className="text-[rgba(255,255,255,0.68)] text-lg leading-relaxed max-w-[480px] mb-8">
+                Real approval odds for your property — based on your council&apos;s actual decision history. 20 site checks, AI-drafted documents, ready in under 2 minutes.
+              </p>
 
-            {/* Postcode widget */}
-            <form onSubmit={handleSearch} className="bg-white rounded-3xl p-4 sm:p-7 w-full sm:max-w-[560px] mx-auto sm:mx-0" style={{ boxShadow: "0 8px 48px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.16)" }}>
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#2d3843] mb-3">Start with your property address</p>
-              <div className="flex items-center gap-3 bg-[#eaf5f5] rounded-2xl px-4 py-3.5 mb-3">
-                <svg className="w-5 h-5 text-[#D4922A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-                <input
-                  value={postcode}
-                  onChange={(e) => setPostcode(e.target.value)}
-                  placeholder="Enter your postcode or address"
-                  className="flex-1 text-base text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
-                  style={{ fontFamily: "'Euclid Circular B', sans-serif" }}
-                />
-              </div>
-              <button type="submit" className="w-full bg-[#D4922A] text-white rounded-2xl py-4 text-base font-bold hover:bg-[#b87820] transition-colors tracking-wide">
-                Get my free planning score →
-              </button>
-              <p className="text-center text-xs text-[#2d3843] mt-3 opacity-60">Free preview · Full report &amp; documents £20 · No account needed</p>
-            </form>
+              {/* Search form — integrated, not floating card */}
+              <form onSubmit={handleSearch} className="max-w-[540px]">
+                <div className="flex items-center rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.13)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,0.22)" }}>
+                  <div className="flex items-center pl-4 pr-2 shrink-0">
+                    <svg className="w-5 h-5 shrink-0" style={{ color: "#D4922A" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+                  <input
+                    value={postcode}
+                    onChange={(e) => setPostcode(e.target.value)}
+                    placeholder="Enter your postcode or address"
+                    className="flex-1 py-4 pr-2 text-base text-white placeholder-white/45 outline-none bg-transparent"
+                    style={{ fontFamily: "'Euclid Circular B', sans-serif" }}
+                  />
+                  <button
+                    type="submit"
+                    className="bg-[#D4922A] text-white text-sm font-bold whitespace-nowrap hover:bg-[#b87820] transition-colors"
+                    style={{ padding: "14px 22px", borderRadius: "0 14px 14px 0" }}
+                  >
+                    Get free score →
+                  </button>
+                </div>
+                <p className="text-[rgba(255,255,255,0.38)] text-xs mt-3 pl-1">Free during beta · No account needed</p>
+              </form>
 
-          </div>
-
-          {/* Right — house-shaped video */}
-          <div className="hidden lg:flex items-center justify-center relative">
-            {/* SVG clip-path definition */}
-            <svg width="0" height="0" style={{ position: "absolute" }}>
-              <defs>
-                <clipPath id="houseClip" clipPathUnits="userSpaceOnUse">
-                  <path d="M 230,8 C 345,2 458,104 458,161 L 458,556 Q 458,590 424,590 L 36,590 Q 2,590 2,556 L 2,161 C 2,104 115,2 230,8 Z" />
-                </clipPath>
-              </defs>
-            </svg>
-            <div
-              style={{
-                clipPath: "url(#houseClip)",
-                width: 460,
-                height: 590,
-                overflow: "hidden",
-                position: "relative",
-              }}
-            >
-              {/* Outgoing video (fades out) */}
-              {prevIdx !== null && (
-                <video
-                  key={`prev-${videos[prevIdx]}`}
-                  src={videos[prevIdx]}
-                  autoPlay
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover object-center scale-110"
-                  style={{ position: "absolute", inset: 0, opacity: fading ? 0 : 1, transition: "opacity 0.8s ease" }}
-                />
-              )}
-              {/* Incoming video — always visible; outgoing fades out on top */}
-              <video
-                ref={videoRef}
-                key={`curr-${videos[videoIdx]}`}
-                src={videos[videoIdx]}
-                autoPlay
-                muted
-                playsInline
-                onEnded={() => advanceVideo((videoIdx + 1) % videos.length)}
-                className="w-full h-full object-cover object-center scale-110"
-                style={{ position: "absolute", inset: 0 }}
-              />
             </div>
-            {/* Dot indicators */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+          </div>
+        </div>
+
+        {/* Bottom bar — arrows + dots left · trust badges right */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between px-4 sm:px-10 lg:px-16 pb-7">
+
+          {/* Left: prev / dots / next */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => advanceVideo((videoIdx - 1 + videos.length) % videos.length)}
+              aria-label="Previous"
+              className="flex items-center justify-center rounded-full transition-colors hover:bg-white/20"
+              style={{ width: 38, height: 38, border: "1.5px solid rgba(255,255,255,0.28)", background: "rgba(255,255,255,0.08)", backdropFilter: "blur(4px)" }}
+            >
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <path d="M8.5 1.5L3.5 6.5l5 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <div className="flex items-center gap-1.5">
               {videos.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => advanceVideo(i)}
-                  className="rounded-full transition-all"
-                  style={{
-                    width: i === videoIdx ? 18 : 6,
-                    height: 6,
-                    background: i === videoIdx ? "#D4922A" : "rgba(255,255,255,0.5)",
-                  }}
+                  className="rounded-full transition-all duration-300"
+                  style={{ width: i === videoIdx ? 20 : 6, height: 6, background: i === videoIdx ? "white" : "rgba(255,255,255,0.38)" }}
+                  aria-label={`Video ${i + 1}`}
                 />
               ))}
             </div>
-            <div className="absolute -bottom-12 -right-10 w-36 h-36 rounded-full border-[3px] border-[#D4922A]/30 pointer-events-none" />
-            <div className="absolute -bottom-20 -right-18 w-56 h-56 rounded-full border border-[#D4922A]/15 pointer-events-none" />
+            <button
+              onClick={() => advanceVideo((videoIdx + 1) % videos.length)}
+              aria-label="Next"
+              className="flex items-center justify-center rounded-full transition-colors hover:bg-white/20"
+              style={{ width: 38, height: 38, border: "1.5px solid rgba(255,255,255,0.28)", background: "rgba(255,255,255,0.08)", backdropFilter: "blur(4px)" }}
+            >
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <path d="M4.5 1.5l5 5-5 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </div>
+
+          {/* Right: trust badges (desktop only) */}
+          <div className="hidden sm:flex items-center gap-2">
+            {[
+              { val: "320+",   label: "councils covered" },
+              { val: "4.9 ★",  label: "avg rating"       },
+              { val: "2 min",  label: "to your score"    },
+            ].map((b) => (
+              <div
+                key={b.val}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl"
+                style={{ background: "rgba(255,255,255,0.10)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)", border: "1px solid rgba(255,255,255,0.16)" }}
+              >
+                <span className="text-sm font-bold text-white">{b.val}</span>
+                <span className="text-xs text-white/55">{b.label}</span>
+              </div>
+            ))}
+          </div>
+
         </div>
       </section>
 
