@@ -344,7 +344,7 @@ export default function HomePage() {
 
       {/* ── 3. FEATURE CARDS ───────────────────────────────────────────────── */}
       <section className="bg-white py-14 sm:py-20 px-4 sm:px-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8 sm:mb-10">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0b1d28] mb-3 flex items-center gap-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -357,7 +357,7 @@ export default function HomePage() {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
               {
                 bg: "linear-gradient(155deg, #c07818 0%, #0b1d28 130%)",
@@ -388,7 +388,7 @@ export default function HomePage() {
                 key={i}
                 href="/dashboard/projects/new"
                 className="group relative rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-end"
-                style={{ aspectRatio: "3/4", textDecoration: "none" }}
+                style={{ minHeight: "clamp(380px, 48vh, 520px)", textDecoration: "none" }}
               >
                 {/* Photo background */}
                 <img src={card.img} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -398,19 +398,19 @@ export default function HomePage() {
                 <div className="absolute inset-0" style={{ background: card.bg, opacity: 0.55, mixBlendMode: "multiply" }} />
 
                 {/* Arrow */}
-                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors group-hover:bg-white/30"
+                <div className="absolute top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors group-hover:bg-white/30"
                   style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)" }}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
                     <path d="M2.5 9.5l7-7M9.5 9.5V2.5H2.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
 
                 {/* Text */}
-                <div className="relative z-10 p-4 sm:p-5">
-                  <h3 className="text-base sm:text-lg font-bold text-white mb-1 leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <div className="relative z-10 p-5 sm:p-6">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {card.title}
                   </h3>
-                  <p className="text-white/65 text-xs sm:text-sm leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <p className="text-white/65 text-sm sm:text-base leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
                     {card.desc}
                   </p>
                 </div>
