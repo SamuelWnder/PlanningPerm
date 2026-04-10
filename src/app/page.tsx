@@ -277,7 +277,7 @@ export default function HomePage() {
 
               <h1 className="text-[2.4rem] sm:text-5xl xl:text-[64px] text-white leading-[1.06] tracking-tight mb-4 sm:mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}>
                 Will your project<br />get approved?
-              </h1>
+          </h1>
               <p className="text-[rgba(255,255,255,0.68)] text-base sm:text-lg font-semibold leading-relaxed max-w-[480px] mb-7 sm:mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
                 Real approval odds, 20 automated site checks, and AI-drafted documents — before you spend a penny on architects.
               </p>
@@ -564,63 +564,17 @@ export default function HomePage() {
 
       {/* ── MONZO-STYLE ALTERNATING PANELS ─────────────────────────────────── */}
 
-      {/* Panel 1: text left, visual right */}
-      <section className="bg-white px-4 sm:px-16 lg:px-32 py-20 sm:py-28">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-20 items-center">
-          <div>
-            <h2 className="text-[2rem] sm:text-5xl xl:text-[56px] font-extrabold text-[#0b1d28] leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Know your odds before you brief an architect.
-            </h2>
-            <p className="text-[#6b7280] text-lg leading-relaxed mb-8 max-w-md" style={{ fontFamily: "'Inter', sans-serif" }}>
-              PlanningPerm shows your real approval probability based on your council&apos;s decision history — so you invest with confidence, not hope.
-            </p>
-            <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-7 py-4 text-sm font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Check my property — it&apos;s free
-            </Link>
-          </div>
-          {/* Visual: real assessment result card */}
-          <div className="rounded-2xl sm:rounded-3xl overflow-hidden" style={{ background: "#0c1c2b", minHeight: 340 }}>
-            {/* Property header */}
-            <div className="px-6 sm:px-8 pt-7 pb-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-              <p className="text-[10px] font-semibold tracking-widest text-white/30 uppercase mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Your property</p>
-              <p className="text-white font-semibold text-[15px]" style={{ fontFamily: "'Inter', sans-serif" }}>42 Brunswick Gardens, W8 4AX</p>
-              <p className="text-white/35 text-[13px] mt-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>London Borough of Kensington & Chelsea</p>
-            </div>
-
-            {/* Score */}
-            <div className="px-6 sm:px-8 py-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-              <div className="flex items-end gap-3 mb-1.5">
-                <span className="text-white font-extrabold leading-none" style={{ fontSize: 68, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>74</span>
-                <div className="pb-2">
-                  <p className="text-white/50 text-sm leading-tight" style={{ fontFamily: "'Inter', sans-serif" }}>% approval</p>
-                  <p className="text-white/30 text-xs" style={{ fontFamily: "'Inter', sans-serif" }}>likelihood</p>
-                </div>
-              </div>
-              <p className="text-white/25 text-xs" style={{ fontFamily: "'Inter', sans-serif" }}>Based on 1,240 similar decisions in Camden</p>
-            </div>
-
-            {/* Constraint rows */}
-            <div className="px-6 sm:px-8 py-5 flex flex-col gap-3.5">
-              {[
-                { label: "Conservation area",  status: "clear" },
-                { label: "Listed building",    status: "clear" },
-                { label: "Article 4 applies",  status: "flag"  },
-                { label: "Flood zone",         status: "clear" },
-              ].map(item => (
-                <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-white/60 text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>{item.label}</span>
-                  <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{
-                    background: item.status === "clear" ? "rgba(55,176,170,0.13)" : "rgba(212,146,42,0.15)",
-                    color:      item.status === "clear" ? "rgb(55,176,170)"        : "#D4922A",
-                    fontFamily: "'Inter', sans-serif",
-                  }}>
-                    {item.status === "clear" ? "Clear" : "Review"}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* Panel 1: text + CTA only */}
+      <section className="bg-white px-4 sm:px-16 lg:px-32 py-20 sm:py-28 border-t border-gray-100">
+        <h2 className="text-[2rem] sm:text-5xl xl:text-[56px] font-extrabold text-[#0b1d28] leading-[1.08] tracking-tight mb-6 max-w-2xl" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          Know your odds before you brief an architect.
+        </h2>
+        <p className="text-[#6b7280] text-lg leading-relaxed mb-8 max-w-lg" style={{ fontFamily: "'Inter', sans-serif" }}>
+          PlanningPerm shows your real approval probability based on your council&apos;s decision history — so you invest with confidence, not hope.
+        </p>
+        <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-7 py-4 text-sm font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+          Check my property — it&apos;s free
+        </Link>
       </section>
 
       {/* ── 5. THREE-COLUMN FEATURES ───────────────────────────────────────── */}
