@@ -342,11 +342,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Disclaimer line ────────────────────────────────────────────────── */}
-      <p className="text-center text-xs text-[#9ca3af] px-4 mt-3 mb-1" style={{ fontFamily: "'Inter', sans-serif" }}>
-        AI-generated assessment for guidance only. Always verify with your local planning authority before submitting an application.
-      </p>
-
       {/* ── 3. TESTIMONIAL BANNER ──────────────────────────────────────────── */}
       <TestimonialBanner
         name="Daniel & Emma W."
