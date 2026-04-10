@@ -343,7 +343,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 3. FEATURE CARDS ───────────────────────────────────────────────── */}
-      <section className="bg-white pt-4 pb-6 px-2 sm:px-16 lg:px-32">
+      <section className="bg-white pt-10 sm:pt-14 pb-6 px-2 sm:px-16 lg:px-32">
         <div className="w-full">
           {/* Header */}
           <div className="mb-8 sm:mb-10">
