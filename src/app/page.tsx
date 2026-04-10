@@ -456,25 +456,25 @@ export default function HomePage() {
                 desc: "AI-drafted Design & Access Statement, Planning Statement and Cover Letter.",
                 illustration: (
                   <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" fill="none" className="w-full h-full">
-                    {/* Doc 3 (back) */}
-                    <rect x="62" y="34" width="84" height="108" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" transform="rotate(-7 104 88)"/>
+                    {/* Doc 3 (back) — large */}
+                    <rect x="38" y="14" width="114" height="148" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.11)" strokeWidth="1.5" transform="rotate(-9 95 88)"/>
                     {/* Doc 2 (mid) */}
-                    <rect x="62" y="30" width="84" height="108" rx="6" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" transform="rotate(4 104 84)"/>
+                    <rect x="38" y="10" width="114" height="148" rx="8" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.16)" strokeWidth="1.5" transform="rotate(5 95 84)"/>
                     {/* Doc 1 (front) */}
-                    <rect x="54" y="26" width="84" height="108" rx="6" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5"/>
+                    <rect x="30" y="6" width="114" height="148" rx="8" fill="rgba(255,255,255,0.11)" stroke="rgba(255,255,255,0.32)" strokeWidth="2"/>
+                    {/* Title bar */}
+                    <rect x="44" y="22" width="72" height="8" rx="4" fill="white" opacity="0.75"/>
                     {/* Text lines */}
-                    <rect x="66" y="42" width="60" height="6" rx="3" fill="white" opacity="0.7"/>
-                    <rect x="66" y="57" width="52" height="3.5" rx="1.5" fill="white" opacity="0.3"/>
-                    <rect x="66" y="66" width="56" height="3.5" rx="1.5" fill="white" opacity="0.25"/>
-                    <rect x="66" y="75" width="48" height="3.5" rx="1.5" fill="white" opacity="0.2"/>
-                    <rect x="66" y="84" width="54" height="3.5" rx="1.5" fill="white" opacity="0.25"/>
-                    <rect x="66" y="97" width="46" height="3.5" rx="1.5" fill="white" opacity="0.2"/>
-                    <rect x="66" y="106" width="52" height="3.5" rx="1.5" fill="white" opacity="0.15"/>
-                    {/* Checkmark badge — moved inward from edge */}
-                    <circle cx="138" cy="118" r="20" fill="rgb(55,176,170)"/>
-                    <path d="M129 118l6 6 12-12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    {/* Label */}
-                    <text x="100" y="155" fill="rgba(255,255,255,0.35)" fontSize="9" textAnchor="middle" fontFamily="Inter, sans-serif">Design &amp; Access · Planning Statement · Cover Letter</text>
+                    <rect x="44" y="40" width="66" height="4" rx="2" fill="white" opacity="0.3"/>
+                    <rect x="44" y="51" width="74" height="4" rx="2" fill="white" opacity="0.22"/>
+                    <rect x="44" y="62" width="60" height="4" rx="2" fill="white" opacity="0.18"/>
+                    <rect x="44" y="73" width="70" height="4" rx="2" fill="white" opacity="0.22"/>
+                    <rect x="44" y="88" width="56" height="4" rx="2" fill="white" opacity="0.16"/>
+                    <rect x="44" y="99" width="64" height="4" rx="2" fill="white" opacity="0.13"/>
+                    <rect x="44" y="110" width="50" height="4" rx="2" fill="white" opacity="0.10"/>
+                    {/* Checkmark badge — overlaps bottom-right of doc */}
+                    <circle cx="144" cy="132" r="24" fill="rgb(55,176,170)"/>
+                    <path d="M134 132l7 7 14-14" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 ),
               },
