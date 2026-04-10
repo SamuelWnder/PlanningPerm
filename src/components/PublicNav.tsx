@@ -4,9 +4,11 @@ import Link from "next/link";
 
 function LogoIcon() {
   return (
-    <svg className="w-7 h-7" style={{ color: "#D4922A" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-      <polyline points="9 22 9 12 15 12 15 22" />
+    <svg className="w-7 h-7" style={{ color: "#D4922A" }} viewBox="0 0 36 36" fill="none">
+      <rect x="23" y="8" width="4" height="7" rx="1" fill="currentColor" />
+      <path d="M4 17L18 5L32 17H4Z" fill="currentColor" />
+      <rect x="6" y="17" width="24" height="14" rx="1.5" fill="currentColor" />
+      <path d="M12 24l4 4 8-9" stroke="white" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
