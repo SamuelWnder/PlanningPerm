@@ -298,6 +298,36 @@ function LeadCapture({ address, isMobile }: { address: string; isMobile?: boolea
 // ── Card style ────────────────────────────────────────────────────────────────
 const CARD = { background: "white", borderRadius: 24, padding: "28px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" };
 
+// ── Accordion wrapper (mobile only) ──────────────────────────────────────────
+function Accordion({ title, defaultOpen = false, isMobile, children, cardStyle }: {
+  title: string;
+  defaultOpen?: boolean;
+  isMobile: boolean;
+  children: React.ReactNode;
+  cardStyle?: React.CSSProperties;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  if (!isMobile) {
+    return <div style={cardStyle ?? CARD}>{children}</div>;
+  }
+  return (
+    <div style={{ ...CARD, ...(cardStyle ?? {}), padding: 0, overflow: "hidden" }}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", background: "none", border: "none", cursor: "pointer", gap: 12 }}
+      >
+        <span style={{ fontSize: 16, fontWeight: 700, color: "rgb(11,29,40)", fontFamily: "'Plus Jakarta Sans', sans-serif", textAlign: "left" }}>{title}</span>
+        <span style={{ fontSize: 18, color: "rgb(100,120,130)", transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0, lineHeight: 1 }}>›</span>
+      </button>
+      {open && (
+        <div style={{ padding: "0 20px 20px" }}>
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function HeroBg() {
   return (
     <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -578,8 +608,8 @@ export default function ProjectResultPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
                 {/* Site constraints */}
-                <div style={CARD}>
-                  <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Site constraints</h2>
+                <Accordion title="Site constraints" defaultOpen={true} isMobile={isMobile}>
+                  {!isMobile && <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Site constraints</h2>}
                   <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 12px 0" }}>{constraints.length} checks run against national and local planning data</p>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 8, background: "rgba(100,120,130,0.07)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
                     <AlertTriangle size={14} color="rgb(130,150,160)" strokeWidth={2} style={{ flexShrink: 0, marginTop: 1 }} />
@@ -651,14 +681,14 @@ export default function ProjectResultPage() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </Accordion>
 
                 {/* Risks / Points to address */}
                 {sortedRisks.length > 0 && (
-                  <div style={CARD}>
-                    <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>
+                  <Accordion title={hasSerious ? "Risk factors" : "Points to address"} defaultOpen={hasSerious} isMobile={isMobile}>
+                    {!isMobile && <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>
                       {hasSerious ? "Risk factors" : "Points to address"}
-                    </h2>
+                    </h2>}
                     <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>
                       {hasSerious ? "Issues identified that could affect your application" : "Minor points worth noting before you submit"}
                     </p>
@@ -678,7 +708,7 @@ export default function ProjectResultPage() {
                         );
                       })}
                     </div>
-                  </div>
+                  </Accordion>
                 )}
 
               </div>
@@ -703,8 +733,8 @@ export default function ProjectResultPage() {
                 </div>
 
                 {/* Documents */}
-                <div id="documents" style={CARD}>
-                  <h3 style={{ fontSize: 20, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Your documents</h3>
+                <Accordion title="Your planning documents" defaultOpen={true} isMobile={isMobile}>
+                  {!isMobile && <h3 style={{ fontSize: 20, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Your documents</h3>}
                   <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Auto-generated from your assessment</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {docs.map((doc, i) => {
@@ -727,7 +757,6 @@ export default function ProjectResultPage() {
                           {isGenerating && <Loader2 size={16} color="rgb(180,200,200)" strokeWidth={2} style={{ animation: "spin 1s linear infinite", flexShrink: 0 }} />}
                           {isError && (
                             <button onClick={() => {
-                              // Clear cached entry so it regenerates fresh
                               if (docCacheKey) {
                                 try {
                                   const c = JSON.parse(localStorage.getItem(docCacheKey) ?? "{}");
@@ -742,30 +771,32 @@ export default function ProjectResultPage() {
                       );
                     })}
                   </div>
-                </div>
+                </Accordion>
 
                 {/* Next steps — hidden on mobile (shown above the grid instead) */}
-                <div style={{ ...CARD, display: isMobile ? "none" : undefined }}>
-                  <h3 style={{ fontSize: 20, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Recommended next steps</h3>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                    {[
-                      "Review each risk flag and constraint above",
-                      "Download your planning documents",
-                      assessment.score < 55 ? "Book a pre-application meeting with the council" : "Submit your application via the Planning Portal",
-                    ].map((s, i) => (
-                      <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <div style={{ width: 28, height: 28, borderRadius: "50%", background: "rgb(226,240,240)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                          <span style={{ fontSize: 13, fontWeight: 700, color: "rgb(55,176,170)" }}>{i + 1}</span>
+                {!isMobile && (
+                  <div style={CARD}>
+                    <h3 style={{ fontSize: 20, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Recommended next steps</h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      {[
+                        "Review each risk flag and constraint above",
+                        "Download your planning documents",
+                        assessment.score < 55 ? "Book a pre-application meeting with the council" : "Submit your application via the Planning Portal",
+                      ].map((s, i) => (
+                        <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                          <div style={{ width: 28, height: 28, borderRadius: "50%", background: "rgb(226,240,240)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <span style={{ fontSize: 13, fontWeight: 700, color: "rgb(55,176,170)" }}>{i + 1}</span>
+                          </div>
+                          <p style={{ fontSize: 15, color: "rgb(45,56,67)", margin: 0 }}>{s}</p>
                         </div>
-                        <p style={{ fontSize: 15, color: "rgb(45,56,67)", margin: 0 }}>{s}</p>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Cost estimate */}
-                <div style={{ ...CARD, padding: 20 }}>
-                  <h3 style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cost estimate</h3>
+                <Accordion title="Cost estimate" defaultOpen={false} isMobile={isMobile} cardStyle={{ ...CARD, padding: isMobile ? 0 : 20 }}>
+                  {!isMobile && <h3 style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cost estimate</h3>}
                   <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 12px 0" }}>Typical costs to planning permission</p>
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     {costs.map((item, i) => (
@@ -787,7 +818,7 @@ export default function ProjectResultPage() {
                     ))}
                   </div>
                   <p style={{ fontSize: 13, color: "rgb(180,195,195)", margin: "12px 0 0 0" }}>Architectural drawing and build cost estimates only — get exact quotes from local professionals.</p>
-                </div>
+                </Accordion>
 
               </div>
             </div>
@@ -795,8 +826,8 @@ export default function ProjectResultPage() {
 
           {/* ══ ASSESSMENT SUMMARY (full width) ════════════════════════════════ */}
           <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad}`, marginTop: 20 }}>
-            <div style={{ ...CARD, marginTop: 0 }}>
-              <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 20px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Assessment summary</h2>
+            <Accordion title="Assessment summary" defaultOpen={false} isMobile={isMobile}>
+              {!isMobile && <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 20px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Assessment summary</h2>}
 
               {/* Borough rate vs project score */}
               {assessment.area_approval_rate != null && (
@@ -835,7 +866,7 @@ export default function ProjectResultPage() {
                   <p style={{ fontSize: 13, color: "rgb(140,100,30)", margin: 0, lineHeight: 1.5 }}>{assessment.area_approval_rate_caveat}</p>
                 </div>
               )}
-            </div>
+            </Accordion>
           </div>
 
           {/* ══ LEAD CAPTURE ═══════════════════════════════════════════════════ */}
