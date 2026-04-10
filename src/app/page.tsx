@@ -562,21 +562,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── MONZO-STYLE ALTERNATING PANELS ─────────────────────────────────── */}
-
-      {/* Panel 1: text + CTA only */}
-      <section className="bg-white px-4 sm:px-16 lg:px-32 py-20 sm:py-28 border-t border-gray-100">
-        <h2 className="text-[2rem] sm:text-5xl xl:text-[56px] font-extrabold text-[#0b1d28] leading-[1.08] tracking-tight mb-6 max-w-2xl" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          Know your odds before you brief an architect.
-        </h2>
-        <p className="text-[#6b7280] text-lg leading-relaxed mb-8 max-w-lg" style={{ fontFamily: "'Inter', sans-serif" }}>
-          PlanningPerm shows your real approval probability based on your council&apos;s decision history — so you invest with confidence, not hope.
-        </p>
-        <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-7 py-4 text-sm font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
-          Check my property — it&apos;s free
-        </Link>
-      </section>
-
       {/* ── FINAL CTA ──────────────────────────────────────────────────── */}
       <section className="bg-[#0e1e30] py-20 sm:py-32 px-4 sm:px-8 text-center">
         <h2 className="text-4xl sm:text-6xl xl:text-[72px] font-extrabold text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -588,7 +573,6 @@ export default function HomePage() {
         <Link href="/dashboard/projects/new" className="inline-block bg-[#D4922A] text-white rounded-full px-12 py-4 text-sm font-bold hover:bg-[#b87820] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
           Check my property — it&apos;s free
         </Link>
-        <p className="text-white/30 text-sm mt-5" style={{ fontFamily: "'Inter', sans-serif" }}>No account needed · Free during beta</p>
       </section>
 
       {/* ── 13. FOOTER ─────────────────────────────────────────────────────── */}
