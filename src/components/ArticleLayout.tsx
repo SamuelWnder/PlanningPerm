@@ -84,7 +84,7 @@ export default function ArticleLayout({
     })),
   } : null;
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", background: "#eaf5f5", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafa", minHeight: "100vh" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
@@ -93,7 +93,7 @@ export default function ArticleLayout({
 
       {/* Header */}
       <div style={{ background: "#0e1e30", paddingTop: 68 }}>
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "48px 32px 44px" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto", padding: "48px 32px 44px" }}>
           <Link href="/blog" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none", marginBottom: 24 }}>
             ← Planning guides
           </Link>
@@ -101,14 +101,14 @@ export default function ArticleLayout({
             <span style={{ background: "rgba(212,146,42,0.18)", color: "#D4922A", borderRadius: 99, padding: "4px 12px", fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase" }}>Planning guide</span>
             <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 13 }}>{readTime} read · {published}</span>
           </div>
-          <h1 style={{ fontSize: 40, fontWeight: 400, color: "white", margin: 0, lineHeight: 1.15, fontFamily: "'Clash Display', sans-serif", maxWidth: 680 }}>
+          <h1 style={{ fontSize: 40, fontWeight: 800, color: "white", margin: 0, lineHeight: 1.15, fontFamily: "'Plus Jakarta Sans', sans-serif", maxWidth: 680 }}>
             {title}
           </h1>
           <p style={{ color: "rgba(255,255,255,0.6)", marginTop: 16, fontSize: 17, lineHeight: 1.6, maxWidth: 600 }}>{description}</p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 32px 80px", display: "grid", gridTemplateColumns: "1fr", gap: 24 }}>
+      <div style={{ maxWidth: 1152, margin: "0 auto", padding: "40px 32px 80px", display: "grid", gridTemplateColumns: "1fr", gap: 24 }}>
 
         {/* CTA banner */}
         <div style={{ background: "#0e1e30", borderRadius: 16, padding: "24px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
@@ -130,7 +130,7 @@ export default function ArticleLayout({
 
         {/* Bottom CTA */}
         <div style={{ background: "white", borderRadius: 20, padding: "32px 40px", boxShadow: "0 2px 24px rgba(0,0,0,0.06)", textAlign: "center" }}>
-          <p style={{ fontSize: 22, fontWeight: 400, color: "#0b1d28", margin: "0 0 8px 0", fontFamily: "'Clash Display', sans-serif" }}>Find out if your project needs planning permission</p>
+          <p style={{ fontSize: 22, fontWeight: 400, color: "#0b1d28", margin: "0 0 8px 0", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Find out if your project needs planning permission</p>
           <p style={{ color: "#2d3843", margin: "0 0 24px 0", fontSize: 15 }}>Enter your postcode and we'll check your property against planning constraints — free.</p>
           <Link href="/dashboard/projects/new" style={{ display: "inline-block", background: "#D4922A", color: "white", borderRadius: 99, padding: "14px 32px", fontSize: 15, fontWeight: 600, textDecoration: "none" }}>
             Get my free planning score →
@@ -155,7 +155,7 @@ export default function ArticleLayout({
       </div>
 
       <style>{`
-        .article-body h2 { font-size: 22px; font-weight: 600; color: #0b1d28; margin: 36px 0 14px; font-family: 'Clash Display', sans-serif; line-height: 1.3; }
+        .article-body h2 { font-size: 22px; font-weight: 700; color: #0b1d28; margin: 36px 0 14px; font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.3; }
         .article-body h3 { font-size: 17px; font-weight: 600; color: #0b1d28; margin: 28px 0 10px; }
         .article-body p { margin: 0 0 18px; color: #2d3843; }
         .article-body ul, .article-body ol { margin: 0 0 18px 0; padding-left: 22px; color: #2d3843; }

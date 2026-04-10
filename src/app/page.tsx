@@ -606,98 +606,108 @@ export default function HomePage() {
       </section>
 
       {/* ── HOW IT WORKS ───────────────────────────────────────────────── */}
-      <section id="how-it-works" className="bg-white border-t border-gray-100">
-        <div className="px-4 sm:px-16 lg:px-32 pt-16 sm:pt-24 pb-6">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1d28]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            How it works
-          </h2>
-        </div>
-
-        {[
-          {
-            n: "01",
-            title: "Enter your address",
-            desc: "Type your postcode or full address. We pull your council, property type, and EPC data automatically — so you barely have to type.",
-          },
-          {
-            n: "02",
-            title: "Tell us what you want to build",
-            desc: "Answer a handful of questions about your project. Takes 60–90 seconds. We pre-fill everything we already know.",
-          },
-          {
-            n: "03",
-            title: "Get your full assessment",
-            desc: "A real approval probability, 20 automated site checks, and three AI-drafted planning documents — ready to submit.",
-          },
-        ].map((s, i) => (
-          <div key={i} className="border-t border-gray-100 px-4 sm:px-16 lg:px-32 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-16">
-            <span className="text-[3.5rem] sm:text-[5rem] font-extrabold leading-none shrink-0 select-none" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: "rgba(11,29,40,0.07)" }}>{s.n}</span>
-            <div className="flex-1 sm:pt-3">
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#0b1d28] mb-2 leading-snug" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{s.title}</h3>
-              <p className="text-[#6b7280] text-base leading-relaxed max-w-lg" style={{ fontFamily: "'Inter', sans-serif" }}>{s.desc}</p>
-            </div>
+      <section id="how-it-works" className="bg-white border-t border-gray-100 py-20 sm:py-28 px-4 sm:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0b1d28] mb-4" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              How it works
+            </h2>
+            <p className="text-[#6b7280] text-base sm:text-xl max-w-xl mx-auto" style={{ fontFamily: "'Inter', sans-serif" }}>
+              From postcode to full planning assessment in under 2 minutes.
+            </p>
           </div>
-        ))}
 
-        <div className="border-t border-gray-100 px-4 sm:px-16 lg:px-32 py-8 sm:py-10">
-          <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-7 py-3.5 text-sm font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
-            Start my assessment — it&apos;s free
-          </Link>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-14">
+            {[
+              {
+                n: "01",
+                title: "Enter your address",
+                desc: "Type your postcode or full address. We pull your council, property type, and EPC data automatically.",
+              },
+              {
+                n: "02",
+                title: "Tell us what you want to build",
+                desc: "Answer a handful of questions about your project. Takes 60–90 seconds. We pre-fill everything we already know.",
+              },
+              {
+                n: "03",
+                title: "Get your full assessment",
+                desc: "A real approval probability, 20 automated site checks, and AI-drafted planning documents — ready to submit.",
+              },
+            ].map((s, i) => (
+              <div key={i} className="bg-[#f8fafa] rounded-3xl p-10 flex flex-col gap-6">
+                <span className="text-7xl font-extrabold leading-none select-none" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: "rgba(11,29,40,0.07)" }}>{s.n}</span>
+                <div>
+                  <h3 className="text-xl font-bold text-[#0b1d28] mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{s.title}</h3>
+                  <p className="text-[#6b7280] text-base leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-10 py-4 text-base font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Start my assessment — it&apos;s free
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* ── BLOG POSTS ─────────────────────────────────────────────────── */}
-      <section className="bg-white px-4 sm:px-16 lg:px-32 py-16 sm:py-20 border-t border-gray-100">
-        <div className="flex items-center justify-between mb-8 sm:mb-10">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0b1d28]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            From the planning guides
-          </h2>
-          <Link href="/blog" className="text-sm font-semibold text-[#6b7280] hover:text-[#0b1d28] transition-colors flex items-center gap-1.5">
-            View all
-            <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
-              <path d="M2.5 9.5l7-7M9.5 9.5V2.5H2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            {
-              tag: "Permitted development",
-              title: "Do I need planning permission for a conservatory?",
-              desc: "Rules, exemptions, and when you need to apply — explained in plain English.",
-              href: "/blog/do-you-need-planning-permission-for-a-conservatory",
-            },
-            {
-              tag: "Extensions",
-              title: "How much does planning permission cost in the UK?",
-              desc: "Application fees, consultant costs, and how to avoid paying for the wrong advice.",
-              href: "/blog/how-much-does-planning-permission-cost-uk",
-            },
-            {
-              tag: "Sustainability",
-              title: "Do you need planning permission for solar panels?",
-              desc: "Most installations are permitted development — but there are exceptions to know.",
-              href: "/blog/do-you-need-planning-permission-for-solar-panels",
-            },
-            {
-              tag: "Garden structures",
-              title: "Do I need planning permission for a pergola?",
-              desc: "Size limits, height rules, and what counts as a garden structure under planning law.",
-              href: "/blog/do-you-need-planning-permission-for-a-pergola",
-            },
-          ].map((post) => (
-            <Link key={post.href} href={post.href} className="group flex flex-col rounded-2xl border border-gray-100 p-6 hover:border-gray-200 hover:shadow-sm transition-all" style={{ textDecoration: "none" }}>
-              <span className="text-xs font-semibold text-[#D4922A] mb-3 uppercase tracking-wide" style={{ fontFamily: "'Inter', sans-serif" }}>{post.tag}</span>
-              <h3 className="text-base font-bold text-[#0b1d28] leading-snug mb-2 group-hover:text-[#1a3040] transition-colors flex-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{post.title}</h3>
-              <p className="text-sm text-[#6b7280] leading-relaxed mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>{post.desc}</p>
-              <span className="text-sm font-semibold text-[#0b1d28] flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                Read guide
-                <svg width="13" height="13" viewBox="0 0 12 12" fill="none">
-                  <path d="M2.5 9.5l7-7M9.5 9.5V2.5H2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </span>
+      <section className="bg-[#f8fafa] border-t border-gray-100 py-16 sm:py-24 px-4 sm:px-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1d28] mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              Planning guides
+            </h2>
+            <p className="text-[#6b7280] text-base sm:text-lg max-w-xl mx-auto" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Plain-English answers to the questions homeowners actually ask.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+            {[
+              {
+                tag: "Permitted development",
+                title: "Do I need planning permission for a conservatory?",
+                desc: "Rules, exemptions, and when you need to apply — explained in plain English.",
+                href: "/blog/do-you-need-planning-permission-for-a-conservatory",
+              },
+              {
+                tag: "Costs",
+                title: "How much does planning permission cost in the UK?",
+                desc: "Application fees, consultant costs, and how to avoid paying for the wrong advice.",
+                href: "/blog/how-much-does-planning-permission-cost-uk",
+              },
+              {
+                tag: "Sustainability",
+                title: "Do you need planning permission for solar panels?",
+                desc: "Most installations are permitted development — but there are exceptions to know.",
+                href: "/blog/do-you-need-planning-permission-for-solar-panels",
+              },
+              {
+                tag: "Garden structures",
+                title: "Do I need planning permission for a pergola?",
+                desc: "Size limits, height rules, and what counts as a garden structure under planning law.",
+                href: "/blog/do-you-need-planning-permission-for-a-pergola",
+              },
+            ].map((post) => (
+              <Link key={post.href} href={post.href} className="group bg-white rounded-2xl p-7 flex flex-col hover:shadow-md transition-all" style={{ textDecoration: "none" }}>
+                <span className="text-xs font-semibold text-[#D4922A] mb-3 uppercase tracking-wide" style={{ fontFamily: "'Inter', sans-serif" }}>{post.tag}</span>
+                <h3 className="text-base font-bold text-[#0b1d28] leading-snug mb-2 flex-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{post.title}</h3>
+                <p className="text-sm text-[#6b7280] leading-relaxed mb-5" style={{ fontFamily: "'Inter', sans-serif" }}>{post.desc}</p>
+                <span className="text-sm font-semibold text-[#D4922A] flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                  Read guide →
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-[#6b7280] hover:text-[#0b1d28] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+              View all planning guides →
             </Link>
-          ))}
+          </div>
         </div>
       </section>
 

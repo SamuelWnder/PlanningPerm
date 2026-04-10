@@ -12,7 +12,7 @@ const EMAIL = "hello@planningperm.com";
 
 export default function TermsPage() {
   return (
-    <div style={{ fontFamily: "'Euclid Circular B', 'Helvetica Neue', Arial, sans-serif", background: "#eaf5f5", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafa", minHeight: "100vh" }}>
 
       <PublicNav />
 
@@ -22,7 +22,7 @@ export default function TermsPage() {
           <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.55)", fontSize: 14, textDecoration: "none", marginBottom: 28 }}>
             ← Back to PlanningPerm
           </Link>
-          <h1 style={{ fontSize: 44, fontWeight: 400, color: "white", margin: 0, lineHeight: 1.1, fontFamily: "'Clash Display', sans-serif" }}>
+          <h1 style={{ fontSize: 44, fontWeight: 800, color: "white", margin: 0, lineHeight: 1.1, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Terms &amp; Conditions
           </h1>
           <p style={{ color: "rgba(255,255,255,0.55)", marginTop: 12, fontSize: 15 }}>Last updated: {LAST_UPDATED}</p>
@@ -132,7 +132,7 @@ export default function TermsPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ marginBottom: 40 }}>
-      <h2 style={{ fontSize: 20, fontWeight: 600, color: "#0b1d28", marginBottom: 14, marginTop: 0, fontFamily: "'Clash Display', sans-serif" }}>{title}</h2>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: "#0b1d28", marginBottom: 14, marginTop: 0, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{title}</h2>
       <div style={{ color: "#2d3843" }}>{children}</div>
     </div>
   );
