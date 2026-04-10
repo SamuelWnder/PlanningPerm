@@ -578,38 +578,44 @@ export default function HomePage() {
               Check my property — it&apos;s free
             </Link>
           </div>
-          {/* Visual: search suggestions UI */}
-          <div className="rounded-2xl sm:rounded-3xl overflow-hidden" style={{ background: "linear-gradient(160deg, #0f2438 0%, #0b1d28 100%)", minHeight: 340 }}>
-            {/* Search bar */}
-            <div className="px-5 sm:px-7 pt-7 pb-5">
-              <div className="flex items-center gap-3 rounded-2xl px-4 py-3.5" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.11)" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth="2" strokeLinecap="round" className="shrink-0">
-                  <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-                </svg>
-                <span className="text-sm text-white/50 flex-1" style={{ fontFamily: "'Inter', sans-serif" }}>Do I need planning permission for…</span>
-                <span className="w-px h-4 bg-white/60 rounded-full animate-pulse" />
-              </div>
+          {/* Visual: real assessment result card */}
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden" style={{ background: "#0c1c2b", minHeight: 340 }}>
+            {/* Property header */}
+            <div className="px-6 sm:px-8 pt-7 pb-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+              <p className="text-[10px] font-semibold tracking-widest text-white/30 uppercase mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Your property</p>
+              <p className="text-white font-semibold text-[15px]" style={{ fontFamily: "'Inter', sans-serif" }}>42 Brunswick Gardens, W8 4AX</p>
+              <p className="text-white/35 text-[13px] mt-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>London Borough of Kensington & Chelsea</p>
             </div>
 
-            {/* Suggestion rows */}
-            <div className="px-3 sm:px-5 pb-6 flex flex-col">
+            {/* Score */}
+            <div className="px-6 sm:px-8 py-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+              <div className="flex items-end gap-3 mb-1.5">
+                <span className="text-white font-extrabold leading-none" style={{ fontSize: 68, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>74</span>
+                <div className="pb-2">
+                  <p className="text-white/50 text-sm leading-tight" style={{ fontFamily: "'Inter', sans-serif" }}>% approval</p>
+                  <p className="text-white/30 text-xs" style={{ fontFamily: "'Inter', sans-serif" }}>likelihood</p>
+                </div>
+              </div>
+              <p className="text-white/25 text-xs" style={{ fontFamily: "'Inter', sans-serif" }}>Based on 1,240 similar decisions in Camden</p>
+            </div>
+
+            {/* Constraint rows */}
+            <div className="px-6 sm:px-8 py-5 flex flex-col gap-3.5">
               {[
-                { text: "Do I need planning permission for a loft conversion?", tag: "Loft",       tagColor: "rgba(212,146,42,0.9)",  tagBg: "rgba(212,146,42,0.15)", bold: true  },
-                { text: "Can I build a rear extension without planning?",        tag: "Extension",  tagColor: "rgb(55,176,170)",       tagBg: "rgba(55,176,170,0.12)", bold: true  },
-                { text: "Is my house in a conservation area?",                   tag: "Site check", tagColor: "rgba(180,130,255,0.9)", tagBg: "rgba(150,100,255,0.12)", bold: false },
-                { text: "What are the permitted development rules for a garage?", tag: null,        tagColor: "",                      tagBg: "",                      bold: false },
-                { text: "How likely is my council to approve this?",             tag: null,        tagColor: "",                      tagBg: "",                      bold: false },
-              ].map((q, i) => (
-                <div key={i} className="flex items-center gap-3 px-2 py-3 rounded-xl transition-colors" style={{ borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.05)" : "none", opacity: 1 - i * 0.13 }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2" strokeLinecap="round" className="shrink-0">
-                    <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-                  </svg>
-                  <p className="flex-1 text-sm text-white leading-snug" style={{ fontWeight: q.bold ? 600 : 400, fontFamily: "'Inter', sans-serif" }}>{q.text}</p>
-                  {q.tag && (
-                    <span className="text-xs px-2.5 py-1 rounded-full shrink-0 font-medium" style={{ background: q.tagBg, color: q.tagColor, fontFamily: "'Inter', sans-serif" }}>
-                      {q.tag}
-                    </span>
-                  )}
+                { label: "Conservation area",  status: "clear" },
+                { label: "Listed building",    status: "clear" },
+                { label: "Article 4 applies",  status: "flag"  },
+                { label: "Flood zone",         status: "clear" },
+              ].map(item => (
+                <div key={item.label} className="flex items-center justify-between">
+                  <span className="text-white/60 text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>{item.label}</span>
+                  <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{
+                    background: item.status === "clear" ? "rgba(55,176,170,0.13)" : "rgba(212,146,42,0.15)",
+                    color:      item.status === "clear" ? "rgb(55,176,170)"        : "#D4922A",
+                    fontFamily: "'Inter', sans-serif",
+                  }}>
+                    {item.status === "clear" ? "Clear" : "Review"}
+                  </span>
                 </div>
               ))}
             </div>
