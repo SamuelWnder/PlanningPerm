@@ -377,10 +377,10 @@ export default function HomePage() {
       </div>
 
       {/* ── 3. FEATURE CARDS ───────────────────────────────────────────────── */}
-      <section className="bg-white pt-10 sm:pt-14 pb-6 px-2 sm:px-16 lg:px-32">
+      <section className="bg-white pt-10 sm:pt-14 pb-6 sm:px-16 lg:px-32">
         <div className="w-full">
           {/* Header */}
-          <div className="mb-8 sm:mb-10">
+          <div className="mb-8 sm:mb-10 px-4 sm:px-0">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0b1d28] mb-3 flex items-center gap-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Everything you need, in 2 minutes
               <span style={{ color: "#D4922A", fontSize: "0.85em" }}>✦</span>
@@ -390,8 +390,8 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          {/* Cards — horizontal scroll on mobile, grid on desktop */}
+          <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 overflow-x-auto sm:overflow-x-visible snap-x snap-mandatory sm:snap-none pb-4 sm:pb-0 px-4 sm:px-0 scrollbar-hide">
             {([
               {
                 bg: "linear-gradient(155deg, #b86d10 0%, #0b1d28 130%)",
@@ -511,8 +511,8 @@ export default function HomePage() {
               <Link
                 key={i}
                 href="/dashboard/projects/new"
-                className="group relative rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-end"
-                style={{ height: "48vh", minHeight: 340, textDecoration: "none", background: card.bg }}
+                className="group relative rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-end snap-start flex-none sm:flex-1 w-[82vw] sm:w-auto"
+                style={{ height: "52vh", minHeight: 340, textDecoration: "none", background: card.bg }}
               >
                 {/* Illustration — fills upper 60% of card */}
                 <div className="absolute inset-x-0 top-0 bottom-[30%] flex items-center justify-center p-5 pointer-events-none">
