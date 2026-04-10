@@ -562,6 +562,61 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── BLOG POSTS ─────────────────────────────────────────────────── */}
+      <section className="bg-white px-4 sm:px-16 lg:px-32 py-16 sm:py-20 border-t border-gray-100">
+        <div className="flex items-center justify-between mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0b1d28]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            From the planning guides
+          </h2>
+          <Link href="/blog" className="text-sm font-semibold text-[#6b7280] hover:text-[#0b1d28] transition-colors flex items-center gap-1.5">
+            View all
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+              <path d="M2.5 9.5l7-7M9.5 9.5V2.5H2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            {
+              tag: "Permitted development",
+              title: "Do I need planning permission for a conservatory?",
+              desc: "Rules, exemptions, and when you need to apply — explained in plain English.",
+              href: "/blog/do-you-need-planning-permission-for-a-conservatory",
+            },
+            {
+              tag: "Extensions",
+              title: "How much does planning permission cost in the UK?",
+              desc: "Application fees, consultant costs, and how to avoid paying for the wrong advice.",
+              href: "/blog/how-much-does-planning-permission-cost-uk",
+            },
+            {
+              tag: "Sustainability",
+              title: "Do you need planning permission for solar panels?",
+              desc: "Most installations are permitted development — but there are exceptions to know.",
+              href: "/blog/do-you-need-planning-permission-for-solar-panels",
+            },
+            {
+              tag: "Garden structures",
+              title: "Do I need planning permission for a pergola?",
+              desc: "Size limits, height rules, and what counts as a garden structure under planning law.",
+              href: "/blog/do-you-need-planning-permission-for-a-pergola",
+            },
+          ].map((post) => (
+            <Link key={post.href} href={post.href} className="group flex flex-col rounded-2xl border border-gray-100 p-6 hover:border-gray-200 hover:shadow-sm transition-all" style={{ textDecoration: "none" }}>
+              <span className="text-xs font-semibold text-[#D4922A] mb-3 uppercase tracking-wide" style={{ fontFamily: "'Inter', sans-serif" }}>{post.tag}</span>
+              <h3 className="text-base font-bold text-[#0b1d28] leading-snug mb-2 group-hover:text-[#1a3040] transition-colors flex-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{post.title}</h3>
+              <p className="text-sm text-[#6b7280] leading-relaxed mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>{post.desc}</p>
+              <span className="text-sm font-semibold text-[#0b1d28] flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                Read guide
+                <svg width="13" height="13" viewBox="0 0 12 12" fill="none">
+                  <path d="M2.5 9.5l7-7M9.5 9.5V2.5H2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* ── FINAL CTA ──────────────────────────────────────────────────── */}
       <section className="bg-[#0e1e30] py-20 sm:py-32 px-4 sm:px-8 text-center">
         <h2 className="text-4xl sm:text-6xl xl:text-[72px] font-extrabold text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
