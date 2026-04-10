@@ -32,7 +32,7 @@ function ScoreArc({ score, sizePx = 220 }: { score: number; sizePx?: number }) {
           style={{ filter: `drop-shadow(0 0 10px ${color})`, transition: "stroke-dasharray 0.9s ease" }} />
       </svg>
       <p style={{ fontSize: Math.round(size * 0.068), fontWeight: 600, color: "rgba(255,255,255,0.55)", margin: `0 0 ${Math.round(size * 0.02)}px 0`, letterSpacing: "0.08em", textTransform: "uppercase" }}>Score</p>
-      <p style={{ fontSize: Math.round(size * 0.27), fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>
+      <p style={{ fontSize: Math.round(size * 0.27), fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         {score}<span style={{ fontSize: Math.round(size * 0.11), fontWeight: 400, color: "rgba(255,255,255,0.45)" }}>%</span>
       </p>
       <p style={{ fontSize: Math.round(size * 0.068), color: "rgba(255,255,255,0.4)", margin: `${Math.round(size * 0.03)}px 0 0 0` }}>out of 100</p>
@@ -138,7 +138,7 @@ export default function PreviewPage() {
 
   if (noData) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(234,245,245)", gap: 16, fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif' }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(248,250,250)", gap: 16, fontFamily: ''Inter', sans-serif' }}>
         <AlertTriangle size={36} color="rgb(180,180,180)" />
         <p style={{ fontSize: 16, color: "rgb(60,80,90)" }}>No preview data found. Please start a new check.</p>
         <Link href="/dashboard/projects/new" style={{ padding: "12px 24px", borderRadius: 12, background: "rgb(11,29,40)", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
@@ -172,7 +172,7 @@ export default function PreviewPage() {
   const CARD = { background: "white", borderRadius: 24, padding: "28px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" };
 
   return (
-    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: ''Inter', sans-serif', background: "rgb(248,250,250)", minHeight: "100vh" }}>
 
       <main>
         {/* ── Hero ── */}
@@ -198,7 +198,7 @@ export default function PreviewPage() {
                   </div>
                 </div>
 
-                <h1 style={{ fontSize: isMobile ? 22 : 42, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: isMobile ? -0.3 : -1, lineHeight: 1.15, fontFamily: "'Clash Display', sans-serif" }}>
+                <h1 style={{ fontSize: isMobile ? 22 : 42, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {project.address}
                 </h1>
                 <p style={{ fontSize: 16, color: "rgba(255,255,255,0.7)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
@@ -220,7 +220,7 @@ export default function PreviewPage() {
           {/* Wave */}
           <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, zIndex: 2, lineHeight: 0, pointerEvents: "none" }}>
             <svg viewBox="0 0 1440 80" preserveAspectRatio="none" width="100%" height="80">
-              <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(234,245,245)" />
+              <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(248,250,250)" />
             </svg>
           </div>
         </section>
@@ -235,7 +235,7 @@ export default function PreviewPage() {
               {/* Constraints */}
               <div style={CARD}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                  <h2 style={{ fontSize: 22, fontWeight: 400, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Clash Display', sans-serif" }}>Site constraints</h2>
+                  <h2 style={{ fontSize: 22, fontWeight: 700, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Site constraints</h2>
                   {hasConstraints ? (
                     <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(140,90,10)", background: "rgba(212,150,42,0.10)", border: "1px solid rgba(212,150,42,0.25)", borderRadius: 8, padding: "3px 10px" }}>Constraints detected</span>
                   ) : (
@@ -245,7 +245,7 @@ export default function PreviewPage() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                   {constraints.map((c, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 0", borderBottom: i < constraints.length - 1 ? "1px solid rgb(240,246,246)" : "none" }}>
-                      <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgb(234,245,245)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgb(248,250,250)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                         {constraintIcon(c.label)}
                       </div>
                       <div style={{ flex: 1 }}>
@@ -264,7 +264,7 @@ export default function PreviewPage() {
               {/* Risk factors — unlocked */}
               <div style={CARD}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                  <h2 style={{ fontSize: 22, fontWeight: 400, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Clash Display', sans-serif" }}>Risk factors</h2>
+                  <h2 style={{ fontSize: 22, fontWeight: 700, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Risk factors</h2>
                   <span style={{ fontSize: 13, fontWeight: 600, color: riskBadgeColor, background: riskBadgeBg, border: `1px solid ${riskBadgeColor}44`, borderRadius: 8, padding: "3px 10px" }}>
                     {riskBadgeText}
                   </span>
@@ -302,7 +302,7 @@ export default function PreviewPage() {
                     <CheckCircle size={12} color="rgb(55,176,170)" strokeWidth={2.5} />
                     <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)" }}>Beta — full access free</span>
                   </div>
-                  <h3 style={{ fontSize: 22, fontWeight: 400, color: "white", margin: "0 0 12px 0", lineHeight: 1.3, fontFamily: "'Clash Display', sans-serif" }}>
+                  <h3 style={{ fontSize: 22, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Your complete planning assessment
                   </h3>
                   <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
@@ -330,7 +330,7 @@ export default function PreviewPage() {
                 {assessment.area_approval_rate !== null && (
                   <div style={{ background: "white", borderRadius: 20, padding: "20px 24px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", marginBottom: 16 }}>
                     <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.06em" }}>Area approval rate</p>
-                    <p style={{ fontSize: 32, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>
+                    <p style={{ fontSize: 32, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       {assessment.area_approval_rate}%
                       <span style={{ fontSize: 15, fontWeight: 400, color: "rgb(100,120,130)", marginLeft: 6 }}>householder</span>
                     </p>

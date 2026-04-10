@@ -166,7 +166,7 @@ function ScoreDonut({ score, sizePx = 220 }: { score: number; sizePx?: number })
         <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={10} strokeLinecap="round" strokeDasharray={`${filled} ${circ - filled}`} />
       </svg>
       <p style={{ fontSize: Math.round(size * 0.05), fontWeight: 500, color: "rgba(255,255,255,0.55)", margin: "0 0 2px 0", letterSpacing: "0.06em", textTransform: "uppercase" }}>Score</p>
-      <p style={{ fontSize: Math.round(size * 0.236), fontWeight: 400, color: "white", margin: 0, lineHeight: 1, letterSpacing: -2, fontFamily: "'Clash Display', sans-serif" }}>{score}</p>
+      <p style={{ fontSize: Math.round(size * 0.236), fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{score}</p>
       <p style={{ fontSize: Math.round(size * 0.045), color: "rgba(255,255,255,0.4)", margin: "2px 0 8px 0" }}>/ 100</p>
       <div style={{ background: `${color}22`, borderRadius: 16000, padding: "5px 14px", border: `1px solid ${color}55` }}>
         <p style={{ fontSize: 12, fontWeight: 700, color, margin: 0 }}>{label}</p>
@@ -232,12 +232,12 @@ function DocViewerModal({ name, html, onClose }: { name: string; html: string; o
                 ? <><Loader2 size={13} strokeWidth={2} style={{ animation: "spin 1s linear infinite" }} /> Generating…</>
                 : <><Download size={13} strokeWidth={2} /> Download</>}
             </button>
-            <button onClick={onClose} style={{ width: 34, height: 34, borderRadius: "50%", background: "rgb(234,245,245)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <button onClick={onClose} style={{ width: 34, height: 34, borderRadius: "50%", background: "rgb(248,250,250)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <X size={15} color="rgb(60,80,90)" strokeWidth={2} />
             </button>
           </div>
         </div>
-        <div className="doc-viewer-body" style={{ padding: "28px 36px", overflowY: "auto", flex: 1, fontSize: 15, lineHeight: 1.75, color: "rgb(30,45,55)", fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif' }} dangerouslySetInnerHTML={{ __html: html }} />
+        <div className="doc-viewer-body" style={{ padding: "28px 36px", overflowY: "auto", flex: 1, fontSize: 15, lineHeight: 1.75, color: "rgb(30,45,55)", fontFamily: ''Inter', sans-serif' }} dangerouslySetInnerHTML={{ __html: html }} />
       </div>
     </div>
   );
@@ -264,7 +264,7 @@ function LeadCapture({ address, isMobile }: { address: string; isMobile?: boolea
     <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: isMobile ? "28px 20px" : "40px 48px", display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 56, alignItems: isMobile ? "stretch" : "center", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" }}>
       <div style={{ flex: 1 }}>
         <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)", margin: "0 0 10px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Get expert help</p>
-        <h2 style={{ fontSize: 28, fontWeight: 400, color: "white", margin: "0 0 12px 0", letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif" }}>Speak to a planning consultant</h2>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Speak to a planning consultant</h2>
         <p style={{ fontSize: 16, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.65 }}>
           A qualified UK planning consultant will review your assessment and advise on the best route to approval. Free 15-minute call, no obligation.
         </p>
@@ -481,7 +481,7 @@ export default function ProjectResultPage() {
 
   if (notFound) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(234,245,245)", gap: 16, padding: 24 }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(248,250,250)", gap: 16, padding: 24 }}>
         <AlertTriangle size={40} color="rgb(180,180,180)" />
         <p style={{ fontSize: 17, color: "rgb(60,80,90)", textAlign: "center", maxWidth: 400 }}>This project wasn&apos;t found. It may have been cleared from your browser.</p>
         <Link href="/dashboard/projects/new" style={{ padding: "12px 24px", borderRadius: 12, background: "#D4922A", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
@@ -510,10 +510,10 @@ export default function ProjectResultPage() {
       : "High Risk — significant obstacles to overcome";
 
   return (
-    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: ''Inter', sans-serif', background: "rgb(248,250,250)", minHeight: "100vh" }}>
 
       <main>
-        <div style={{ background: "rgb(234,245,245)", paddingBottom: 64 }}>
+        <div style={{ background: "rgb(248,250,250)", paddingBottom: 64 }}>
 
           {/* ══ HERO ══════════════════════════════════════════════════════════ */}
           <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 360 }}>
@@ -560,7 +560,7 @@ export default function ProjectResultPage() {
                     <MapPin size={13} color="rgba(255,255,255,0.6)" strokeWidth={2} />
                     <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)" }}>{project.council || "Local Planning Authority"}</span>
                   </div>
-                  <h1 style={{ fontSize: isMobile ? 26 : 46, fontWeight: 400, color: "white", margin: "0 0 12px 0", letterSpacing: isMobile ? -0.3 : -1, fontFamily: "'Clash Display', sans-serif" }}>{project.address}</h1>
+                  <h1 style={{ fontSize: isMobile ? 26 : 46, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{project.address}</h1>
                   <p style={{ fontSize: 17, color: "rgba(255,255,255,0.7)", margin: "0 0 24px 0", maxWidth: 520, lineHeight: 1.6 }}>{project.description || project.projectTypeLabel}</p>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 10, padding: "9px 16px" }}>
                     <Building2 size={15} color="rgba(255,255,255,0.5)" strokeWidth={1.8} />
@@ -572,7 +572,7 @@ export default function ProjectResultPage() {
             </div>
             <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, zIndex: 2, lineHeight: 0, pointerEvents: "none" }}>
               <svg viewBox="0 0 1440 80" preserveAspectRatio="none" width="100%" height="80">
-                <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(234,245,245)" />
+                <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(248,250,250)" />
               </svg>
             </div>
           </section>
@@ -586,7 +586,7 @@ export default function ProjectResultPage() {
 
                 {/* Site constraints */}
                 <div style={CARD}>
-                  <h2 style={{ fontSize: 24, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.3 }}>Site constraints</h2>
+                  <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Site constraints</h2>
                   <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 12px 0" }}>{constraints.length} checks run against national and local planning data</p>
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 8, background: "rgba(100,120,130,0.07)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
                     <AlertTriangle size={14} color="rgb(130,150,160)" strokeWidth={2} style={{ flexShrink: 0, marginTop: 1 }} />
@@ -663,7 +663,7 @@ export default function ProjectResultPage() {
                 {/* Risks / Points to address */}
                 {sortedRisks.length > 0 && (
                   <div style={CARD}>
-                    <h2 style={{ fontSize: 24, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.3 }}>
+                    <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>
                       {hasSerious ? "Risk factors" : "Points to address"}
                     </h2>
                     <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>
@@ -696,7 +696,7 @@ export default function ProjectResultPage() {
                 {/* Verdict */}
                 <div style={{ ...CARD, background: "rgb(11,29,40)" }}>
                   <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.5)", margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Overall verdict</p>
-                  <p style={{ fontSize: 28, fontWeight: 400, color: sc, margin: "0 0 12px 0", lineHeight: 1.2, fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.5 }}>{scoreVerdict}</p>
+                  <p style={{ fontSize: 28, fontWeight: 400, color: sc, margin: "0 0 12px 0", lineHeight: 1.2, fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.5 }}>{scoreVerdict}</p>
                   <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
                     {assessment.score >= 65
                       ? "Your project aligns well with local planning policy. Address the minor issues and your application is well-positioned."
@@ -711,7 +711,7 @@ export default function ProjectResultPage() {
 
                 {/* Documents */}
                 <div id="documents" style={CARD}>
-                  <h3 style={{ fontSize: 20, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 4px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.3 }}>Your documents</h3>
+                  <h3 style={{ fontSize: 20, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Your documents</h3>
                   <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Auto-generated from your assessment</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {docs.map((doc, i) => {
@@ -720,7 +720,7 @@ export default function ProjectResultPage() {
                       const isGenerating = status === "generating";
                       const isError = status === "error";
                       return (
-                        <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, background: "rgb(234,245,245)", borderRadius: 12, padding: "13px 16px" }}>
+                        <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, background: "rgb(248,250,250)", borderRadius: 12, padding: "13px 16px" }}>
                           <FileSignature size={20} color={isDone ? "rgb(55,176,170)" : "rgb(180,200,200)"} strokeWidth={1.8} />
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(11,29,40)", margin: "0 0 2px 0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{doc.name}</p>
@@ -753,7 +753,7 @@ export default function ProjectResultPage() {
 
                 {/* Next steps */}
                 <div style={CARD}>
-                  <h3 style={{ fontSize: 20, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 16px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.3 }}>Recommended next steps</h3>
+                  <h3 style={{ fontSize: 20, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Recommended next steps</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                     {[
                       "Review each risk flag and constraint above",
@@ -772,7 +772,7 @@ export default function ProjectResultPage() {
 
                 {/* Cost estimate */}
                 <div style={{ ...CARD, padding: 20 }}>
-                  <h3 style={{ fontSize: 18, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 4px 0", fontFamily: "'Clash Display', sans-serif" }}>Cost estimate</h3>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Cost estimate</h3>
                   <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 12px 0" }}>Typical costs to planning permission</p>
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     {costs.map((item, i) => (
@@ -803,19 +803,19 @@ export default function ProjectResultPage() {
           {/* ══ ASSESSMENT SUMMARY (full width) ════════════════════════════════ */}
           <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad}`, marginTop: 20 }}>
             <div style={{ ...CARD, marginTop: 0 }}>
-              <h2 style={{ fontSize: 24, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 20px 0", fontFamily: "'Clash Display', sans-serif", letterSpacing: -0.3 }}>Assessment summary</h2>
+              <h2 style={{ fontSize: 24, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 20px 0", fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: -0.3 }}>Assessment summary</h2>
 
               {/* Borough rate vs project score */}
               {assessment.area_approval_rate != null && (
                 <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, marginBottom: 24 }}>
                   <div style={{ background: "rgba(55,176,170,0.07)", borderRadius: 14, padding: "18px 20px", border: "1px solid rgba(55,176,170,0.18)" }}>
                     <p style={{ fontSize: 12, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.07em" }}>Borough approval rate</p>
-                    <p style={{ fontSize: 32, fontWeight: 400, color: "rgb(55,176,170)", margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>{assessment.area_approval_rate}%</p>
+                    <p style={{ fontSize: 32, fontWeight: 700, color: "rgb(55,176,170)", margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{assessment.area_approval_rate}%</p>
                     <p style={{ fontSize: 13, color: "rgb(130,150,160)", margin: 0 }}>of all householder applications in {project.council}</p>
                   </div>
                   <div style={{ background: `${scoreColor(assessment.score)}0f`, borderRadius: 14, padding: "18px 20px", border: `1px solid ${scoreColor(assessment.score)}30` }}>
                     <p style={{ fontSize: 12, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.07em" }}>Your project score</p>
-                    <p style={{ fontSize: 32, fontWeight: 400, color: sc, margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>{assessment.score}<span style={{ fontSize: 15, fontWeight: 400, color: "rgb(130,150,160)" }}>/100</span></p>
+                    <p style={{ fontSize: 32, fontWeight: 400, color: sc, margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{assessment.score}<span style={{ fontSize: 15, fontWeight: 400, color: "rgb(130,150,160)" }}>/100</span></p>
                     <p style={{ fontSize: 13, color: "rgb(130,150,160)", margin: 0 }}>based on site constraints and design factors</p>
                   </div>
                 </div>

@@ -23,7 +23,7 @@ const securityHeaders = [
       // Fonts
       "font-src 'self' data: https://fonts.gstatic.com https://fonts.bunny.net https://api.fonts.coollabs.io",
       // Images: self + data URIs + OS Maps tiles
-      "img-src 'self' data: blob: https://*.os.uk https://*.ordnancesurvey.co.uk https://images.unsplash.com",
+      "img-src 'self' data: blob: https://*.os.uk https://*.ordnancesurvey.co.uk",
       // API calls to external services
       [
         "connect-src 'self'",

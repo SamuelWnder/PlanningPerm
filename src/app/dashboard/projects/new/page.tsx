@@ -489,9 +489,12 @@ function NewProjectContent() {
   // ── Gate: used their free check, no active preview
   if (gated === "used") {
     return (
-      <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", padding: 24, textAlign: "center" }}>
-        <div style={{ width: 60, height: 60, borderRadius: 16, background: "#D4922A", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 28 }}>
-          <span style={{ fontSize: 18, fontWeight: 700, color: "white" }}>PP</span>
+      <div style={{ fontFamily: "'Inter', sans-serif", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", padding: 24, textAlign: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D4922A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 28, height: 28 }}>
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          <span style={{ fontSize: 18, fontWeight: 800, color: "white", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>PlanningPerm</span>
         </div>
 
         <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(212,150,42,0.15)", border: "1px solid rgba(212,150,42,0.35)", borderRadius: 20, padding: "5px 14px", marginBottom: 20 }}>
@@ -499,7 +502,7 @@ function NewProjectContent() {
           <span style={{ fontSize: 13, fontWeight: 600, color: "#D4922A" }}>Free check used</span>
         </div>
 
-        <h1 style={{ fontSize: 34, fontWeight: 400, color: "white", margin: "0 0 14px 0", letterSpacing: -0.5, maxWidth: 440, lineHeight: 1.2, fontFamily: "'Clash Display', sans-serif" }}>
+        <h1 style={{ fontSize: 34, fontWeight: 800, color: "white", margin: "0 0 14px 0", letterSpacing: -0.5, maxWidth: 440, lineHeight: 1.2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           You&apos;ve used your free planning check
         </h1>
         <p style={{ fontSize: 16, color: "rgba(255,255,255,0.55)", margin: "0 0 36px 0", maxWidth: 420, lineHeight: 1.7 }}>
@@ -561,7 +564,7 @@ function NewProjectContent() {
   }
 
   return (
-    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "rgb(248,250,250)", minHeight: "100vh" }}>
 
       <main>
         {/* ══ HERO ════════════════════════════════════════════════════════ */}
@@ -575,7 +578,7 @@ function NewProjectContent() {
               <p style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.5)", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.1em" }}>
                 Step {step} of {TOTAL_STEPS}
               </p>
-              <h1 style={{ fontSize: isMobile ? 22 : 36, fontWeight: 400, color: "white", margin: 0, letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif", lineHeight: 1.15 }}>
+              <h1 style={{ fontSize: isMobile ? 22 : 36, fontWeight: 800, color: "white", margin: 0, letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: 1.15 }}>
                 {STEP_TITLES[step]}
               </h1>
             </div>
@@ -583,7 +586,7 @@ function NewProjectContent() {
           </div>
           <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, zIndex: 2, lineHeight: 0, pointerEvents: "none" }}>
             <svg viewBox="0 0 1440 80" preserveAspectRatio="none" width="100%" height="80">
-              <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(234,245,245)" />
+              <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(248,250,250)" />
             </svg>
           </div>
         </section>
@@ -598,7 +601,7 @@ function NewProjectContent() {
                 <p style={{ fontSize: 16, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>
                   Enter the full address or postcode of the property you want to check
                 </p>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, background: "rgb(234,245,245)", borderRadius: 14, padding: "0 18px", marginBottom: suggestions.length > 0 ? 0 : 16 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, background: "rgb(248,250,250)", borderRadius: 14, padding: "0 18px", marginBottom: suggestions.length > 0 ? 0 : 16 }}>
                   <Search size={20} color="rgb(130,150,160)" strokeWidth={1.8} style={{ flexShrink: 0 }} />
                   <input
                     value={addressQuery}

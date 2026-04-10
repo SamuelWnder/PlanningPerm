@@ -103,10 +103,10 @@ export default function ProjectsPage() {
   const needsAttention = projects.filter((p) => p.assessment.score < 45).length;
 
   return (
-    <div style={{ fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif', background: "rgb(234,245,245)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: ''Inter', sans-serif', background: "rgb(248,250,250)", minHeight: "100vh" }}>
 
       <main>
-        <div style={{ background: "rgb(234,245,245)", paddingBottom: 40 }}>
+        <div style={{ background: "rgb(248,250,250)", paddingBottom: 40 }}>
 
           {/* ══ HERO ════════════════════════════════════════════════════════ */}
           <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 340 }}>
@@ -117,7 +117,7 @@ export default function ProjectsPage() {
               </Link>
               <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "flex-end", justifyContent: "space-between", gap: 16, marginBottom: 32 }}>
                 <div>
-                  <h1 style={{ fontSize: isMobile ? 30 : 44, fontWeight: 400, color: "white", margin: "0 0 10px 0", letterSpacing: -1, fontFamily: "'Clash Display', sans-serif" }}>Your projects</h1>
+                  <h1 style={{ fontSize: isMobile ? 30 : 44, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Your projects</h1>
                   <p style={{ fontSize: isMobile ? 15 : 18, color: "rgba(255,255,255,0.55)", margin: 0 }}>
                     {projects.length} {projects.length === 1 ? "property" : "properties"} checked &nbsp;·&nbsp;
                     <span style={{ color: needsAttention > 0 ? "rgb(212,150,42)" : "rgb(55,176,170)" }}>
@@ -132,7 +132,7 @@ export default function ProjectsPage() {
             </div>
             <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, zIndex: 2, lineHeight: 0, pointerEvents: "none" }}>
               <svg viewBox="0 0 1440 80" preserveAspectRatio="none" width="100%" height="80">
-                <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(234,245,245)" />
+                <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(248,250,250)" />
               </svg>
             </div>
           </section>

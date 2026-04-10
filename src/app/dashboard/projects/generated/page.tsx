@@ -71,7 +71,7 @@ function LoadingScreen({ address }: { address: string }) {
       justifyContent: "center",
       background: "rgb(11,29,40)",
       padding: "32px 20px",
-      fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif',
+      fontFamily: "'Inter', sans-serif",
       position: "relative",
       overflow: "hidden",
     }}>
@@ -98,14 +98,14 @@ function LoadingScreen({ address }: { address: string }) {
               <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-            <span style={{ fontSize: 22, fontWeight: 400, color: "white", letterSpacing: -0.5, fontFamily: "'Clash Display', sans-serif", textTransform: "lowercase" }}>
-              planningperm
+            <span style={{ fontSize: 18, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              PlanningPerm
             </span>
           </div>
           <p style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.14em", margin: "0 0 10px 0" }}>
             Feasibility check
           </p>
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: "white", margin: "0 0 6px 0", letterSpacing: -0.3, lineHeight: 1.3 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: "white", margin: "0 0 6px 0", letterSpacing: -0.3, lineHeight: 1.3, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {address}
           </h2>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.3)", margin: 0 }}>
@@ -264,7 +264,7 @@ export default function GeneratedResultPage() {
 
   if (error) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(234,245,245)", gap: 16, padding: 24 }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "white", gap: 16, padding: 24, fontFamily: "'Inter', sans-serif" }}>
         <AlertTriangle size={40} color="rgb(200,60,60)" />
         <p style={{ fontSize: 17, color: "rgb(60,80,90)", textAlign: "center", maxWidth: 400 }}>{error}</p>
         <Link href="/dashboard/projects/new" style={{ padding: "12px 24px", borderRadius: 12, background: "rgb(11,29,40)", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
