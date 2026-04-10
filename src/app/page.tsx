@@ -398,23 +398,23 @@ export default function HomePage() {
                 title: "Your approval odds",
                 desc: "Based on your council's real decision history — not a guess.",
                 illustration: (
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full h-full">
-                    {/* Outer ring */}
-                    <circle cx="100" cy="100" r="72" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5"/>
-                    <circle cx="100" cy="100" r="55" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
+                  <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" fill="none" className="w-full h-full">
+                    {/* Outer rings */}
+                    <circle cx="100" cy="96" r="76" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5"/>
+                    <circle cx="100" cy="96" r="58" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
                     {/* Arc track */}
-                    <circle cx="100" cy="100" r="72" stroke="rgba(255,255,255,0.12)" strokeWidth="10" strokeLinecap="round"
-                      strokeDasharray="339 452" transform="rotate(135 100 100)"/>
+                    <circle cx="100" cy="96" r="76" stroke="rgba(255,255,255,0.14)" strokeWidth="12" strokeLinecap="round"
+                      strokeDasharray="358 478" transform="rotate(135 100 96)"/>
                     {/* Arc fill ~74% */}
-                    <circle cx="100" cy="100" r="72" stroke="white" strokeWidth="10" strokeLinecap="round"
-                      strokeDasharray="251 452" transform="rotate(135 100 100)"/>
+                    <circle cx="100" cy="96" r="76" stroke="white" strokeWidth="12" strokeLinecap="round"
+                      strokeDasharray="265 478" transform="rotate(135 100 96)"/>
                     {/* Score */}
-                    <text x="100" y="94" fill="white" fontSize="38" fontWeight="800" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif">74</text>
-                    <text x="100" y="113" fill="rgba(255,255,255,0.55)" fontSize="13" textAnchor="middle" fontFamily="Inter, sans-serif">% likely approved</text>
+                    <text x="100" y="90" fill="white" fontSize="42" fontWeight="800" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif">74</text>
+                    <text x="100" y="110" fill="rgba(255,255,255,0.6)" fontSize="14" textAnchor="middle" fontFamily="Inter, sans-serif">% likely approved</text>
                     {/* Tick markers */}
                     {[0,1,2,3,4].map(n => {
                       const a = (135 + n * 67.5) * Math.PI / 180;
-                      return <line key={n} x1={100 + 82*Math.cos(a)} y1={100 + 82*Math.sin(a)} x2={100 + 88*Math.cos(a)} y2={100 + 88*Math.sin(a)} stroke="rgba(255,255,255,0.25)" strokeWidth="1.5"/>;
+                      return <line key={n} x1={100 + 86*Math.cos(a)} y1={96 + 86*Math.sin(a)} x2={100 + 93*Math.cos(a)} y2={96 + 93*Math.sin(a)} stroke="rgba(255,255,255,0.25)" strokeWidth="1.5"/>;
                     })}
                   </svg>
                 ),
@@ -424,27 +424,27 @@ export default function HomePage() {
                 title: "20 automated site checks",
                 desc: "Conservation areas, green belt, flood zones and more — all verified instantly.",
                 illustration: (
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full h-full">
+                  <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" fill="none" className="w-full h-full">
                     {/* Grid lines */}
-                    {[40,80,120,160].map(x => <line key={`v${x}`} x1={x} y1="20" x2={x} y2="160" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
-                    {[50,90,130].map(y => <line key={`h${y}`} x1="20" y1={y} x2="180" y2={y} stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
-                    {/* House outline */}
-                    <path d="M100 45L140 75V135H60V75L100 45Z" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinejoin="round"/>
-                    <rect x="88" y="105" width="24" height="30" rx="2" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-                    {/* Constraint pins */}
-                    <circle cx="58" cy="68" r="8" fill="rgba(212,146,42,0.3)" stroke="#D4922A" strokeWidth="1.5"/>
-                    <text x="58" y="72" fill="#D4922A" fontSize="9" textAnchor="middle" fontWeight="700">A4</text>
-                    <circle cx="148" cy="55" r="8" fill="rgba(55,176,170,0.2)" stroke="rgb(55,176,170)" strokeWidth="1.5"/>
-                    <text x="148" y="59" fill="rgb(55,176,170)" fontSize="8" textAnchor="middle" fontWeight="700">CA</text>
-                    <circle cx="142" cy="130" r="8" fill="rgba(100,160,255,0.2)" stroke="rgba(100,160,255,0.8)" strokeWidth="1.5"/>
-                    <text x="142" y="134" fill="rgba(100,160,255,0.9)" fontSize="8" textAnchor="middle" fontWeight="700">FZ</text>
-                    <circle cx="52" cy="130" r="8" fill="rgba(200,80,80,0.2)" stroke="rgba(200,80,80,0.8)" strokeWidth="1.5"/>
-                    <text x="52" y="134" fill="rgba(200,80,80,0.9)" fontSize="8" textAnchor="middle" fontWeight="700">LB</text>
-                    {/* Check badges bottom */}
+                    {[40,80,120,160].map(x => <line key={`v${x}`} x1={x} y1="15" x2={x} y2="158" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
+                    {[50,90,130].map(y => <line key={`h${y}`} x1="15" y1={y} x2="185" y2={y} stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
+                    {/* House outline — slightly larger */}
+                    <path d="M100 38L146 72V138H54V72L100 38Z" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinejoin="round"/>
+                    <rect x="86" y="106" width="28" height="32" rx="2" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
+                    {/* Constraint pins — larger radius for readability */}
+                    <circle cx="52" cy="64" r="11" fill="rgba(212,146,42,0.3)" stroke="#D4922A" strokeWidth="1.5"/>
+                    <text x="52" y="68" fill="#D4922A" fontSize="10" textAnchor="middle" fontWeight="700">A4</text>
+                    <circle cx="152" cy="50" r="11" fill="rgba(55,176,170,0.2)" stroke="rgb(55,176,170)" strokeWidth="1.5"/>
+                    <text x="152" y="54" fill="rgb(55,176,170)" fontSize="10" textAnchor="middle" fontWeight="700">CA</text>
+                    <circle cx="148" cy="132" r="11" fill="rgba(100,160,255,0.2)" stroke="rgba(100,160,255,0.8)" strokeWidth="1.5"/>
+                    <text x="148" y="136" fill="rgba(100,160,255,0.9)" fontSize="10" textAnchor="middle" fontWeight="700">FZ</text>
+                    <circle cx="46" cy="132" r="11" fill="rgba(200,80,80,0.2)" stroke="rgba(200,80,80,0.8)" strokeWidth="1.5"/>
+                    <text x="46" y="136" fill="rgba(200,80,80,0.9)" fontSize="10" textAnchor="middle" fontWeight="700">LB</text>
+                    {/* Check badges row */}
                     {[0,1,2,3,4,5].map(n => (
-                      <g key={n} transform={`translate(${26 + n*30}, 152)`}>
-                        <rect x="0" y="0" width="22" height="14" rx="3" fill="rgba(55,176,170,0.2)" stroke="rgba(55,176,170,0.4)" strokeWidth="1"/>
-                        <path d="M7 7l3 3 5-5" stroke="rgb(55,176,170)" strokeWidth="1.2" strokeLinecap="round"/>
+                      <g key={n} transform={`translate(${17 + n*30}, 156)`}>
+                        <rect x="0" y="0" width="24" height="16" rx="4" fill="rgba(55,176,170,0.2)" stroke="rgba(55,176,170,0.4)" strokeWidth="1"/>
+                        <path d="M8 8l3.5 3.5 5.5-6" stroke="rgb(55,176,170)" strokeWidth="1.4" strokeLinecap="round"/>
                       </g>
                     ))}
                   </svg>
@@ -455,26 +455,26 @@ export default function HomePage() {
                 title: "Documents ready to submit",
                 desc: "AI-drafted Design & Access Statement, Planning Statement and Cover Letter.",
                 illustration: (
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full h-full">
+                  <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" fill="none" className="w-full h-full">
                     {/* Doc 3 (back) */}
-                    <rect x="68" y="38" width="80" height="104" rx="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" transform="rotate(-6 108 90)"/>
+                    <rect x="62" y="34" width="84" height="108" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" transform="rotate(-7 104 88)"/>
                     {/* Doc 2 (mid) */}
-                    <rect x="68" y="35" width="80" height="104" rx="5" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" transform="rotate(3 108 87)"/>
+                    <rect x="62" y="30" width="84" height="108" rx="6" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" transform="rotate(4 104 84)"/>
                     {/* Doc 1 (front) */}
-                    <rect x="60" y="32" width="80" height="104" rx="5" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5"/>
+                    <rect x="54" y="26" width="84" height="108" rx="6" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5"/>
                     {/* Text lines */}
-                    <rect x="72" y="48" width="56" height="5" rx="2.5" fill="white" opacity="0.7"/>
-                    <rect x="72" y="62" width="48" height="3" rx="1.5" fill="white" opacity="0.3"/>
-                    <rect x="72" y="70" width="52" height="3" rx="1.5" fill="white" opacity="0.25"/>
-                    <rect x="72" y="78" width="44" height="3" rx="1.5" fill="white" opacity="0.2"/>
-                    <rect x="72" y="86" width="50" height="3" rx="1.5" fill="white" opacity="0.25"/>
-                    <rect x="72" y="98" width="42" height="3" rx="1.5" fill="white" opacity="0.2"/>
-                    <rect x="72" y="106" width="48" height="3" rx="1.5" fill="white" opacity="0.15"/>
-                    {/* Checkmark badge */}
-                    <circle cx="140" cy="120" r="18" fill="rgb(55,176,170)"/>
-                    <path d="M132 120l5 5 11-11" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    {/* Labels */}
-                    <text x="100" y="158" fill="rgba(255,255,255,0.35)" fontSize="9" textAnchor="middle" fontFamily="Inter, sans-serif">Design &amp; Access · Planning Statement · Cover Letter</text>
+                    <rect x="66" y="42" width="60" height="6" rx="3" fill="white" opacity="0.7"/>
+                    <rect x="66" y="57" width="52" height="3.5" rx="1.5" fill="white" opacity="0.3"/>
+                    <rect x="66" y="66" width="56" height="3.5" rx="1.5" fill="white" opacity="0.25"/>
+                    <rect x="66" y="75" width="48" height="3.5" rx="1.5" fill="white" opacity="0.2"/>
+                    <rect x="66" y="84" width="54" height="3.5" rx="1.5" fill="white" opacity="0.25"/>
+                    <rect x="66" y="97" width="46" height="3.5" rx="1.5" fill="white" opacity="0.2"/>
+                    <rect x="66" y="106" width="52" height="3.5" rx="1.5" fill="white" opacity="0.15"/>
+                    {/* Checkmark badge — moved inward from edge */}
+                    <circle cx="138" cy="118" r="20" fill="rgb(55,176,170)"/>
+                    <path d="M129 118l6 6 12-12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    {/* Label */}
+                    <text x="100" y="155" fill="rgba(255,255,255,0.35)" fontSize="9" textAnchor="middle" fontFamily="Inter, sans-serif">Design &amp; Access · Planning Statement · Cover Letter</text>
                   </svg>
                 ),
               },
@@ -483,27 +483,27 @@ export default function HomePage() {
                 title: "Built on real UK data",
                 desc: "23 million planning decisions across 320+ councils.",
                 illustration: (
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full h-full">
+                  <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" fill="none" className="w-full h-full">
                     {/* Grid */}
-                    {[40,80,120,160].map(y => <line key={y} x1="24" y1={y} x2="188" y2={y} stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
-                    {/* Bars */}
+                    {[50,90,130,155].map(y => <line key={y} x1="14" y1={y} x2="186" y2={y} stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
+                    {/* Bars — centred: total span = 5×28 + 4×8 = 172, start = (200−172)/2 = 14 */}
                     {[
-                      { x: 30,  h: 72, label: "LDN", pct: "89%" },
-                      { x: 64,  h: 56, label: "MCR", pct: "78%" },
-                      { x: 98,  h: 64, label: "BRS", pct: "83%" },
-                      { x: 132, h: 48, label: "LDS", pct: "71%" },
-                      { x: 166, h: 60, label: "BHM", pct: "80%" },
+                      { x: 14,  h: 76, label: "LDN", pct: "89%" },
+                      { x: 50,  h: 60, label: "MCR", pct: "78%" },
+                      { x: 86,  h: 68, label: "BRS", pct: "83%" },
+                      { x: 122, h: 52, label: "LDS", pct: "71%" },
+                      { x: 158, h: 64, label: "BHM", pct: "80%" },
                     ].map((b) => (
                       <g key={b.x}>
-                        <rect x={b.x} y={160 - b.h} width="26" height={b.h} rx="4" fill="rgba(55,176,170,0.25)" stroke="rgba(55,176,170,0.5)" strokeWidth="1"/>
-                        <rect x={b.x} y={160 - b.h} width="26" height="6" rx="4" fill="rgb(55,176,170)"/>
-                        <text x={b.x + 13} y="172" fill="rgba(255,255,255,0.4)" fontSize="8" textAnchor="middle" fontFamily="Inter, sans-serif">{b.label}</text>
-                        <text x={b.x + 13} y={154 - b.h} fill="white" fontSize="9" textAnchor="middle" fontWeight="600" fontFamily="Inter, sans-serif">{b.pct}</text>
+                        <rect x={b.x} y={158 - b.h} width="28" height={b.h} rx="5" fill="rgba(55,176,170,0.25)" stroke="rgba(55,176,170,0.5)" strokeWidth="1"/>
+                        <rect x={b.x} y={158 - b.h} width="28" height="7" rx="5" fill="rgb(55,176,170)"/>
+                        <text x={b.x + 14} y={148 - b.h} fill="white" fontSize="10" textAnchor="middle" fontWeight="600" fontFamily="Inter, sans-serif">{b.pct}</text>
+                        <text x={b.x + 14} y="170" fill="rgba(255,255,255,0.45)" fontSize="9" textAnchor="middle" fontFamily="Inter, sans-serif">{b.label}</text>
                       </g>
                     ))}
                     {/* Big stat */}
-                    <text x="100" y="26" fill="white" fontSize="22" fontWeight="800" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif">23M</text>
-                    <text x="100" y="38" fill="rgba(255,255,255,0.4)" fontSize="9" textAnchor="middle" fontFamily="Inter, sans-serif">planning decisions analysed</text>
+                    <text x="100" y="30" fill="white" fontSize="24" fontWeight="800" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif">23M</text>
+                    <text x="100" y="43" fill="rgba(255,255,255,0.45)" fontSize="10" textAnchor="middle" fontFamily="Inter, sans-serif">planning decisions analysed</text>
                   </svg>
                 ),
               },
