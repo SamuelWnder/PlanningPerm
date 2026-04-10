@@ -135,6 +135,7 @@ function TestimonialBanner({ name, location, quote }: { name: string; location: 
 export default function HomePage() {
   const router = useRouter();
   const [postcode, setPostcode] = useState("");
+  const [navOpen, setNavOpen] = useState(false);
   const videos = ["/hero.mp4", "/hero2.mp4", "/hero3.mp4"];
   const [videoIdx, setVideoIdx] = useState(0);
   const [prevIdx, setPrevIdx] = useState<number | null>(null);
@@ -191,29 +192,48 @@ export default function HomePage() {
     <div className="font-sans text-[#0b1d28] overflow-x-hidden" style={{ fontFamily: "'Euclid Circular B', sans-serif" }}>
 
       {/* ── 1. NAV ─────────────────────────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 bg-white px-4 sm:px-8 py-4 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-white px-4 sm:px-8 py-3.5 flex items-center justify-between">
+        {/* Hamburger — mobile only */}
+        <button
+          className="md:hidden flex flex-col justify-center gap-[5px] w-9 h-9 p-1.5"
+          onClick={() => setNavOpen(!navOpen)}
+          aria-label="Menu"
+        >
+          <span className={`block h-[2px] bg-[#0b1d28] rounded-full transition-all ${navOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
+          <span className={`block h-[2px] bg-[#0b1d28] rounded-full transition-all ${navOpen ? "opacity-0" : ""}`} />
+          <span className={`block h-[2px] bg-[#0b1d28] rounded-full transition-all ${navOpen ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+        </button>
+
         <div className="flex items-center gap-2">
-          <LogoIcon className="w-7 h-7 text-[#D4922A]" />
-          <span className="text-[#0b1d28] text-xl font-normal lowercase tracking-tight" style={{ fontFamily: "'Clash Display', sans-serif" }}>{BRAND}</span>
+          <LogoIcon className="w-6 h-6 text-[#D4922A]" />
+          <span className="text-[#0b1d28] text-lg font-normal lowercase tracking-tight" style={{ fontFamily: "'Clash Display', sans-serif" }}>{BRAND}</span>
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#0b1d28]">
-          {[
-            ["How it works", "#how-it-works"],
-            ["Pricing",       "#pricing"],
-            ["Blog",          "/blog"],
-          ].map(([label, href]) => (
+          {[["How it works","#how-it-works"],["Pricing","#pricing"],["Blog","/blog"]].map(([label, href]) => (
             <a key={label} href={href} className="hover:text-[#D4922A] transition-colors whitespace-nowrap">{label}</a>
           ))}
         </div>
 
-        <Link href="/dashboard/projects/new" className="bg-[#D4922A] text-white rounded-full px-6 py-2.5 text-sm font-semibold hover:bg-[#b87820] transition-colors whitespace-nowrap">
+        <Link href="/dashboard/projects/new" className="bg-[#D4922A] text-white rounded-full px-5 py-2 text-sm font-semibold hover:bg-[#b87820] transition-colors whitespace-nowrap">
           Check my property
         </Link>
       </nav>
 
+      {/* Mobile nav drawer */}
+      {navOpen && (
+        <div className="md:hidden sticky top-[57px] z-40 bg-white border-t border-gray-100 px-5 py-4 flex flex-col gap-1">
+          {[["How it works","#how-it-works"],["Pricing","#pricing"],["Blog","/blog"]].map(([label, href]) => (
+            <a key={label} href={href} onClick={() => setNavOpen(false)}
+               className="py-3 text-sm font-semibold text-[#0b1d28] border-b border-gray-50 hover:text-[#D4922A] transition-colors">
+              {label}
+            </a>
+          ))}
+        </div>
+      )}
+
       {/* ── 2. HERO ────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden mx-4 sm:mx-10 lg:mx-20" style={{ minHeight: "88vh", borderRadius: "24px" }}>
+      <section className="relative overflow-hidden mx-2 sm:mx-10 lg:mx-20" style={{ minHeight: "clamp(520px, 82vh, 92vh)", borderRadius: "20px" }}>
 
         {/* Video background */}
         {prevIdx !== null && (
@@ -252,25 +272,43 @@ export default function HomePage() {
         </div>
 
         {/* Text content */}
-        <div className="relative z-10 flex items-center" style={{ minHeight: "88vh" }}>
-            <div className="w-full max-w-7xl mx-auto px-6 sm:px-14 lg:px-20 pt-8 pb-24">
-            <div className="max-w-[720px]">
+        <div className="relative z-10 flex items-center" style={{ minHeight: "clamp(520px, 82vh, 92vh)" }}>
+          <div className="w-full max-w-7xl mx-auto px-5 sm:px-14 lg:px-20 pt-10 pb-28">
+            <div className="max-w-[680px]">
 
-              <p className="text-[rgba(255,255,255,0.55)] text-sm font-semibold uppercase tracking-[0.15em] mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>UK planning permission · instant AI assessment</p>
-              <h1 className="text-4xl sm:text-5xl xl:text-[64px] text-white leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}>
+              <p className="text-[rgba(255,255,255,0.55)] text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] mb-3 sm:mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>UK planning permission · instant AI assessment</p>
+              <h1 className="text-[2.4rem] sm:text-5xl xl:text-[64px] text-white leading-[1.06] tracking-tight mb-4 sm:mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}>
                 Will your project<br />get approved?
               </h1>
-              <p className="text-[rgba(255,255,255,0.68)] text-base leading-relaxed max-w-[480px] mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
-                Find out before you spend a penny on architects. Real approval odds, 20 automated site checks, and AI-drafted planning documents — in under 2 minutes.
+              <p className="text-[rgba(255,255,255,0.68)] text-sm sm:text-base leading-relaxed max-w-[440px] mb-7 sm:mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
+                Real approval odds, 20 automated site checks, and AI-drafted documents — before you spend a penny on architects.
               </p>
 
-              {/* Search form */}
-              <form onSubmit={handleSearch} className="max-w-[620px]">
-                <div className="flex items-center p-1.5" style={{ background: "white", borderRadius: 100, boxShadow: "0 8px 40px rgba(0,0,0,0.22)" }}>
+              {/* Search form — stacked on mobile, pill on desktop */}
+              <form onSubmit={handleSearch} className="w-full sm:max-w-[620px]">
+                {/* Mobile: stacked */}
+                <div className="flex flex-col gap-2 sm:hidden">
+                  <div className="flex items-center bg-white rounded-2xl px-4 py-0" style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.18)" }}>
+                    <svg className="w-4 h-4 shrink-0 mr-3" style={{ color: "#D4922A" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <input
+                      value={postcode}
+                      onChange={(e) => setPostcode(e.target.value)}
+                      placeholder="Postcode or address"
+                      className="flex-1 py-4 text-sm text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
+                      style={{ fontFamily: "'Inter', sans-serif" }}
+                    />
+                  </div>
+                  <button type="submit" className="w-full bg-[#D4922A] text-white font-bold rounded-2xl py-4 text-base hover:bg-[#b87820] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    Get my free planning score →
+                  </button>
+                </div>
+                {/* Desktop: pill */}
+                <div className="hidden sm:flex items-center p-1.5" style={{ background: "white", borderRadius: 100, boxShadow: "0 8px 40px rgba(0,0,0,0.22)" }}>
                   <div className="flex items-center pl-4 pr-2 shrink-0">
                     <svg className="w-5 h-5 shrink-0" style={{ color: "#D4922A" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                      <circle cx="12" cy="10" r="3" />
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                     </svg>
                   </div>
                   <input
@@ -280,15 +318,11 @@ export default function HomePage() {
                     className="flex-1 py-3 pr-2 text-base text-[#0b1d28] placeholder-[#9ca3af] outline-none bg-transparent"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   />
-                  <button
-                    type="submit"
-                    className="bg-[#D4922A] text-white font-bold whitespace-nowrap hover:bg-[#b87820] transition-colors shrink-0"
-                    style={{ padding: "14px 24px", borderRadius: 100, fontSize: 15, fontFamily: "'Inter', sans-serif" }}
-                  >
+                  <button type="submit" className="bg-[#D4922A] text-white font-bold whitespace-nowrap hover:bg-[#b87820] transition-colors shrink-0" style={{ padding: "14px 24px", borderRadius: 100, fontSize: 15, fontFamily: "'Inter', sans-serif" }}>
                     Get free score →
                   </button>
                 </div>
-                <p className="text-[rgba(255,255,255,0.45)] text-xs mt-3 pl-5">Free during beta · No account needed</p>
+                <p className="text-[rgba(255,255,255,0.4)] text-xs mt-3 pl-1" style={{ fontFamily: "'Inter', sans-serif" }}>Free during beta · No account needed</p>
               </form>
 
             </div>
@@ -296,7 +330,7 @@ export default function HomePage() {
         </div>
 
         {/* Bottom bar — arrows + dots left · trust badges right */}
-          <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between px-6 sm:px-14 lg:px-20 pb-8">
+        <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between px-5 sm:px-14 lg:px-20 pb-5 sm:pb-8">
 
           {/* Left: prev / dots / next */}
           <div className="flex items-center gap-3">
