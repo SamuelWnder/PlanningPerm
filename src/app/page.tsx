@@ -343,7 +343,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 3. FEATURE CARDS ───────────────────────────────────────────────── */}
-      <section className="bg-white py-10 sm:py-14 px-2 sm:px-16 lg:px-32">
+      <section className="bg-white pt-4 pb-6 px-2 sm:px-16 lg:px-32">
         <div className="w-full">
           {/* Header */}
           <div className="mb-8 sm:mb-10">
@@ -388,7 +388,7 @@ export default function HomePage() {
                 key={i}
                 href="/dashboard/projects/new"
                 className="group relative rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-end"
-                style={{ minHeight: "clamp(420px, 55vh, 600px)", textDecoration: "none" }}
+                style={{ height: "82vh", minHeight: 480, textDecoration: "none" }}
               >
                 {/* Photo background */}
                 <img src={card.img} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
