@@ -545,55 +545,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── REVIEWS ────────────────────────────────────────────────────────── */}
-      <section className="bg-white py-10 sm:py-14 px-2 sm:px-16 lg:px-32">
-        <div className="rounded-2xl sm:rounded-3xl overflow-hidden" style={{ background: "linear-gradient(135deg, #0b1d28 0%, #0d2d3d 100%)" }}>
-          {/* Stats row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px" style={{ background: "rgba(255,255,255,0.06)" }}>
-            {[
-              { val: "14,000+", label: "Homeowners assessed" },
-              { val: "320+",    label: "Councils covered"    },
-              { val: "2 mins",  label: "Avg time to score"   },
-              { val: "4.9 / 5", label: "Average rating"      },
-            ].map((s, i) => (
-              <div key={i} className="text-center py-6 px-4" style={{ background: "linear-gradient(135deg, #0b1d28 0%, #0d2d3d 100%)" }}>
-                <p className="text-2xl sm:text-3xl font-bold text-white mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{s.val}</p>
-                <p className="text-xs text-white/45 font-medium uppercase tracking-wider" style={{ fontFamily: "'Inter', sans-serif" }}>{s.label}</p>
-              </div>
-            ))}
+      {/* ── REVIEW ─────────────────────────────────────────────────────────── */}
+      <section className="bg-white pb-6 px-2 sm:px-16 lg:px-32">
+        <div className="rounded-2xl sm:rounded-3xl px-8 sm:px-12 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12" style={{ background: "linear-gradient(135deg, #0b1d28 0%, #0d2d3d 100%)" }}>
+          <div className="flex-1">
+            <div className="flex gap-0.5 mb-4">
+              {[1,2,3,4,5].map(n => <Star key={n} />)}
+            </div>
+            <p className="text-white text-lg sm:text-xl leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
+              &ldquo;We were about to pay an architect £3,000 for plans. PlanningPerm gave us a 78% approval score in 2 minutes — with all three planning documents ready to submit.&rdquo;
+            </p>
           </div>
-
-          {/* Reviews grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.06)" }}>
-            {[
-              {
-                quote: "We were about to pay an architect £3,000 for plans. PlanningPerm gave us a 78% approval score in 2 minutes — with all three planning documents ready to submit.",
-                name: "Daniel & Emma W.", location: "Leeds", featured: true,
-              },
-              {
-                quote: "Showed me exactly what conservation area rules applied — and what didn't. We got permission first time.",
-                name: "Priya S.", location: "Hackney, London", featured: false,
-              },
-              {
-                quote: "I'd been quoted £1,800 for a planning consultant. PlanningPerm gave me the same analysis in minutes and wrote all three documents. Total cost: £20.",
-                name: "James T.", location: "Bristol", featured: false,
-              },
-            ].map((r, i) => (
-              <div key={i} className="p-7 sm:p-8 flex flex-col justify-between gap-6" style={{ background: "linear-gradient(135deg, #0b1d28 0%, #0d2d3d 100%)" }}>
-                <div>
-                  <div className="flex gap-0.5 mb-4">
-                    {[1,2,3,4,5].map(n => <Star key={n} />)}
-                  </div>
-                  <p className={`text-white leading-relaxed ${r.featured ? "text-lg sm:text-xl" : "text-base"}`} style={{ fontFamily: "'Inter', sans-serif" }}>
-                    &ldquo;{r.quote}&rdquo;
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white/80" style={{ fontFamily: "'Inter', sans-serif" }}>{r.name}</p>
-                  <p className="text-xs text-white/40 mt-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>{r.location}</p>
-                </div>
-              </div>
-            ))}
+          <div className="shrink-0">
+            <p className="text-sm font-semibold text-white/80" style={{ fontFamily: "'Inter', sans-serif" }}>Daniel & Emma W.</p>
+            <p className="text-xs text-white/40 mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>Leeds</p>
           </div>
         </div>
       </section>
