@@ -6,7 +6,7 @@ import { useBreakpoint } from "@/hooks/useBreakpoint";
 import {
   MapPin, ChevronLeft,
   CheckCircle, AlertTriangle, XCircle, Building2, Zap, ShieldCheck,
-  Trees, Landmark, FileSignature, TrendingUp, ArrowRight,
+  Trees, Landmark, TrendingUp,
 } from "lucide-react";
 import type { StoredProject, AssessmentResult } from "@/lib/project-store";
 
@@ -138,7 +138,7 @@ export default function PreviewPage() {
 
   if (noData) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(248,250,250)", gap: 16, fontFamily: ''Inter', sans-serif' }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(248,250,250)", gap: 16, fontFamily: "'Inter', sans-serif" }}>
         <AlertTriangle size={36} color="rgb(180,180,180)" />
         <p style={{ fontSize: 16, color: "rgb(60,80,90)" }}>No preview data found. Please start a new check.</p>
         <Link href="/dashboard/projects/new" style={{ padding: "12px 24px", borderRadius: 12, background: "rgb(11,29,40)", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
@@ -172,7 +172,7 @@ export default function PreviewPage() {
   const CARD = { background: "white", borderRadius: 24, padding: "28px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" };
 
   return (
-    <div style={{ fontFamily: ''Inter', sans-serif', background: "rgb(248,250,250)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "rgb(248,250,250)", minHeight: "100vh" }}>
 
       <main>
         {/* ── Hero ── */}
@@ -188,10 +188,6 @@ export default function PreviewPage() {
               <div style={{ flex: 1 }}>
                 {/* Badges */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16, justifyContent: isMobile ? "center" : "flex-start" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(55,176,170,0.15)", border: "1px solid rgba(55,176,170,0.35)", borderRadius: 20, padding: "5px 14px" }}>
-                    <CheckCircle size={12} color="rgb(55,176,170)" strokeWidth={2.5} />
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)" }}>Full report — free during beta</span>
-                  </div>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.10)", borderRadius: 20, padding: "5px 14px" }}>
                     <MapPin size={13} color="rgba(255,255,255,0.6)" strokeWidth={2} />
                     <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)" }}>{project.council || "Local Planning Authority"}</span>
@@ -296,28 +292,20 @@ export default function PreviewPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <div style={{ position: "sticky", top: 96 }}>
 
-                {/* Beta access card */}
-                <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: "32px 28px", boxShadow: "rgba(0,0,0,0.2) 0px 8px 32px", marginBottom: 16 }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(55,176,170,0.15)", border: "1px solid rgba(55,176,170,0.3)", borderRadius: 20, padding: "5px 14px", marginBottom: 14 }}>
-                    <CheckCircle size={12} color="rgb(55,176,170)" strokeWidth={2.5} />
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)" }}>Beta — full access free</span>
-                  </div>
-                  <h3 style={{ fontSize: 22, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    Your complete planning assessment
+                {/* What's included card */}
+                <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: "28px 24px", boxShadow: "rgba(0,0,0,0.2) 0px 8px 32px", marginBottom: 16 }}>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: "white", letterSpacing: -0.4, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: "0 0 16px 0" }}>
+                    What&apos;s in your report
                   </h3>
-                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
-                    We&apos;re in early access — full reports are free while we refine the product. Paid plans launch soon.
-                  </p>
-
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {[
-                      { icon: <AlertTriangle size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Full risk factor breakdown — included" },
-                      { icon: <FileSignature size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Planning documents — coming soon" },
-                      { icon: <Building2    size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Cost estimate — coming soon" },
-                      { icon: <ArrowRight   size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Architect referrals — coming soon" },
+                      { icon: <CheckCircle  size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Approval probability score" },
+                      { icon: <CheckCircle  size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "20 automated site checks" },
+                      { icon: <CheckCircle  size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Full risk factor breakdown" },
+                      { icon: <CheckCircle  size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Council decision history" },
                     ].map((item, i) => (
                       <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 24, height: 24, borderRadius: 6, background: "rgba(55,176,170,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <div style={{ width: 24, height: 24, borderRadius: 6, background: "rgba(55,176,170,0.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                           {item.icon}
                         </div>
                         <p style={{ fontSize: 14, color: "rgba(255,255,255,0.8)", margin: 0 }}>{item.text}</p>
@@ -341,8 +329,8 @@ export default function PreviewPage() {
                 {/* Email capture — save report link */}
                 {!emailSaved ? (
                   <div style={{ background: "white", borderRadius: 20, padding: "20px 24px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" }}>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(11,29,40)", margin: "0 0 4px 0" }}>Not ready to unlock?</p>
-                    <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: "0 0 12px 0", lineHeight: 1.5 }}>Leave your details and we&apos;ll save this report so you can come back. Your name will also appear on your planning documents.</p>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(11,29,40)", margin: "0 0 4px 0" }}>Save this report</p>
+                    <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: "0 0 12px 0", lineHeight: 1.5 }}>Leave your details and we&apos;ll email you a link to come back. Your name will also appear on your planning documents.</p>
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       <input
                         type="text"
@@ -380,17 +368,6 @@ export default function PreviewPage() {
 
           </div>
 
-          {/* Bottom info banner */}
-          <div style={{ marginTop: 32, background: "white", borderRadius: 20, padding: isMobile ? "20px" : "24px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "space-between", gap: 16 }}>
-            <div>
-              <p style={{ fontSize: 16, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px 0" }}>planningperm is in early access</p>
-              <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: 0 }}>Full reports are free during beta. Paid plans with additional features — documents, comparables, and architect referrals — launch soon.</p>
-            </div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(55,176,170,0.08)", border: "1.5px solid rgba(55,176,170,0.25)", borderRadius: 12, padding: "10px 18px", flexShrink: 0, whiteSpace: "nowrap" }}>
-              <CheckCircle size={15} color="rgb(55,176,170)" strokeWidth={2} />
-              <span style={{ fontSize: 14, fontWeight: 600, color: "rgb(30,100,95)" }}>Free during beta</span>
-            </div>
-          </div>
 
         </div>
       </main>

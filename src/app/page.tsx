@@ -240,6 +240,7 @@ export default function HomePage() {
             key={`prev-${videos[prevIdx]}`}
             src={videos[prevIdx]}
             autoPlay muted playsInline
+            onError={() => {/* video missing in dev — safe to ignore */}}
             className="absolute inset-0 w-full h-full object-cover"
             style={{ transform: "scale(1.04)", animation: "videoFadeOut 0.9s ease forwards" }}
           />
@@ -250,6 +251,7 @@ export default function HomePage() {
           src={videos[videoIdx]}
           autoPlay muted playsInline
           onEnded={() => advanceVideo((videoIdx + 1) % videos.length)}
+          onError={() => {/* video missing in dev — safe to ignore */}}
           className="absolute inset-0 w-full h-full object-cover"
           style={{ transform: "scale(1.04)", animation: "videoFadeIn 0.9s ease forwards" }}
         />

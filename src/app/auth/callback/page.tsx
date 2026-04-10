@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Loader2, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
 function AuthCallbackContent() {
@@ -16,16 +16,13 @@ function AuthCallbackContent() {
     const projectId = searchParams.get("projectId");
 
     async function handleCallback() {
-      // Supabase puts the auth code in the URL hash (implicit flow) or as a ?code= param (PKCE)
-      // @supabase/ssr handles both automatically when we call getSession
       const { error: sessionError } = await supabase.auth.getSession();
 
       if (sessionError) {
-        setError("Could not sign you in. The link may have expired — please contact support.");
+        setError("Could not sign you in. The link may have expired — please try again.");
         return;
       }
 
-      // Redirect to the project if we have an ID, else the dashboard
       const destination = projectId
         ? `/dashboard/projects/${projectId}`
         : "/dashboard/projects";
@@ -39,7 +36,7 @@ function AuthCallbackContent() {
 
   if (error) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(234,245,245)", gap: 16, padding: 24, fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif' }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(248,250,250)", gap: 16, padding: 24, fontFamily: "'Inter', sans-serif" }}>
         <AlertTriangle size={36} color="rgb(200,60,60)" />
         <p style={{ fontSize: 16, color: "rgb(60,80,90)", textAlign: "center", maxWidth: 380 }}>{error}</p>
         <Link href="/dashboard/projects/new" style={{ padding: "12px 24px", borderRadius: 12, background: "rgb(11,29,40)", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
@@ -50,13 +47,15 @@ function AuthCallbackContent() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", gap: 20, padding: 24, fontFamily: '"Euclid Circular B","Helvetica Neue",Arial,sans-serif' }}>
-      <div style={{ width: 60, height: 60, borderRadius: 16, background: "#D4922A", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ fontSize: 18, fontWeight: 700, color: "white" }}>PP</span>
-      </div>
-      <Loader2 size={28} color="rgb(55,176,170)" strokeWidth={1.5} style={{ animation: "spin 1s linear infinite" }} />
-      <p style={{ fontSize: 16, color: "rgba(255,255,255,0.6)", margin: 0 }}>Opening your report…</p>
-      <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(11,29,40)", gap: 20, padding: 24, fontFamily: "'Inter', sans-serif" }}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#D4922A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 36, height: 36, filter: "drop-shadow(0 0 10px rgba(212,146,42,0.5))" }}>
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+      <span style={{ fontSize: 16, fontWeight: 800, color: "white", letterSpacing: -0.3, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>PlanningPerm</span>
+      <div style={{ width: 28, height: 28, borderRadius: "50%", border: "2.5px solid rgba(55,176,170,0.2)", borderTopColor: "rgb(55,176,170)", animation: "spin 0.8s linear infinite" }} />
+      <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", margin: 0 }}>Signing you in…</p>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

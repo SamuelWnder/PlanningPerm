@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { X, Menu } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { X, Menu, LogOut } from "lucide-react";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 const NAV_ITEMS = [
   { label: "Home",      href: "/dashboard"           },
@@ -14,7 +15,7 @@ const NAV_ITEMS = [
 
 function LogoIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
       <polyline points="9 22 9 12 15 12 15 22" />
     </svg>
@@ -23,8 +24,21 @@ function LogoIcon({ className }: { className?: string }) {
 
 export default function DashboardNav() {
   const pathname     = usePathname();
+  const router       = useRouter();
   const { isMobile } = useBreakpoint();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen]   = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    createClient().auth.getSession().then(({ data: { session } }) => {
+      setEmail(session?.user?.email ?? null);
+    });
+  }, []);
+
+  async function signOut() {
+    await createClient().auth.signOut();
+    router.push("/");
+  }
 
   function isActive(href: string) {
     if (href === "/dashboard") return pathname === "/dashboard";
@@ -68,16 +82,34 @@ export default function DashboardNav() {
           </div>
         )}
 
-        {/* Desktop right: CTA */}
+        {/* Desktop right: CTA + user */}
         {!isMobile && (
-          <Link href="/dashboard/projects/new" className="no-underline whitespace-nowrap" style={{
-            background: "#D4922A", color: "white",
-            borderRadius: 99999, padding: "8px 18px",
-            fontSize: 13, fontWeight: 600,
-            fontFamily: "'Inter', sans-serif",
-          }}>
-            + New check
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/dashboard/projects/new" className="no-underline whitespace-nowrap" style={{
+              background: "#D4922A", color: "white",
+              borderRadius: 99999, padding: "8px 18px",
+              fontSize: 13, fontWeight: 600,
+              fontFamily: "'Inter', sans-serif",
+            }}>
+              + New check
+            </Link>
+            {email && (
+              <div className="flex items-center gap-2" style={{ borderLeft: "1px solid #f1f5f5", paddingLeft: 12 }}>
+                <span style={{ fontSize: 13, color: "#9ca3af", fontFamily: "'Inter', sans-serif", maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {email}
+                </span>
+                <button
+                  onClick={signOut}
+                  title="Sign out"
+                  style={{ background: "none", border: "none", cursor: "pointer", padding: 6, color: "#9ca3af", display: "flex", alignItems: "center", borderRadius: 8, transition: "color 0.15s" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#0b1d28")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "#9ca3af")}
+                >
+                  <LogOut size={15} strokeWidth={2} />
+                </button>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Mobile hamburger */}
@@ -107,7 +139,7 @@ export default function DashboardNav() {
                 </Link>
               );
             })}
-            <div style={{ paddingTop: 16 }}>
+            <div style={{ paddingTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
               <Link href="/dashboard/projects/new" onClick={() => setOpen(false)} style={{
                 display: "block", textAlign: "center",
                 background: "#D4922A", color: "white",
@@ -118,6 +150,14 @@ export default function DashboardNav() {
               }}>
                 + New check
               </Link>
+              {email && (
+                <button
+                  onClick={() => { setOpen(false); signOut(); }}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "none", border: "1.5px solid #f1f5f5", borderRadius: 12, padding: "13px", fontSize: 14, fontWeight: 500, color: "#6b7280", cursor: "pointer", fontFamily: "'Inter', sans-serif" }}
+                >
+                  <LogOut size={14} strokeWidth={2} /> Sign out
+                </button>
+              )}
             </div>
           </div>
         </div>

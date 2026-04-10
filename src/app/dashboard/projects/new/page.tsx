@@ -294,13 +294,9 @@ function NewProjectContent() {
   const [currentUse, setCurrentUse]   = useState("");
   const [proposedUse, setProposedUse] = useState("");
 
-  // Gate check + postcode pre-fill on mount
+  // Postcode pre-fill on mount
   useEffect(() => {
-    const usedFree    = localStorage.getItem("pp_used_free_check") === "true";
-    const hasPreview  = !!sessionStorage.getItem("pp_preview_data");
-    // If they've used their free check AND have no active preview, show the gate
-    setGated(usedFree && !hasPreview ? "used" : "free");
-
+    setGated("free");
     const pc = searchParams.get("postcode");
     if (pc && pc.length >= 4) { handleAddressInput(pc); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -541,11 +537,7 @@ function NewProjectContent() {
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 12, marginTop: 4 }}>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.28)", margin: "0 0 10px 0" }}>Or check a different property</p>
             <button
-              onClick={async () => {
-                // Allow a new check — clear the flag and preview so they can start fresh
-                // But gate again behind Stripe if they actually want the report
-                localStorage.removeItem("pp_used_free_check");
-                sessionStorage.removeItem("pp_preview_data");
+              onClick={() => {
                 sessionStorage.removeItem("pp_new_project");
                 setGated("free");
               }}

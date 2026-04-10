@@ -12,7 +12,7 @@ import {
   FileSignature, Download, ArrowRight, Building2,
   TrendingUp, Zap, ShieldCheck, Trees, Landmark, Loader2, X, Mail, Trash2,
 } from "lucide-react";
-import { projectStore, type SavedProject, type StoredProject, type AssessmentResult } from "@/lib/project-store";
+import type { SavedProject, StoredProject, AssessmentResult } from "@/lib/project-store";
 
 // ── Document types ────────────────────────────────────────────────────────────
 const DOC_TYPE_MAP: Record<string, string> = {
@@ -237,7 +237,7 @@ function DocViewerModal({ name, html, onClose }: { name: string; html: string; o
             </button>
           </div>
         </div>
-        <div className="doc-viewer-body" style={{ padding: "28px 36px", overflowY: "auto", flex: 1, fontSize: 15, lineHeight: 1.75, color: "rgb(30,45,55)", fontFamily: ''Inter', sans-serif' }} dangerouslySetInnerHTML={{ __html: html }} />
+        <div className="doc-viewer-body" style={{ padding: "28px 36px", overflowY: "auto", flex: 1, fontSize: 15, lineHeight: 1.75, color: "rgb(30,45,55)", fontFamily: "'Inter', sans-serif" }} dangerouslySetInnerHTML={{ __html: html }} />
       </div>
     </div>
   );
@@ -400,64 +400,24 @@ export default function ProjectResultPage() {
     if (!id) return;
 
     async function load() {
-      // 1. Try localStorage first (fast, works offline)
-      const localEntry = projectStore.getById(id!);
-      if (localEntry) {
-        setSaved(localEntry);
-        const docs = getDocuments(localEntry.project.constraints);
-        // Restore any previously generated docs from cache
-        const cached = loadCachedDocs();
-        const restoredStatuses: Record<string, DocStatus> = {};
-        const restoredContents: Record<string, string> = {};
-        docs.forEach((doc) => {
-          if (cached[doc.name]) {
-            restoredContents[doc.name] = cached[doc.name];
-            restoredStatuses[doc.name] = "done";
-          }
-        });
-        if (Object.keys(restoredContents).length > 0) {
-          setDocContents(restoredContents);
-          setDocStatuses(restoredStatuses);
-        }
-        // Only generate docs that aren't already cached
-        const missing = docs.filter((doc) => !cached[doc.name]);
-        missing.forEach((doc, i) => { setTimeout(() => generateDoc(doc.name, localEntry.project), i * 1200); });
-        return;
-      }
-
-      // 2. Fall back to Supabase (cross-device via magic link)
       try {
-        const { createClient } = await import("@/lib/supabase/client");
-        const supabase = createClient();
+        // Fetch from API route — public access by UUID, no auth required
+        const res = await fetch(`/api/projects/${id}`);
+        if (!res.ok) { setNotFound(true); return; }
 
-        // Check if we have an authenticated session
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user?.email) { setNotFound(true); return; }
-
-        // Fetch from Supabase by project UUID and user email
-        const { data, error } = await supabase
-          .from("projects")
-          .select("id, project_data, assessment_data, created_at")
-          .eq("id", id)
-          .eq("user_email", session.user.email)
-          .single();
-
-        if (error || !data) { setNotFound(true); return; }
-
+        const data = await res.json();
         const entry: SavedProject = {
-          id:          data.id,
-          createdAt:   data.created_at,
-          project:     data.project_data as StoredProject,
-          assessment:  data.assessment_data as AssessmentResult,
+          id:         data.id,
+          createdAt:  data.createdAt,
+          project:    data.project    as StoredProject,
+          assessment: data.assessment as AssessmentResult,
         };
 
-        // Cache in localStorage so subsequent visits are instant (preserve the Supabase UUID)
-        projectStore.save(entry.project, entry.assessment, entry.id);
         setSaved(entry);
-        const docs = getDocuments(entry.project.constraints);
+        const docs   = getDocuments(entry.project.constraints);
         const cached = loadCachedDocs();
         const restoredStatuses: Record<string, DocStatus> = {};
-        const restoredContents: Record<string, string> = {};
+        const restoredContents: Record<string, string>    = {};
         docs.forEach((doc) => {
           if (cached[doc.name]) {
             restoredContents[doc.name] = cached[doc.name];
@@ -483,7 +443,7 @@ export default function ProjectResultPage() {
     return (
       <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgb(248,250,250)", gap: 16, padding: 24 }}>
         <AlertTriangle size={40} color="rgb(180,180,180)" />
-        <p style={{ fontSize: 17, color: "rgb(60,80,90)", textAlign: "center", maxWidth: 400 }}>This project wasn&apos;t found. It may have been cleared from your browser.</p>
+        <p style={{ fontSize: 17, color: "rgb(60,80,90)", textAlign: "center", maxWidth: 400 }}>This project wasn&apos;t found. The link may have expired or the report no longer exists.</p>
         <Link href="/dashboard/projects/new" style={{ padding: "12px 24px", borderRadius: 12, background: "#D4922A", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
           Start a new check
         </Link>
@@ -510,7 +470,7 @@ export default function ProjectResultPage() {
       : "High Risk — significant obstacles to overcome";
 
   return (
-    <div style={{ fontFamily: ''Inter', sans-serif', background: "rgb(248,250,250)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "rgb(248,250,250)", minHeight: "100vh" }}>
 
       <main>
         <div style={{ background: "rgb(248,250,250)", paddingBottom: 64 }}>
@@ -530,8 +490,6 @@ export default function ProjectResultPage() {
                     <span style={{ fontSize: 14, color: "rgba(255,255,255,0.8)" }}>Delete this project?</span>
                     <button
                       onClick={() => {
-                        projectStore.deleteById(id!);
-                        sessionStorage.removeItem("pp_latest_project_id");
                         router.replace("/dashboard/projects");
                       }}
                       style={{ fontSize: 13, fontWeight: 700, color: "rgb(255,100,100)", background: "rgba(200,60,60,0.25)", border: "1px solid rgba(200,60,60,0.5)", borderRadius: 8, padding: "5px 12px", cursor: "pointer" }}

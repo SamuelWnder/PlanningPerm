@@ -3,46 +3,33 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import {
-  Home, FolderOpen, FileText, MapPin, Bell,
-  User, ChevronLeft, ChevronRight, Plus,
-  AlertTriangle, CheckCircle, Search,
-} from "lucide-react";
-import { projectStore, type SavedProject } from "@/lib/project-store";
+import { ChevronLeft, Plus, AlertTriangle, CheckCircle, Search, ChevronRight } from "lucide-react";
+import type { SavedProject } from "@/lib/project-store";
+import { createClient } from "@/lib/supabase/client";
 
 function HeroBg() {
   return (
-    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-      <svg preserveAspectRatio="none" width="100%" height="100%" style={{ display: "block", height: "100%", pointerEvents: "none" }}>
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none", borderRadius: "inherit", overflow: "hidden" }}>
+      <svg preserveAspectRatio="none" width="100%" height="100%" style={{ display: "block", width: "100%", height: "100%" }}>
         <defs>
-          <mask id="pjHeroMask">
-            <rect fill="white" width="100%" height="50%" />
-            <ellipse cx="50%" cy="0%" rx="150%" ry="100%" fill="white" />
-          </mask>
-          <linearGradient id="pjSky" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id="pjSky2" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%"   stopColor="#0e1e30" />
-            <stop offset="30%"  stopColor="#1a3448" />
-            <stop offset="60%"  stopColor="#2a5850" />
-            <stop offset="85%"  stopColor="#3a6840" />
-            <stop offset="100%" stopColor="#4a6038" />
+            <stop offset="40%"  stopColor="#1a3448" />
+            <stop offset="70%"  stopColor="#2a5850" />
+            <stop offset="100%" stopColor="#3a6040" />
           </linearGradient>
-          <radialGradient id="pjSun" cx="68%" cy="32%" r="28%">
-            <stop offset="0%"  stopColor="#d4922a" stopOpacity="0.5" />
-            <stop offset="65%" stopColor="#d4922a" stopOpacity="0"   />
+          <radialGradient id="pjSun2" cx="75%" cy="25%" r="35%">
+            <stop offset="0%"  stopColor="#d4922a" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="#d4922a" stopOpacity="0"   />
           </radialGradient>
-          <linearGradient id="pjDark" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="rgba(8,18,32,0.78)" />
-            <stop offset="45%"  stopColor="rgba(8,18,32,0.32)" />
-            <stop offset="100%" stopColor="rgba(8,18,32,0)"    />
-          </linearGradient>
         </defs>
-        <rect fill="url(#pjSky)"  width="100%" height="100%" mask="url(#pjHeroMask)" />
-        <rect fill="url(#pjSun)"  width="100%" height="100%" mask="url(#pjHeroMask)" />
-        <rect fill="url(#pjDark)" width="100%" height="100%" mask="url(#pjHeroMask)" />
+        <rect fill="url(#pjSky2)" width="100%" height="100%" />
+        <rect fill="url(#pjSun2)" width="100%" height="100%" />
       </svg>
     </div>
   );
 }
+
 
 function scoreColor(s: number) {
   if (s >= 70) return "rgb(55,176,170)";
@@ -82,17 +69,76 @@ function timeAgo(iso: string): string {
   return `${mos} month${mos !== 1 ? "s" : ""} ago`;
 }
 
+type AuthState = "loading" | "signed_in" | "signed_out";
+
 export default function ProjectsPage() {
-  const [projects, setProjects]         = useState<SavedProject[]>([]);
-  const [search, setSearch]             = useState("");
-  const [hasUnpaidPreview, setHasUnpaidPreview] = useState(false);
-  const { isMobile, isTablet }          = useBreakpoint();
+  const [projects,   setProjects]   = useState<SavedProject[]>([]);
+  const [search,     setSearch]     = useState("");
+  const [authState,  setAuthState]  = useState<AuthState>("loading");
+  const [userEmail,  setUserEmail]  = useState("");
+  // Sign-in form state
+  const [signInEmail, setSignInEmail]   = useState("");
+  const [signInState, setSignInState]   = useState<"idle" | "sending" | "sent">("idle");
+  const [signInError, setSignInError]   = useState("");
+
+  const { isMobile, isTablet } = useBreakpoint();
   const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
 
   useEffect(() => {
-    setProjects(projectStore.getAll());
-    setHasUnpaidPreview(!!sessionStorage.getItem("pp_preview_data"));
+    async function init() {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session?.user?.email) {
+        setAuthState("signed_out");
+        return;
+      }
+
+      setUserEmail(session.user.email);
+
+      // Fetch all projects for this user (RLS filters by email automatically)
+      const { data, error } = await supabase
+        .from("projects")
+        .select("id, project_data, assessment_data, created_at")
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        setProjects(data.map((row) => ({
+          id:         row.id,
+          createdAt:  row.created_at,
+          project:    row.project_data  as SavedProject["project"],
+          assessment: row.assessment_data as SavedProject["assessment"],
+        })));
+      }
+
+      setAuthState("signed_in");
+    }
+    init();
   }, []);
+
+  async function handleSendMagicLink() {
+    setSignInError("");
+    const trimmed = signInEmail.trim().toLowerCase();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setSignInError("Please enter a valid email address.");
+      return;
+    }
+    setSignInState("sending");
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOtp({
+        email: trimmed,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) throw error;
+      setSignInState("sent");
+    } catch {
+      setSignInError("Couldn't send the link. Please try again.");
+      setSignInState("idle");
+    }
+  }
 
   const filtered = projects.filter((p) =>
     p.project.address.toLowerCase().includes(search.toLowerCase()) ||
@@ -102,46 +148,134 @@ export default function ProjectsPage() {
 
   const needsAttention = projects.filter((p) => p.assessment.score < 45).length;
 
+  // ── Loading skeleton ────────────────────────────────────────────────────────
+  if (authState === "loading") {
+    return (
+      <div style={{ fontFamily: "'Inter', sans-serif", background: "rgb(248,250,250)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
+          <div style={{ width: 36, height: 36, borderRadius: "50%", border: "3px solid rgba(55,176,170,0.2)", borderTopColor: "rgb(55,176,170)", animation: "spin 0.8s linear infinite" }} />
+          <p style={{ fontSize: 14, color: "rgb(130,150,160)", margin: 0 }}>Loading your projects…</p>
+        </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
+  // ── Sign-in gate ────────────────────────────────────────────────────────────
+  if (authState === "signed_out") {
+    return (
+      <div style={{ fontFamily: "'Inter', sans-serif", background: "rgb(248,250,250)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 16px" }}>
+        <div style={{ width: "100%", maxWidth: 420, background: "rgb(11,29,40)", borderRadius: 24, padding: "40px 32px", textAlign: "center" }}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D4922A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 36, height: 36, margin: "0 auto 20px", display: "block", filter: "drop-shadow(0 0 10px rgba(212,146,42,0.4))" }}>
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: "white", letterSpacing: -0.4, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: "0 0 8px" }}>
+            Sign in to view your reports
+          </h2>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", margin: "0 0 28px", lineHeight: 1.6 }}>
+            Enter the email you used when you ran your check. We&apos;ll send you a one-click sign-in link.
+          </p>
+
+          {signInState === "sent" ? (
+            <div style={{ background: "rgba(55,176,170,0.12)", border: "1px solid rgba(55,176,170,0.3)", borderRadius: 14, padding: "18px 20px" }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(55,176,170)", margin: "0 0 4px" }}>Check your email</p>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", margin: 0, lineHeight: 1.5 }}>
+                We&apos;ve sent a sign-in link to <strong style={{ color: "white" }}>{signInEmail}</strong>. Click it to access your projects.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                <input
+                  type="email"
+                  value={signInEmail}
+                  onChange={(e) => { setSignInEmail(e.target.value); setSignInError(""); }}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleSendMagicLink(); }}
+                  placeholder="your@email.com"
+                  disabled={signInState === "sending"}
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.08)",
+                    border: signInError ? "1.5px solid rgba(220,60,60,0.6)" : "1.5px solid rgba(255,255,255,0.12)",
+                    borderRadius: 10,
+                    padding: "12px 14px",
+                    fontSize: 14,
+                    color: "white",
+                    outline: "none",
+                    fontFamily: "'Inter', sans-serif",
+                  }}
+                />
+                <button
+                  onClick={handleSendMagicLink}
+                  disabled={signInState === "sending"}
+                  style={{
+                    background: "#D4922A",
+                    color: "white",
+                    border: "none",
+                    borderRadius: 10,
+                    padding: "12px 18px",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: signInState === "sending" ? "default" : "pointer",
+                    whiteSpace: "nowrap",
+                    opacity: signInState === "sending" ? 0.6 : 1,
+                  }}
+                >
+                  {signInState === "sending" ? "Sending…" : "Send link"}
+                </button>
+              </div>
+              {signInError && <p style={{ fontSize: 12, color: "rgba(220,80,80,0.9)", margin: "0 0 8px", textAlign: "left" }}>{signInError}</p>}
+            </>
+          )}
+
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.25)", margin: "20px 0 0" }}>
+            Don&apos;t have an account?{" "}
+            <Link href="/dashboard/projects/new" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "underline" }}>
+              Run a new check
+            </Link>
+          </p>
+        </div>
+        <style>{`input::placeholder { color: rgba(255,255,255,0.25); } input:focus { border-color: rgba(55,176,170,0.5) !important; }`}</style>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ fontFamily: ''Inter', sans-serif', background: "rgb(248,250,250)", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "rgb(248,250,250)", minHeight: "100vh" }}>
 
       <main>
-        <div style={{ background: "rgb(248,250,250)", paddingBottom: 40 }}>
+        {/* ══ PAGE WRAPPER (hero + content share same gutter) ════════════ */}
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: isMobile ? "12px 16px 40px" : "24px 48px 48px" }}>
 
-          {/* ══ HERO ════════════════════════════════════════════════════════ */}
-          <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 340 }}>
+          {/* HERO CARD */}
+          <div style={{ position: "relative", borderRadius: 24, overflow: "hidden", padding: isMobile ? "32px 24px 40px" : "48px 52px 52px", marginBottom: isMobile ? 12 : 16 }}>
             <HeroBg />
-            <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: `40px ${hPad} 56px` }}>
-              <Link href="/dashboard" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 15, fontWeight: 500, marginBottom: 28 }}>
-                <ChevronLeft size={16} strokeWidth={2} /> Back to dashboard
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <Link href="/dashboard" style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: 13, fontWeight: 500, marginBottom: 24 }}>
+                <ChevronLeft size={14} strokeWidth={2} /> Dashboard
               </Link>
-              <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "flex-end", justifyContent: "space-between", gap: 16, marginBottom: 32 }}>
+              <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: 16 }}>
                 <div>
-                  <h1 style={{ fontSize: isMobile ? 30 : 44, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Your projects</h1>
-                  <p style={{ fontSize: isMobile ? 15 : 18, color: "rgba(255,255,255,0.55)", margin: 0 }}>
-                    {projects.length} {projects.length === 1 ? "property" : "properties"} checked &nbsp;·&nbsp;
-                    <span style={{ color: needsAttention > 0 ? "rgb(212,150,42)" : "rgb(55,176,170)" }}>
-                      {needsAttention > 0 ? `${needsAttention} need${needsAttention === 1 ? "s" : ""} attention` : "All clear"}
-                    </span>
+                  <h1 style={{ fontSize: isMobile ? 30 : 42, fontWeight: 800, color: "white", letterSpacing: -0.5, margin: "0 0 8px", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Your projects</h1>
+                  <p style={{ fontSize: 15, color: "rgba(255,255,255,0.5)", margin: 0 }}>
+                    {userEmail && <span>{userEmail} &nbsp;·&nbsp;</span>}
+                    {projects.length} {projects.length === 1 ? "property" : "properties"} checked
+                    {needsAttention > 0 && <> &nbsp;·&nbsp; <span style={{ color: "rgb(212,150,42)" }}>{needsAttention} need{needsAttention === 1 ? "s" : ""} attention</span></>}
                   </p>
                 </div>
-                <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 12, padding: "13px 24px", fontSize: 16, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 0 24px rgba(212,146,42,0.35)" }}>
-                  <Plus size={17} strokeWidth={2.5} /> Check new property
+                <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 100, padding: "13px 24px", fontSize: 15, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap", fontFamily: "'Inter', sans-serif", boxShadow: "0 0 24px rgba(212,146,42,0.35)", flexShrink: 0 }}>
+                  <Plus size={16} strokeWidth={2.5} /> New check
                 </Link>
               </div>
             </div>
-            <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, zIndex: 2, lineHeight: 0, pointerEvents: "none" }}>
-              <svg viewBox="0 0 1440 80" preserveAspectRatio="none" width="100%" height="80">
-                <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(248,250,250)" />
-              </svg>
-            </div>
-          </section>
+          </div>
 
           {/* ══ CONTENT ═════════════════════════════════════════════════════ */}
-          <div style={{ maxWidth: 1280, margin: "0 auto", padding: `0 ${hPad}` }}>
+          <div>
 
             {/* Search */}
-            <section style={{ padding: "32px 0 16px" }}>
+            <section style={{ padding: isMobile ? "20px 0 12px" : "32px 0 16px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, background: "white", borderRadius: 14, padding: "0 18px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" }}>
                 <Search size={18} color="rgb(130,150,160)" strokeWidth={1.8} />
                 <input
@@ -175,24 +309,10 @@ export default function ProjectsPage() {
                   ) : (
                     <>
                       <p style={{ fontSize: 18, fontWeight: 600, color: "rgb(60,80,90)", margin: "0 0 8px 0" }}>No projects yet</p>
-                      {hasUnpaidPreview ? (
-                        <>
-                          <p style={{ fontSize: 15, color: "rgb(130,150,160)", margin: "0 0 24px 0" }}>You have an unsaved report — unlock it to save it here.</p>
-                          <Link href="/dashboard/projects/preview" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none", marginRight: 10 }}>
-                            View your preview
-                          </Link>
-                          <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgb(11,29,40)", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none" }}>
-                            <Plus size={16} strokeWidth={2.5} /> Check a different property
-                          </Link>
-                        </>
-                      ) : (
-                        <>
-                          <p style={{ fontSize: 15, color: "rgb(130,150,160)", margin: "0 0 24px 0" }}>Run your first planning check to get a real approval score.</p>
-                          <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none" }}>
-                            <Plus size={16} strokeWidth={2.5} /> Check a property
-                          </Link>
-                        </>
-                      )}
+                      <p style={{ fontSize: 15, color: "rgb(130,150,160)", margin: "0 0 24px 0" }}>Run your first planning check to get a real approval score.</p>
+                      <Link href="/dashboard/projects/new" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#D4922A", color: "white", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 600, textDecoration: "none" }}>
+                        <Plus size={16} strokeWidth={2.5} /> Check a property
+                      </Link>
                     </>
                   )}
                 </div>
@@ -208,11 +328,11 @@ export default function ProjectsPage() {
                           <div style={{ background: "white", borderRadius: 24, padding: isMobile ? "16px 18px" : "22px 28px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", display: "flex", alignItems: "center", gap: isMobile ? 14 : 22 }}>
                           <ScoreRing score={score} />
                           <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap", marginBottom: 4 }}>
-                              <p style={{ fontSize: isMobile ? 15 : 19, fontWeight: 700, color: "rgb(11,29,40)", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: isMobile ? 180 : 400 }}>{p.project.address}</p>
-                              <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: 0, whiteSpace: "nowrap" }}>{p.project.council}</p>
+                            <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
+                              <p style={{ fontSize: isMobile ? 15 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: isMobile ? "calc(100vw - 180px)" : 400 }}>{p.project.address}</p>
+                              {!isMobile && <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: 0, whiteSpace: "nowrap" }}>{p.project.council}</p>}
                             </div>
-                            <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 10px 0" }}>{p.project.projectTypeLabel}</p>
+                            <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: "0 0 8px 0" }}>{isMobile ? `${p.project.council} · ` : ""}{p.project.projectTypeLabel}</p>
                             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                               <span style={{ fontSize: 13, fontWeight: 600, color: sc, background: sb, borderRadius: 8, padding: "3px 10px" }}>
                                 {score >= 70 ? "Likely Approved" : score >= 45 ? "Borderline" : "High Risk"}
@@ -239,10 +359,12 @@ export default function ProjectsPage() {
                               )}
                             </div>
                           </div>
-                          <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 7 }}>
-                            <span style={{ fontSize: 13, color: "rgb(160,180,185)" }}>{timeAgo(p.createdAt)}</span>
+                          <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+                            {!isMobile && <span style={{ fontSize: 13, color: "rgb(160,180,185)" }}>{timeAgo(p.createdAt)}</span>}
                             {needsAttn
-                              ? <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(212,150,42)", background: "rgba(212,150,42,0.10)", borderRadius: 8, padding: "4px 12px" }}>Review needed</span>
+                              ? isMobile
+                                ? <AlertTriangle size={18} color="rgb(212,150,42)" strokeWidth={2} />
+                                : <span style={{ fontSize: 13, fontWeight: 600, color: "rgb(212,150,42)", background: "rgba(212,150,42,0.10)", borderRadius: 8, padding: "4px 12px" }}>Review needed</span>
                               : <CheckCircle size={18} color="rgb(55,176,170)" strokeWidth={2} />
                             }
                           </div>
@@ -256,7 +378,8 @@ export default function ProjectsPage() {
             </section>
 
           </div>
-        </div>
+
+        </div>{/* end page wrapper */}
       </main>
     </div>
   );

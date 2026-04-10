@@ -183,7 +183,7 @@ async function sendMagicLinkEmail({
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "PlanningPerm <onboarding@resend.dev>",
+      from: "PlanningPerm <hello@planningperm.com>",
       to: email,
       subject: `Your planning report for ${address}`,
       html,

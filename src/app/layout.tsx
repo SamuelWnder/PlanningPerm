@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,13 +18,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <head>
-        {/* Privacy-friendly analytics by Plausible */}
-        <script async src="https://plausible.io/js/pa-Qdczfs_XyMHR9ouVXG2b5.js"></script>
-        <script dangerouslySetInnerHTML={{ __html: `window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()` }} />
-      </head>
       <body className="min-h-full flex flex-col bg-[#FAFAF8] text-[#1A1F2E]">
         {children}
+        {/* Plausible analytics — afterInteractive prevents load errors reaching window.onerror */}
+        <Script
+          src="https://plausible.io/js/pa-Qdczfs_XyMHR9ouVXG2b5.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
