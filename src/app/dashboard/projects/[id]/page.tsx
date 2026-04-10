@@ -478,8 +478,8 @@ export default function ProjectResultPage() {
           {/* ══ HERO ══════════════════════════════════════════════════════════ */}
           <section style={{ position: "relative", overflow: "hidden", paddingTop: 68, minHeight: 360 }}>
             <HeroBg />
-            <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: `${isMobile ? "24px" : "36px"} ${hPad} ${isMobile ? "56px" : "72px"}` }}>
-              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 28 }}>
+            <div style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: `8px ${hPad} ${isMobile ? "40px" : "60px"}` }}>
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: isMobile ? 16 : 24 }}>
                 <Link href="/dashboard/projects" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 15, fontWeight: 500 }}>
                   <ChevronLeft size={16} strokeWidth={2} /> Back to projects
                 </Link>
