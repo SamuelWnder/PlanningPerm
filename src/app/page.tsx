@@ -563,6 +563,134 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── MONZO-STYLE ALTERNATING PANELS ─────────────────────────────────── */}
+
+      {/* Panel 1: text left, visual right */}
+      <section className="bg-white px-4 sm:px-16 lg:px-32 py-20 sm:py-28">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-20 items-center">
+          <div>
+            <h2 className="text-[2rem] sm:text-5xl xl:text-[56px] font-extrabold text-[#0b1d28] leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              Know your odds before you brief an architect.
+            </h2>
+            <p className="text-[#6b7280] text-lg leading-relaxed mb-8 max-w-md" style={{ fontFamily: "'Inter', sans-serif" }}>
+              PlanningPerm shows your real approval probability based on your council&apos;s decision history — so you invest with confidence, not hope.
+            </p>
+            <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-7 py-4 text-sm font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Check my property — it&apos;s free
+            </Link>
+          </div>
+          {/* Visual: score gauge card */}
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden flex items-center justify-center" style={{ background: "linear-gradient(155deg, #b86d10 0%, #0b1d28 110%)", minHeight: 340 }}>
+            <svg viewBox="0 0 280 260" fill="none" className="w-full h-full" style={{ maxHeight: 380 }}>
+              <circle cx="140" cy="138" r="96" stroke="rgba(255,255,255,0.07)" strokeWidth="2"/>
+              <circle cx="140" cy="138" r="74" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+              {/* Arc track */}
+              <circle cx="140" cy="138" r="96" stroke="rgba(255,255,255,0.14)" strokeWidth="16" strokeLinecap="round"
+                strokeDasharray="452 603" transform="rotate(135 140 138)"/>
+              {/* Arc fill 74% */}
+              <circle cx="140" cy="138" r="96" stroke="white" strokeWidth="16" strokeLinecap="round"
+                strokeDasharray="335 603" transform="rotate(135 140 138)"/>
+              {/* Score */}
+              <text x="140" y="128" fill="white" fontSize="56" fontWeight="800" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif">74</text>
+              <text x="140" y="152" fill="rgba(255,255,255,0.6)" fontSize="17" textAnchor="middle" fontFamily="Inter, sans-serif">% likely approved</text>
+              {/* Council label */}
+              <rect x="94" y="172" width="92" height="26" rx="13" fill="rgba(212,146,42,0.25)" stroke="rgba(212,146,42,0.5)" strokeWidth="1"/>
+              <text x="140" y="189" fill="#D4922A" fontSize="12" fontWeight="700" textAnchor="middle" fontFamily="Inter, sans-serif">Camden Council</text>
+              {/* Tick marks */}
+              {[0,1,2,3,4].map(n => {
+                const a = (135 + n * 67.5) * Math.PI / 180;
+                return <line key={n} x1={140 + 108*Math.cos(a)} y1={138 + 108*Math.sin(a)} x2={140 + 116*Math.cos(a)} y2={138 + 116*Math.sin(a)} stroke="rgba(255,255,255,0.2)" strokeWidth="2"/>;
+              })}
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      {/* Panel 2: visual left, text right */}
+      <section className="bg-white px-4 sm:px-16 lg:px-32 py-20 sm:py-28 border-t border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-20 items-center">
+          {/* Visual: checklist card */}
+          <div className="order-2 md:order-1 rounded-2xl sm:rounded-3xl overflow-hidden flex items-center justify-center" style={{ background: "linear-gradient(155deg, #0d3a4a 0%, #0b1d28 110%)", minHeight: 340 }}>
+            <svg viewBox="0 0 280 260" fill="none" className="w-full h-full" style={{ maxHeight: 380 }}>
+              {/* Background grid */}
+              {[60,110,160,210].map(x => <line key={`v${x}`} x1={x} y1="20" x2={x} y2="240" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>)}
+              {[60,100,140,180,220].map(y => <line key={`h${y}`} x1="20" y1={y} x2="260" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>)}
+              {/* Check rows */}
+              {[
+                { y: 52,  label: "Conservation area",  pass: true  },
+                { y: 88,  label: "Listed building",    pass: true  },
+                { y: 124, label: "Green belt",         pass: false },
+                { y: 160, label: "Flood zone 2 or 3",  pass: true  },
+                { y: 196, label: "Article 4 direction", pass: true  },
+              ].map(row => (
+                <g key={row.y}>
+                  <rect x="30" y={row.y - 18} width="220" height="32" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.09)" strokeWidth="1"/>
+                  <circle cx="55" cy={row.y - 2} r="11" fill={row.pass ? "rgba(55,176,170,0.25)" : "rgba(200,80,80,0.2)"} stroke={row.pass ? "rgb(55,176,170)" : "rgba(200,80,80,0.8)"} strokeWidth="1.5"/>
+                  {row.pass
+                    ? <path d={`M49 ${row.y - 2}l4 4 8-8`} stroke="rgb(55,176,170)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    : <path d={`M51 ${row.y - 6}l8 8M59 ${row.y - 6}l-8 8`} stroke="rgba(200,80,80,0.9)" strokeWidth="1.8" strokeLinecap="round"/>
+                  }
+                  <text x="74" y={row.y + 3} fill="rgba(255,255,255,0.8)" fontSize="13" fontFamily="Inter, sans-serif">{row.label}</text>
+                  <text x="236" y={row.y + 3} fill={row.pass ? "rgb(55,176,170)" : "rgba(200,80,80,0.9)"} fontSize="12" fontWeight="600" textAnchor="middle" fontFamily="Inter, sans-serif">{row.pass ? "Clear" : "Flag"}</text>
+                </g>
+              ))}
+            </svg>
+          </div>
+          <div className="order-1 md:order-2">
+            <h2 className="text-[2rem] sm:text-5xl xl:text-[56px] font-extrabold text-[#0b1d28] leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              Every constraint, checked in seconds.
+            </h2>
+            <p className="text-[#6b7280] text-lg leading-relaxed mb-8 max-w-md" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Conservation areas, listed buildings, green belt, flood zones, Article 4 — 20 site checks run the moment you enter your address. No manual research, no surprises later.
+            </p>
+            <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-7 py-4 text-sm font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Run my site checks
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Panel 3: text left, visual right */}
+      <section className="bg-white px-4 sm:px-16 lg:px-32 py-20 sm:py-28 border-t border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-20 items-center">
+          <div>
+            <h2 className="text-[2rem] sm:text-5xl xl:text-[56px] font-extrabold text-[#0b1d28] leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              Submit-ready documents, without the consultant.
+            </h2>
+            <p className="text-[#6b7280] text-lg leading-relaxed mb-8 max-w-md" style={{ fontFamily: "'Inter', sans-serif" }}>
+              AI-drafted Design & Access Statement, Planning Statement, and Cover Letter — tailored to your project and ready to attach to your planning portal submission.
+            </p>
+            <Link href="/dashboard/projects/new" className="inline-block bg-[#0b1d28] text-white rounded-full px-7 py-4 text-sm font-semibold hover:bg-[#1a3040] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+              See a sample report
+            </Link>
+          </div>
+          {/* Visual: document stack card */}
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden flex items-center justify-center" style={{ background: "linear-gradient(155deg, #1a2d50 0%, #0b1d28 110%)", minHeight: 340 }}>
+            <svg viewBox="0 0 280 260" fill="none" className="w-full h-full" style={{ maxHeight: 380 }}>
+              {/* Doc 3 (back) */}
+              <rect x="56" y="24" width="150" height="196" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.10)" strokeWidth="2" transform="rotate(-9 131 122)"/>
+              {/* Doc 2 (mid) */}
+              <rect x="56" y="18" width="150" height="196" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="2" transform="rotate(5 131 116)"/>
+              {/* Doc 1 (front) */}
+              <rect x="46" y="12" width="150" height="196" rx="12" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.28)" strokeWidth="2"/>
+              {/* Title */}
+              <rect x="62" y="30" width="96" height="10" rx="5" fill="white" opacity="0.75"/>
+              {/* Text lines */}
+              <rect x="62" y="52" width="88" height="5" rx="2.5" fill="white" opacity="0.28"/>
+              <rect x="62" y="64" width="100" height="5" rx="2.5" fill="white" opacity="0.22"/>
+              <rect x="62" y="76" width="80" height="5" rx="2.5" fill="white" opacity="0.18"/>
+              <rect x="62" y="88" width="92" height="5" rx="2.5" fill="white" opacity="0.22"/>
+              <rect x="62" y="104" width="76" height="5" rx="2.5" fill="white" opacity="0.15"/>
+              <rect x="62" y="116" width="86" height="5" rx="2.5" fill="white" opacity="0.13"/>
+              <rect x="62" y="128" width="68" height="5" rx="2.5" fill="white" opacity="0.10"/>
+              {/* Checkmark */}
+              <circle cx="196" cy="180" r="32" fill="rgb(55,176,170)"/>
+              <path d="M182 180l10 10 20-20" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </section>
+
       {/* ── 5. THREE-COLUMN FEATURES ───────────────────────────────────────── */}
       <section id="how-it-works" className="bg-white py-16 sm:py-20 px-4 sm:px-8 border-t border-gray-100">
         <div className="max-w-6xl mx-auto">
