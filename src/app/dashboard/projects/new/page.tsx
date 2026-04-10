@@ -230,17 +230,19 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
 }
 
 // ── Pill selector button ───────────────────────────────────────────────────────
-function PillBtn({ label, selected, onClick }: { label: string; selected: boolean; onClick: () => void }) {
+function PillBtn({ label, selected, onClick, fullWidth }: { label: string; selected: boolean; onClick: () => void; fullWidth?: boolean }) {
   return (
     <button
       onClick={onClick}
       style={{
         border: `2px solid ${selected ? "rgb(55,176,170)" : "rgb(226,240,240)"}`,
-        borderRadius: 12, padding: "12px 20px",
+        borderRadius: 12, padding: "10px 16px",
         background: selected ? "rgba(55,176,170,0.06)" : "white",
-        cursor: "pointer", fontSize: 15, fontWeight: 600,
+        cursor: "pointer", fontSize: 14, fontWeight: 600,
         color: selected ? "rgb(55,176,170)" : "rgb(45,56,67)",
         transition: "all 0.15s",
+        width: fullWidth ? "100%" : undefined,
+        textAlign: "left" as const,
       }}
     >
       {label}
@@ -746,9 +748,9 @@ function NewProjectContent() {
 
               {/* Tenure */}
               <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
-                <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the ownership status?</p>
-                <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Leasehold properties may need landlord consent in addition to planning</p>
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the ownership status?</p>
+                <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Leasehold properties may need landlord consent in addition to planning</p>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 8 }}>
                   {[
                     { id: "Owner-occupied (freehold)", note: "" },
                     { id: "Leasehold",                 note: "Landlord consent likely needed" },
@@ -758,10 +760,10 @@ function NewProjectContent() {
                     <button
                       key={opt.id}
                       onClick={() => setTenure(opt.id)}
-                      style={{ textAlign: "left", border: `2px solid ${tenure === opt.id ? "rgb(55,176,170)" : "rgb(226,240,240)"}`, borderRadius: 14, padding: "14px 18px", background: tenure === opt.id ? "rgba(55,176,170,0.06)" : "white", cursor: "pointer", transition: "all 0.15s" }}
+                      style={{ textAlign: "left", border: `2px solid ${tenure === opt.id ? "rgb(55,176,170)" : "rgb(226,240,240)"}`, borderRadius: 14, padding: "12px 14px", background: tenure === opt.id ? "rgba(55,176,170,0.06)" : "white", cursor: "pointer", transition: "all 0.15s" }}
                     >
-                      <p style={{ fontSize: 15, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 2px 0" }}>{opt.id}</p>
-                      {opt.note && <p style={{ fontSize: 12, color: "rgb(140,90,10)", margin: 0 }}>{opt.note}</p>}
+                      <p style={{ fontSize: 14, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 2px 0" }}>{opt.id}</p>
+                      {opt.note && <p style={{ fontSize: 11, color: "rgb(140,90,10)", margin: 0 }}>{opt.note}</p>}
                     </button>
                   ))}
                 </div>
@@ -804,32 +806,32 @@ function NewProjectContent() {
               {/* Tree-specific questions */}
               {typeConfig.showTreeExtras && (
                 <>
-                  <div style={{ ...CARD, padding: "28px 32px" }}>
-                    <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What type of work are you planning?</p>
-                    <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Select the main type of work</p>
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
+                    <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What type of work are you planning?</p>
+                    <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Select the main type of work</p>
+                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 8 }}>
                       {["Crown reduction", "Crown thinning", "Pollarding", "Felling", "Pruning / deadwooding", "Root works"].map((opt) => (
-                        <PillBtn key={opt} label={opt} selected={treeWorkType === opt} onClick={() => setTreeWorkType(opt)} />
-                      ))}
-                    </div>
-                  </div>
-
-                  <div style={{ ...CARD, padding: "28px 32px" }}>
-                    <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Is the tree protected?</p>
-                    <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>TPO trees and trees in conservation areas require consent before any work</p>
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                      {["Yes — Tree Preservation Order (TPO)", "Yes — in a conservation area", "Not sure", "No — not protected"].map((opt) => (
-                        <PillBtn key={opt} label={opt} selected={treeTPO === opt} onClick={() => setTreeTPO(opt)} />
+                        <PillBtn key={opt} label={opt} selected={treeWorkType === opt} onClick={() => setTreeWorkType(opt)} fullWidth />
                       ))}
                     </div>
                   </div>
 
                   <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
-                    <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Approximate trunk diameter at chest height</p>
-                    <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Helps determine the scale and significance of the tree</p>
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                    <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Is the tree protected?</p>
+                    <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>TPO trees and trees in conservation areas require consent before any work</p>
+                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 8 }}>
+                      {["Yes — Tree Preservation Order (TPO)", "Yes — in a conservation area", "Not sure", "No — not protected"].map((opt) => (
+                        <PillBtn key={opt} label={opt} selected={treeTPO === opt} onClick={() => setTreeTPO(opt)} fullWidth />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
+                    <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Approximate trunk diameter at chest height</p>
+                    <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Helps determine the scale and significance of the tree</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                       {["Under 30cm", "30–60cm", "Over 60cm", "Not sure"].map((opt) => (
-                        <PillBtn key={opt} label={opt} selected={treeDiameter === opt} onClick={() => setTreeDiameter(opt)} />
+                        <PillBtn key={opt} label={opt} selected={treeDiameter === opt} onClick={() => setTreeDiameter(opt)} fullWidth />
                       ))}
                     </div>
                   </div>
@@ -839,31 +841,31 @@ function NewProjectContent() {
               {/* Change of use questions */}
               {typeConfig.showChangeExtras && (
                 <>
-                  <div style={{ ...CARD, padding: "28px 32px" }}>
-                    <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the current use?</p>
-                    <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>The existing planning use class of the property</p>
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
+                    <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the current use?</p>
+                    <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>The existing planning use class of the property</p>
+                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 8 }}>
                       {USE_CLASSES.map((opt) => (
-                        <PillBtn key={opt} label={opt} selected={currentUse === opt} onClick={() => setCurrentUse(opt)} />
-                      ))}
-                    </div>
-                  </div>
-
-                  <div style={{ ...CARD, padding: "28px 32px" }}>
-                    <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the proposed use?</p>
-                    <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>The planning use class you want to convert to</p>
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                      {USE_CLASSES.map((opt) => (
-                        <PillBtn key={opt} label={opt} selected={proposedUse === opt} onClick={() => setProposedUse(opt)} />
+                        <PillBtn key={opt} label={opt} selected={currentUse === opt} onClick={() => setCurrentUse(opt)} fullWidth />
                       ))}
                     </div>
                   </div>
 
                   <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
-                    <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the total floor area?</p>
-                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 10 }}>
+                    <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What is the proposed use?</p>
+                    <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>The planning use class you want to convert to</p>
+                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 8 }}>
+                      {USE_CLASSES.map((opt) => (
+                        <PillBtn key={opt} label={opt} selected={proposedUse === opt} onClick={() => setProposedUse(opt)} fullWidth />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
+                    <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0" }}>What is the total floor area?</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 }}>
                       {typeConfig.sizes.map((opt) => (
-                        <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} />
+                        <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} fullWidth />
                       ))}
                     </div>
                   </div>
@@ -875,11 +877,11 @@ function NewProjectContent() {
                 <>
                   {typeConfig.showSize && (
                     <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
-                      <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>{typeConfig.sizeLabel}</p>
-                      <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Approximate floor area in square metres</p>
-                      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 10 }}>
+                      <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>{typeConfig.sizeLabel}</p>
+                      <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Approximate floor area in square metres</p>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 }}>
                         {typeConfig.sizes.map((opt) => (
-                          <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} />
+                          <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} fullWidth />
                         ))}
                       </div>
                     </div>
@@ -889,19 +891,19 @@ function NewProjectContent() {
                   {typeConfig.showGarageExtras && (
                     <>
                       <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
-                        <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Attached or detached?</p>
-                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                        <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0" }}>Attached or detached?</p>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                           {["Attached to the main house", "Detached structure"].map((opt) => (
-                            <PillBtn key={opt} label={opt} selected={garageAttachment === opt} onClick={() => setGarageAttachment(opt)} />
+                            <PillBtn key={opt} label={opt} selected={garageAttachment === opt} onClick={() => setGarageAttachment(opt)} fullWidth />
                           ))}
                         </div>
                       </div>
-                      <div style={{ ...CARD, padding: "28px 32px" }}>
-                        <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What will it be used for?</p>
-                        <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Intended use affects planning classification</p>
-                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                      <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
+                        <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What will it be used for?</p>
+                        <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Intended use affects planning classification</p>
+                        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 8 }}>
                           {["Car storage / garage", "Home office", "Studio / gym", "Storage", "Annexe / guest room"].map((opt) => (
-                            <PillBtn key={opt} label={opt} selected={garageUse === opt} onClick={() => setGarageUse(opt)} />
+                            <PillBtn key={opt} label={opt} selected={garageUse === opt} onClick={() => setGarageUse(opt)} fullWidth />
                           ))}
                         </div>
                       </div>
@@ -909,24 +911,24 @@ function NewProjectContent() {
                   )}
 
                   {typeConfig.showRoof && (
-                    <div style={{ ...CARD, padding: "28px 32px" }}>
-                      <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What roof type are you planning?</p>
-                      <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Affects permitted development limits and design policy</p>
-                      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                    <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
+                      <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What roof type are you planning?</p>
+                      <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Affects permitted development limits and design policy</p>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                         {typeConfig.roofOptions.map((opt) => (
-                          <PillBtn key={opt} label={opt} selected={roof === opt} onClick={() => setRoof(opt)} />
+                          <PillBtn key={opt} label={opt} selected={roof === opt} onClick={() => setRoof(opt)} fullWidth />
                         ))}
                       </div>
                     </div>
                   )}
 
                   {typeConfig.showMaterials && (
-                    <div style={{ ...CARD, padding: "28px 32px" }}>
-                      <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Proposed external material</p>
-                      <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 20px 0" }}>Councils assess whether materials match the character of the area</p>
-                      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                    <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
+                      <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Proposed external material</p>
+                      <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Councils assess whether materials match the character of the area</p>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                         {typeConfig.materialOptions.map((opt) => (
-                          <PillBtn key={opt} label={opt} selected={material === opt} onClick={() => setMaterial(opt)} />
+                          <PillBtn key={opt} label={opt} selected={material === opt} onClick={() => setMaterial(opt)} fullWidth />
                         ))}
                       </div>
                     </div>
@@ -935,11 +937,11 @@ function NewProjectContent() {
               )}
 
               {/* Notes — shown for all types */}
-              <div style={{ ...CARD, padding: "28px 32px" }}>
-                <p style={{ fontSize: 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>
-                  Anything else we should know? <span style={{ fontSize: 15, fontWeight: 400, color: "rgb(130,150,160)" }}>Optional</span>
+              <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
+                <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>
+                  Anything else we should know? <span style={{ fontSize: 14, fontWeight: 400, color: "rgb(130,150,160)" }}>Optional</span>
                 </p>
-                <p style={{ fontSize: 15, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Any specific concerns, constraints, or details about your project</p>
+                <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Any specific concerns, constraints, or details about your project</p>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -1027,11 +1029,11 @@ function NewProjectContent() {
           )}
 
           {/* ── Navigation ──────────────────────────────────────────────── */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 28 }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "space-between", gap: isMobile ? 10 : 0, marginTop: 28 }}>
             {step > 1 ? (
               <button
                 onClick={back}
-                style={{ display: "flex", alignItems: "center", gap: 8, background: "white", border: "1.5px solid rgb(220,235,235)", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 500, color: "rgb(45,56,67)", cursor: "pointer" }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "white", border: "1.5px solid rgb(220,235,235)", borderRadius: 12, padding: "12px 22px", fontSize: 15, fontWeight: 500, color: "rgb(45,56,67)", cursor: "pointer" }}
               >
                 <ChevronLeft size={17} strokeWidth={2} /> Back
               </button>
@@ -1042,12 +1044,13 @@ function NewProjectContent() {
                 onClick={next}
                 disabled={!canAdvance}
                 style={{
-                  display: "flex", alignItems: "center", gap: 8,
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                   background: canAdvance ? "rgb(55,176,170)" : "rgb(200,220,220)",
                   color: canAdvance ? "white" : "rgb(150,170,170)",
-                  border: "none", borderRadius: 12, padding: "13px 28px",
+                  border: "none", borderRadius: 12, padding: "14px 28px",
                   fontSize: 16, fontWeight: 600, cursor: canAdvance ? "pointer" : "not-allowed",
                   transition: "background 0.2s",
+                  width: isMobile ? "100%" : undefined,
                 }}
               >
                 Continue <ChevronRight size={17} strokeWidth={2.5} />
