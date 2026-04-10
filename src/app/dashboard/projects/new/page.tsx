@@ -578,11 +578,6 @@ function NewProjectContent() {
             </div>
             <ProgressBar step={step} total={TOTAL_STEPS} />
           </div>
-          <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, zIndex: 2, lineHeight: 0, pointerEvents: "none" }}>
-            <svg viewBox="0 0 1440 80" preserveAspectRatio="none" width="100%" height="80">
-              <path d="M0,0 Q360,80 720,40 Q1080,0 1440,60 L1440,80 L0,80 Z" fill="rgb(248,250,250)" />
-            </svg>
-          </div>
         </section>
 
         {/* ══ STEP CONTENT ════════════════════════════════════════════════ */}
