@@ -232,7 +232,7 @@ export default function HomePage() {
       )}
 
       {/* ── 2. HERO ────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden mx-2 sm:mx-10 lg:mx-20" style={{ minHeight: "clamp(520px, 82vh, 92vh)", borderRadius: "20px" }}>
+      <section className="relative overflow-hidden mx-2 sm:mx-10 lg:mx-20 mt-3 sm:mt-4" style={{ minHeight: "clamp(520px, 82vh, 92vh)", borderRadius: "20px" }}>
 
         {/* Video background */}
         {prevIdx !== null && (
