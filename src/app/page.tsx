@@ -139,14 +139,13 @@ export default function HomePage() {
   const videos = ["/hero.mp4", "/hero2.mp4", "/hero3.mp4"];
   const [videoIdx, setVideoIdx] = useState(0);
   const [prevIdx, setPrevIdx] = useState<number | null>(null);
-  const [fading, setFading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   function advanceVideo(next: number) {
+    if (next === videoIdx) return;
     setPrevIdx(videoIdx);
-    setFading(true);
     setVideoIdx(next);
-    setTimeout(() => { setPrevIdx(null); setFading(false); }, 800);
+    setTimeout(() => setPrevIdx(null), 900);
   }
 
   function handleSearch(e?: React.FormEvent) {
@@ -242,7 +241,7 @@ export default function HomePage() {
             src={videos[prevIdx]}
             autoPlay muted playsInline
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ opacity: fading ? 0 : 1, transition: "opacity 0.8s ease", transform: "scale(1.04)" }}
+            style={{ transform: "scale(1.04)", animation: "videoFadeOut 0.9s ease forwards" }}
           />
         )}
         <video
@@ -252,7 +251,7 @@ export default function HomePage() {
           autoPlay muted playsInline
           onEnded={() => advanceVideo((videoIdx + 1) % videos.length)}
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ transform: "scale(1.04)" }}
+          style={{ transform: "scale(1.04)", animation: "videoFadeIn 0.9s ease forwards" }}
         />
 
         {/* Gradient overlay — heavier on left for text legibility */}
