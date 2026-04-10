@@ -545,49 +545,56 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── 3. TESTIMONIAL BANNER ──────────────────────────────────────────── */}
-      <TestimonialBanner
-        name="Daniel & Emma W."
-        location="Leeds"
-        quote="We were about to pay an architect £3,000 for plans. PlanningPerm gave us a 78% approval score in 2 minutes — with all three planning documents ready to submit."
-      />
-
-      {/* ── 4. SOCIAL PROOF / BIG QUOTE ────────────────────────────────────── */}
-      <section className="bg-white py-14 sm:py-28 px-4 sm:px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 items-center">
-          <div className="rounded-2xl overflow-hidden h-[220px] sm:h-[420px]">
-            <img
-              src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&auto=format&fit=crop"
-              alt="Homeowners reviewing their planning report"
-              className="w-full h-full object-cover"
-            />
+      {/* ── REVIEWS ────────────────────────────────────────────────────────── */}
+      <section className="bg-white py-10 sm:py-14 px-2 sm:px-16 lg:px-32">
+        <div className="rounded-2xl sm:rounded-3xl overflow-hidden" style={{ background: "linear-gradient(135deg, #0b1d28 0%, #0d2d3d 100%)" }}>
+          {/* Stats row */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px" style={{ background: "rgba(255,255,255,0.06)" }}>
+            {[
+              { val: "14,000+", label: "Homeowners assessed" },
+              { val: "320+",    label: "Councils covered"    },
+              { val: "2 mins",  label: "Avg time to score"   },
+              { val: "4.9 / 5", label: "Average rating"      },
+            ].map((s, i) => (
+              <div key={i} className="text-center py-6 px-4" style={{ background: "linear-gradient(135deg, #0b1d28 0%, #0d2d3d 100%)" }}>
+                <p className="text-2xl sm:text-3xl font-bold text-white mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{s.val}</p>
+                <p className="text-xs text-white/45 font-medium uppercase tracking-wider" style={{ fontFamily: "'Inter', sans-serif" }}>{s.label}</p>
+              </div>
+            ))}
           </div>
-          <div className="text-center sm:text-left">
-            <p className="text-xl sm:text-3xl xl:text-4xl font-normal italic text-[#0b1d28] leading-[1.3] mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
-              &ldquo;PlanningPerm showed me exactly what conservation area rules applied — and what didn&apos;t. We got permission first time.&rdquo;
-            </p>
-            <p className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[#2d3843] mb-2">
-              Priya S. · Hackney, London
-            </p>
-            <div className="flex justify-center sm:justify-start"><Stars /></div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── STATS STRIP ────────────────────────────────────────────────────── */}
-      <section className="bg-[#eaf5f5] py-14 px-4 sm:px-8 border-t border-[#d0e8e8]">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { val: "14,000+", label: "Homeowners assessed"  },
-            { val: "320+",    label: "Councils covered"     },
-            { val: "2 mins",  label: "Average time to score"},
-            { val: "4.9 / 5", label: "Trustpilot rating"    },
-          ].map((s, i) => (
-            <div key={i} className="text-center">
-              <p className="text-2xl sm:text-4xl font-normal tracking-tight mb-1" style={{ fontFamily: "'Clash Display', sans-serif", color: "rgb(55,176,170)" }}>{s.val}</p>
-              <p className="text-sm font-semibold text-[#0b1d28]">{s.label}</p>
-            </div>
-          ))}
+          {/* Reviews grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.06)" }}>
+            {[
+              {
+                quote: "We were about to pay an architect £3,000 for plans. PlanningPerm gave us a 78% approval score in 2 minutes — with all three planning documents ready to submit.",
+                name: "Daniel & Emma W.", location: "Leeds", featured: true,
+              },
+              {
+                quote: "Showed me exactly what conservation area rules applied — and what didn't. We got permission first time.",
+                name: "Priya S.", location: "Hackney, London", featured: false,
+              },
+              {
+                quote: "I'd been quoted £1,800 for a planning consultant. PlanningPerm gave me the same analysis in minutes and wrote all three documents. Total cost: £20.",
+                name: "James T.", location: "Bristol", featured: false,
+              },
+            ].map((r, i) => (
+              <div key={i} className="p-7 sm:p-8 flex flex-col justify-between gap-6" style={{ background: "linear-gradient(135deg, #0b1d28 0%, #0d2d3d 100%)" }}>
+                <div>
+                  <div className="flex gap-0.5 mb-4">
+                    {[1,2,3,4,5].map(n => <Star key={n} />)}
+                  </div>
+                  <p className={`text-white leading-relaxed ${r.featured ? "text-lg sm:text-xl" : "text-base"}`} style={{ fontFamily: "'Inter', sans-serif" }}>
+                    &ldquo;{r.quote}&rdquo;
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white/80" style={{ fontFamily: "'Inter', sans-serif" }}>{r.name}</p>
+                  <p className="text-xs text-white/40 mt-0.5" style={{ fontFamily: "'Inter', sans-serif" }}>{r.location}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
