@@ -188,7 +188,7 @@ export default function HomePage() {
     : null;
 
   return (
-    <div className="font-sans text-[#0b1d28]" style={{ fontFamily: "'Euclid Circular B', sans-serif" }}>
+    <div className="text-[#0b1d28]" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── 1. NAV ─────────────────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-white px-4 sm:px-8 py-3.5 flex items-center justify-between">
@@ -205,12 +205,12 @@ export default function HomePage() {
 
         <div className="flex items-center gap-2">
           <LogoIcon className="w-6 h-6 text-[#D4922A]" />
-          <span className="text-[#0b1d28] text-lg font-normal lowercase tracking-tight" style={{ fontFamily: "'Clash Display', sans-serif" }}>{BRAND}</span>
+          <span className="text-[#0b1d28] text-base font-extrabold tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{BRAND}</span>
         </div>
 
-        <div className="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#0b1d28]">
-          {[["How it works","#how-it-works"],["Pricing","#pricing"],["Blog","/blog"]].map(([label, href]) => (
-            <a key={label} href={href} className="hover:text-[#D4922A] transition-colors whitespace-nowrap">{label}</a>
+        <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-[#6b7280]">
+          {[["Blog","/blog"],["How it works","#feature-cards"]].map(([label, href]) => (
+            <a key={label} href={href} className="hover:text-[#0b1d28] transition-colors whitespace-nowrap">{label}</a>
           ))}
         </div>
 
@@ -222,7 +222,7 @@ export default function HomePage() {
       {/* Mobile nav drawer */}
       {navOpen && (
         <div className="md:hidden sticky top-[57px] z-40 bg-white border-t border-gray-100 px-5 py-4 flex flex-col gap-1">
-          {[["How it works","#how-it-works"],["Pricing","#pricing"],["Blog","/blog"]].map(([label, href]) => (
+          {[["Blog","/blog"],["How it works","#feature-cards"]].map(([label, href]) => (
             <a key={label} href={href} onClick={() => setNavOpen(false)}
                className="py-3 text-sm font-semibold text-[#0b1d28] border-b border-gray-50 hover:text-[#D4922A] transition-colors">
               {label}
@@ -377,11 +377,11 @@ export default function HomePage() {
       </div>
 
       {/* ── 3. FEATURE CARDS ───────────────────────────────────────────────── */}
-      <section className="bg-white pt-10 sm:pt-14 pb-6 sm:px-16 lg:px-32">
+      <section id="feature-cards" className="bg-white pt-10 sm:pt-14 pb-6 sm:px-16 lg:px-32">
         <div className="w-full">
           {/* Header */}
           <div className="mb-8 sm:mb-10 px-4 sm:px-0">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#0b1d28] mb-3 flex items-center gap-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0b1d28] mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Everything you need, in 2 minutes
             </h2>
             <p className="text-[#6b7280] text-base max-w-md" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -545,7 +545,7 @@ export default function HomePage() {
       </section>
 
       {/* ── REVIEW ─────────────────────────────────────────────────────────── */}
-      <section className="bg-white pb-6 px-2 sm:px-16 lg:px-32">
+      <section className="bg-white pb-6 px-4 sm:px-16 lg:px-32">
         <div className="rounded-2xl sm:rounded-3xl px-8 sm:px-12 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12" style={{ background: "rgb(234,245,245)", border: "1.5px solid rgb(210,236,236)" }}>
           <div className="flex-1">
             <div className="flex gap-0.5 mb-4">
@@ -579,17 +579,16 @@ export default function HomePage() {
 
       {/* ── FINAL CTA ──────────────────────────────────────────────────── */}
       <section className="bg-[#0e1e30] py-20 sm:py-32 px-4 sm:px-8 text-center">
-        <SketchPersonDoc />
-        <h2 className="text-3xl sm:text-5xl xl:text-6xl font-normal text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Clash Display', sans-serif" }}>
+        <h2 className="text-4xl sm:text-6xl xl:text-[72px] font-extrabold text-white leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           Get your free planning<br />score today
         </h2>
-        <p className="text-[rgba(255,255,255,0.70)] text-lg mb-10 max-w-md mx-auto leading-relaxed">
-          Enter your postcode, tell us what you want to build, and get a real approval score in under 2 minutes — free.
+        <p className="text-white/60 text-lg mb-10 max-w-md mx-auto leading-relaxed" style={{ fontFamily: "'Inter', sans-serif" }}>
+          Enter your postcode, tell us what you want to build, and get a real approval score in under 2 minutes.
         </p>
-        <Link href="/dashboard/projects/new" className="inline-block bg-[#D4922A] text-white rounded-full px-12 py-4 text-sm font-bold hover:bg-[#b87820] transition-colors">
-          Check my property — it's free
+        <Link href="/dashboard/projects/new" className="inline-block bg-[#D4922A] text-white rounded-full px-12 py-4 text-sm font-bold hover:bg-[#b87820] transition-colors" style={{ fontFamily: "'Inter', sans-serif" }}>
+          Check my property — it&apos;s free
         </Link>
-        <p className="text-[#5a9494] text-sm mt-4">No account needed · Preview free · Full report & documents £20</p>
+        <p className="text-white/30 text-sm mt-5" style={{ fontFamily: "'Inter', sans-serif" }}>No account needed · Free during beta</p>
       </section>
 
       {/* ── 13. FOOTER ─────────────────────────────────────────────────────── */}
@@ -600,12 +599,11 @@ export default function HomePage() {
             {/* Brand */}
             <div className="shrink-0">
               <div className="flex items-center gap-2 mb-4">
-                <LogoIcon className="w-6 h-6 text-[#D4922A]" />
-                <span className="text-[#0b1d28] text-lg font-normal lowercase" style={{ fontFamily: "'Clash Display', sans-serif" }}>{BRAND}</span>
+                <LogoIcon className="w-5 h-5 text-[#D4922A]" />
+                <span className="text-[#0b1d28] text-base font-extrabold tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{BRAND}</span>
               </div>
-              <p className="text-[#2d3843] text-sm mb-1">AI-powered planning permission guidance</p>
-              <p className="text-[#2d3843] text-sm mb-1">for UK homeowners.</p>
-              <a href="mailto:hello@planningperm.com" className="text-[#D4922A] text-sm font-semibold hover:underline mt-3 inline-block">
+              <p className="text-[#6b7280] text-sm leading-relaxed mb-3">AI-powered planning permission guidance<br />for UK homeowners.</p>
+              <a href="mailto:hello@planningperm.com" className="text-[#D4922A] text-sm font-semibold hover:underline inline-block">
                 hello@planningperm.com
               </a>
             </div>
@@ -632,9 +630,9 @@ export default function HomePage() {
                 ]},
               ].map((col) => (
                 <div key={col.heading}>
-                  <p className="text-[11px] uppercase tracking-[0.12em] font-bold text-[#0b1d28] mb-4">{col.heading}</p>
+                  <p className="text-xs font-bold text-[#0b1d28] mb-4" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{col.heading}</p>
                   {col.links.map(([label, href]) => (
-                    <a key={label} href={href} className="block text-sm text-[#2d3843] mb-2.5 hover:text-[#0b1d28] transition-colors">
+                    <a key={label} href={href} className="block text-sm text-[#6b7280] mb-2.5 hover:text-[#0b1d28] transition-colors">
                       {label}
                     </a>
                   ))}
@@ -646,7 +644,7 @@ export default function HomePage() {
           <hr className="border-[#d0e8e8] mb-6" />
 
           {/* Bottom row */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs text-[#9ca3af]">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs text-[#9ca3af]" style={{ fontFamily: "'Inter', sans-serif" }}>
             <p>© {new Date().getFullYear()} PlanningPerm. All rights reserved.</p>
             <p>Planning data sourced from Planning Portal, OS, and Environment Agency open data.</p>
           </div>
