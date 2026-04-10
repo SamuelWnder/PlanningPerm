@@ -213,7 +213,7 @@ export default function HomePage() {
       </nav>
 
       {/* ── 2. HERO ────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden" style={{ minHeight: "88vh", borderRadius: "0 0 36px 36px" }}>
+      <section className="relative overflow-hidden mx-2 sm:mx-3" style={{ minHeight: "88vh", borderRadius: "20px" }}>
 
         {/* Video background */}
         {prevIdx !== null && (
