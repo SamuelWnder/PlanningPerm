@@ -398,7 +398,7 @@ export default function HomePage() {
                 title: "Your approval odds",
                 desc: "Based on your council's real decision history — not a guess.",
                 illustration: (
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full max-w-[220px]">
+                  <svg viewBox="0 0 200 180" fill="none" className="w-full h-full">
                     {/* Outer ring */}
                     <circle cx="100" cy="100" r="72" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5"/>
                     <circle cx="100" cy="100" r="55" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
@@ -424,7 +424,7 @@ export default function HomePage() {
                 title: "20 automated site checks",
                 desc: "Conservation areas, green belt, flood zones and more — all verified instantly.",
                 illustration: (
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full max-w-[220px]">
+                  <svg viewBox="0 0 200 180" fill="none" className="w-full h-full">
                     {/* Grid lines */}
                     {[40,80,120,160].map(x => <line key={`v${x}`} x1={x} y1="20" x2={x} y2="160" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
                     {[50,90,130].map(y => <line key={`h${y}`} x1="20" y1={y} x2="180" y2={y} stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
@@ -455,7 +455,7 @@ export default function HomePage() {
                 title: "Documents ready to submit",
                 desc: "AI-drafted Design & Access Statement, Planning Statement and Cover Letter.",
                 illustration: (
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full max-w-[220px]">
+                  <svg viewBox="0 0 200 180" fill="none" className="w-full h-full">
                     {/* Doc 3 (back) */}
                     <rect x="68" y="38" width="80" height="104" rx="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" transform="rotate(-6 108 90)"/>
                     {/* Doc 2 (mid) */}
@@ -483,7 +483,7 @@ export default function HomePage() {
                 title: "Built on real UK data",
                 desc: "23 million planning decisions across 320+ councils.",
                 illustration: (
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full max-w-[220px]">
+                  <svg viewBox="0 0 200 180" fill="none" className="w-full h-full">
                     {/* Grid */}
                     {[40,80,120,160].map(y => <line key={y} x1="24" y1={y} x2="188" y2={y} stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>)}
                     {/* Bars */}
@@ -514,8 +514,8 @@ export default function HomePage() {
                 className="group relative rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-end"
                 style={{ height: "62vh", minHeight: 400, textDecoration: "none", background: card.bg }}
               >
-                {/* Illustration — centered upper area */}
-                <div className="absolute inset-x-0 top-0 flex items-center justify-center pt-8 pb-4 pointer-events-none">
+                {/* Illustration — fills upper 60% of card */}
+                <div className="absolute inset-x-0 top-0 bottom-[38%] flex items-center justify-center p-6 pointer-events-none">
                   {card.illustration}
                 </div>
 
