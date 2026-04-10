@@ -515,7 +515,7 @@ export default function HomePage() {
                 style={{ height: "62vh", minHeight: 400, textDecoration: "none", background: card.bg }}
               >
                 {/* Illustration — fills upper 60% of card */}
-                <div className="absolute inset-x-0 top-0 bottom-[38%] flex items-center justify-center p-6 pointer-events-none">
+                <div className="absolute inset-x-0 top-0 bottom-[30%] flex items-center justify-center p-5 pointer-events-none">
                   {card.illustration}
                 </div>
 
