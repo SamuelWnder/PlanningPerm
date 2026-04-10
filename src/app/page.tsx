@@ -188,7 +188,7 @@ export default function HomePage() {
     : null;
 
   return (
-    <div className="font-sans text-[#0b1d28] overflow-x-hidden" style={{ fontFamily: "'Euclid Circular B', sans-serif" }}>
+    <div className="font-sans text-[#0b1d28]" style={{ fontFamily: "'Euclid Circular B', sans-serif" }}>
 
       {/* ── 1. NAV ─────────────────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-white px-4 sm:px-8 py-3.5 flex items-center justify-between">
@@ -388,7 +388,7 @@ export default function HomePage() {
                 key={i}
                 href="/dashboard/projects/new"
                 className="group relative rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-end"
-                style={{ height: "82vh", minHeight: 480, textDecoration: "none" }}
+                style={{ height: "62vh", minHeight: 400, textDecoration: "none" }}
               >
                 {/* Photo background */}
                 <img src={card.img} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
