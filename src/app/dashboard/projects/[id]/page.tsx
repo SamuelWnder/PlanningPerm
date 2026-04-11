@@ -5,6 +5,7 @@ export const runtime = 'edge';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import {
   Home, FolderOpen, FileText, MapPin, Bell, User,
@@ -244,18 +245,39 @@ function DocViewerModal({ name, html, onClose }: { name: string; html: string; o
 }
 
 // ── Lead capture ──────────────────────────────────────────────────────────────
-function LeadCapture({ address, isMobile }: { address: string; isMobile?: boolean }) {
-  const [name, setName]   = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [sent, setSent]   = useState(false);
+function LeadCapture({ address, projectType, score, userEmail, isMobile }: {
+  address: string;
+  projectType?: string;
+  score?: number;
+  userEmail?: string;
+  isMobile?: boolean;
+}) {
+  const [name, setName]         = useState("");
+  const [phone, setPhone]       = useState("");
+  const [consented, setConsented] = useState(false);
+  const [sent, setSent]         = useState(false);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState("");
 
-  const submit = () => {
-    if (!email.trim()) return;
-    const leads = JSON.parse(localStorage.getItem("pp_leads") ?? "[]");
-    leads.push({ name, email, phone, address, submittedAt: new Date().toISOString() });
-    localStorage.setItem("pp_leads", JSON.stringify(leads));
-    setSent(true);
+  const canSubmit = name.trim() && consented && !loading;
+
+  const submit = async () => {
+    if (!canSubmit) return;
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, consented, address, projectType, score, userEmail }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      setSent(true);
+    } catch {
+      setError("Something went wrong — please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const INPUT = { width: "100%", border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 10, padding: "11px 14px", fontSize: 15, color: "white", background: "rgba(255,255,255,0.07)", fontFamily: "inherit", outline: "none", boxSizing: "border-box" as const };
@@ -264,7 +286,7 @@ function LeadCapture({ address, isMobile }: { address: string; isMobile?: boolea
     <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: isMobile ? "28px 20px" : "40px 48px", display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 56, alignItems: isMobile ? "stretch" : "center", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" }}>
       <div style={{ flex: 1 }}>
         <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(55,176,170)", margin: "0 0 10px 0", textTransform: "uppercase", letterSpacing: "0.08em" }}>Get expert help</p>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Speak to a planning consultant</h2>
+        <h2 style={{ fontSize: isMobile ? 22 : 28, fontWeight: 800, color: "white", letterSpacing: -0.5, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Speak to a planning consultant</h2>
         <p style={{ fontSize: 16, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.65 }}>
           A qualified UK planning consultant will review your assessment and advise on the best route to approval. Free 15-minute call, no obligation.
         </p>
@@ -278,16 +300,34 @@ function LeadCapture({ address, isMobile }: { address: string; isMobile?: boolea
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <input placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} style={INPUT} />
-            <input placeholder="Email address *" type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={INPUT} />
-            <input placeholder="Phone (optional)" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={INPUT} />
+            <input placeholder="Your name *" value={name} onChange={(e) => setName(e.target.value)} style={INPUT} />
+            <input placeholder="Phone number (optional)" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={INPUT} />
+
+            {/* Consent checkbox */}
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer", marginTop: 2 }}>
+              <div
+                onClick={() => setConsented((c) => !c)}
+                style={{ width: 18, height: 18, borderRadius: 5, border: `2px solid ${consented ? "rgb(55,176,170)" : "rgba(255,255,255,0.25)"}`, background: consented ? "rgb(55,176,170)" : "transparent", flexShrink: 0, marginTop: 1, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", cursor: "pointer" }}
+              >
+                {consented && <CheckCircle size={12} color="white" strokeWidth={3} />}
+              </div>
+              <span style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.5 }}>
+                I&apos;m happy to be contacted by a planning consultant regarding my assessment
+              </span>
+            </label>
+
+            {error && <p style={{ fontSize: 13, color: "rgb(255,100,100)", margin: 0 }}>{error}</p>}
+
             <button
               onClick={submit}
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: email.trim() ? "rgb(55,176,170)" : "rgba(55,176,170,0.3)", color: "white", border: "none", borderRadius: 10, padding: "13px 20px", fontSize: 15, fontWeight: 600, cursor: email.trim() ? "pointer" : "not-allowed", transition: "background 0.2s", marginTop: 2 }}
+              disabled={!canSubmit}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: canSubmit ? "rgb(55,176,170)" : "rgba(55,176,170,0.3)", color: "white", border: "none", borderRadius: 10, padding: "13px 20px", fontSize: 15, fontWeight: 600, cursor: canSubmit ? "pointer" : "not-allowed", transition: "background 0.2s", marginTop: 2 }}
             >
-              <Mail size={15} strokeWidth={2} /> Request a free consultation
+              {loading
+                ? <Loader2 size={15} strokeWidth={2} style={{ animation: "spin 1s linear infinite" }} />
+                : <><Mail size={15} strokeWidth={2} /> Request a free consultation</>}
             </button>
-            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", margin: "2px 0 0 0", textAlign: "center" }}>No spam. Your details stay private.</p>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", margin: "2px 0 0 0", textAlign: "center" }}>Your details are kept private and never shared.</p>
           </div>
         )}
       </div>
@@ -363,6 +403,7 @@ export default function ProjectResultPage() {
 
   const [saved, setSaved] = useState<SavedProject | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
   const [confirmDelete, setConfirmDelete]       = useState(false);
   const [expandedConstraint, setExpandedConstraint] = useState<string | null>(null);
 
@@ -425,6 +466,19 @@ export default function ProjectResultPage() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docCacheKey]);
+
+  // Fetch logged-in user's email for the lead capture form
+  useEffect(() => {
+    try {
+      const sb = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      sb.auth.getUser().then(({ data }) => {
+        if (data?.user?.email) setUserEmail(data.user.email);
+      });
+    } catch { /* not logged in */ }
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -871,7 +925,13 @@ export default function ProjectResultPage() {
 
           {/* ══ LEAD CAPTURE ═══════════════════════════════════════════════════ */}
           <div id="lead-capture" style={{ maxWidth: 1280, margin: "32px auto 0", padding: `0 ${hPad}` }}>
-            <LeadCapture address={project.address} isMobile={isMobile} />
+            <LeadCapture
+              address={project.address}
+              projectType={project.projectTypeLabel}
+              score={assessment.score}
+              userEmail={userEmail}
+              isMobile={isMobile}
+            />
           </div>
 
         </div>

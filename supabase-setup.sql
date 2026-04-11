@@ -37,3 +37,28 @@ create policy "Users can view own projects"
 -- API routes use the service role key for:
 --   - Inserting new projects (POST /api/auth/save-project)
 --   - Fetching a project by UUID (GET /api/projects/[id]) — public access by UUID
+
+-- ============================================================
+-- Leads table
+-- Captures consultation requests from the report page.
+-- ============================================================
+
+drop table if exists public.leads cascade;
+
+create table public.leads (
+  id              uuid        primary key default gen_random_uuid(),
+  user_email      text,                        -- from Supabase auth session
+  name            text        not null,
+  phone           text,
+  consented       boolean     not null default false,
+  address         text,
+  project_type    text,
+  score           integer,
+  submitted_at    timestamptz default now()
+);
+
+-- Index for quick lookup by email
+create index leads_user_email_idx on public.leads (user_email);
+
+-- Row-level security (service role inserts, no public read)
+alter table public.leads enable row level security;
