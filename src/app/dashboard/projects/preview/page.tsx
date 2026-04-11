@@ -243,15 +243,17 @@ export default function PreviewPage() {
                 </p>
               </div>
 
-              {/* Risk factors — unlocked */}
-              <div style={CARD}>
+              {/* Risk factors — paywalled */}
+              <div style={{ ...CARD, position: "relative", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
                   <h2 style={{ fontSize: 22, fontWeight: 700, color: "rgb(11,29,40)", margin: 0, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Risk factors</h2>
                   <span style={{ fontSize: 13, fontWeight: 600, color: riskBadgeColor, background: riskBadgeBg, border: `1px solid ${riskBadgeColor}44`, borderRadius: 8, padding: "3px 10px" }}>
                     {riskBadgeText}
                   </span>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+
+                {/* Risk rows — blurred behind paywall */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 0, filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
                   {[...highRisks, ...medRisks, ...lowRisks].map((r, i, arr) => (
                     <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "14px 0", borderBottom: i < arr.length - 1 ? "1px solid rgb(240,246,246)" : "none" }}>
                       <div style={{ width: 36, height: 36, borderRadius: 10, background: r.severity === "high" ? "rgba(200,60,60,0.08)" : r.severity === "medium" ? "rgba(212,150,42,0.08)" : "rgba(55,176,170,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -271,6 +273,48 @@ export default function PreviewPage() {
                     </div>
                   ))}
                 </div>
+
+                {/* Glass overlay */}
+                <div style={{
+                  position: "absolute", inset: 0,
+                  background: "linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 30%, rgba(255,255,255,0.92) 60%)",
+                  backdropFilter: "blur(2px)",
+                  WebkitBackdropFilter: "blur(2px)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  paddingBottom: 28,
+                }}>
+                  <div style={{ textAlign: "center", padding: "0 24px" }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgb(11,29,40)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+                      <Lock size={18} color="white" strokeWidth={2} />
+                    </div>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 4px", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      {highRisks.length + medRisks.length + lowRisks.length} risk factor{highRisks.length + medRisks.length + lowRisks.length !== 1 ? "s" : ""} identified
+                    </p>
+                    <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: "0 0 16px", lineHeight: 1.5 }}>
+                      Unlock your full report to see the detailed breakdown.
+                    </p>
+                    <button
+                      onClick={() => openCheckout(project.address)}
+                      style={{
+                        background: "#D4922A",
+                        color: "white",
+                        border: "none",
+                        borderRadius: 12,
+                        padding: "12px 24px",
+                        fontSize: 14,
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                        boxShadow: "0 4px 16px rgba(212,146,42,0.4)",
+                      }}
+                    >
+                      Unlock full report — £20
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -288,14 +332,14 @@ export default function PreviewPage() {
                     Unlock your full planning report
                   </h3>
                   <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
-                    Your preview shows constraints and risk factors. The full report adds:
+                    Your preview shows site constraints. The full report includes:
                   </p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
                     {[
+                      "Full risk factor breakdown",
                       "Detailed assessment summary",
                       "Planning document templates",
                       "Cost estimate breakdown",
-                      "Recommended next steps",
                       "Saved to your account forever",
                     ].map((text, i) => (
                       <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
