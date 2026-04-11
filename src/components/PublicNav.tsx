@@ -14,7 +14,7 @@ function LogoIcon({ className }: { className?: string }) {
 
 const NAV_LINKS = [
   { label: "How it works", href: "/#how-it-works" },
-  { label: "Blog",         href: "/blog"           },
+  { label: "Guides",       href: "/blog"           },
 ];
 
 export default function PublicNav() {
