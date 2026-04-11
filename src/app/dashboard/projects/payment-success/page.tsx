@@ -9,10 +9,14 @@ import Link from "next/link";
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const router       = useRouter();
-  const [status, setStatus]       = useState<"verifying" | "saving" | "done" | "error">("verifying");
-  const [projectId, setProjectId] = useState<string | null>(null);
-  const [emailSent, setEmailSent] = useState(false);
-  const [errorMsg, setErrorMsg]   = useState("");
+  const [status, setStatus]           = useState<"verifying" | "saving" | "done" | "error">("verifying");
+  const [projectId, setProjectId]     = useState<string | null>(null);
+  const [supabaseProjectId, setSupabaseProjectId] = useState<string | null>(null);
+  const [userEmail, setUserEmail]     = useState<string | null>(null);
+  const [emailSent, setEmailSent]     = useState(false);
+  const [resending, setResending]     = useState(false);
+  const [resent, setResent]           = useState(false);
+  const [errorMsg, setErrorMsg]       = useState("");
 
   useEffect(() => {
     // Paddle appends ?_ptxn=TXN_ID on successUrl redirect; eventCallback stores in sessionStorage
@@ -33,8 +37,9 @@ function PaymentSuccessContent() {
       try {
         // 1. Verify payment with Paddle
         const verifyRes = await fetch(`/api/paddle/verify?transaction_id=${transactionId}`);
-        const verifyData = await verifyRes.json() as { paid?: boolean; error?: string };
+        const verifyData = await verifyRes.json() as { paid?: boolean; error?: string; email?: string };
         if (!verifyData.paid) throw new Error(verifyData.error ?? "Payment not verified");
+        if (verifyData.email) setUserEmail(verifyData.email);
 
         // 2. Read preview data from sessionStorage
         setStatus("saving");
@@ -58,7 +63,10 @@ function PaymentSuccessContent() {
           body: JSON.stringify({ paddleTransactionId: transactionId, project, assessment }),
         })
           .then((r) => r.json())
-          .then((d: { success?: boolean }) => { if (d.success) setEmailSent(true); })
+          .then((d: { success?: boolean; projectId?: string }) => {
+            if (d.success) setEmailSent(true);
+            if (d.projectId) setSupabaseProjectId(d.projectId);
+          })
           .catch((e) => console.error("[setup-account]", e));
 
         // 5. Clean up session data
@@ -111,9 +119,31 @@ function PaymentSuccessContent() {
                 {emailSent ? "Magic link sent to your email" : "Sending your magic link…"}
               </p>
             </div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", margin: 0, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", margin: "0 0 12px 0", lineHeight: 1.6 }}>
               We&apos;ve emailed you a link so you can access this report from any device at any time — no password needed.
             </p>
+            {emailSent && userEmail && (
+              resent ? (
+                <p style={{ fontSize: 13, color: "rgb(55,176,170)", margin: 0, fontWeight: 600 }}>✓ New link sent to {userEmail}</p>
+              ) : (
+                <button
+                  onClick={async () => {
+                    setResending(true);
+                    await fetch("/api/auth/resend-magic-link", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email: userEmail, projectId: supabaseProjectId }),
+                    });
+                    setResending(false);
+                    setResent(true);
+                  }}
+                  disabled={resending}
+                  style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: 13, cursor: "pointer", padding: 0, textDecoration: "underline" }}
+                >
+                  {resending ? "Sending…" : "Didn't arrive? Resend magic link"}
+                </button>
+              )
+            )}
           </div>
 
           <Link
