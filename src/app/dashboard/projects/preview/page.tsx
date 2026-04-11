@@ -107,6 +107,65 @@ function HeroBg() {
   );
 }
 
+// ── Locked card with glass overlay ───────────────────────────────────────────
+function LockedCard({
+  title,
+  children,
+  onUnlock,
+}: {
+  title: string;
+  children: React.ReactNode;
+  onUnlock: () => void;
+}) {
+  return (
+    <div style={{ background: "white", borderRadius: 24, padding: "28px 32px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", position: "relative", overflow: "hidden" }}>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 20px 0", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{title}</h2>
+      {/* Content shown blurred */}
+      <div style={{ filter: "blur(4px)", userSelect: "none", pointerEvents: "none" }}>
+        {children}
+      </div>
+      {/* Glass overlay */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.95) 65%)",
+        backdropFilter: "blur(3px)",
+        WebkitBackdropFilter: "blur(3px)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        paddingBottom: 28,
+      }}>
+        <div style={{ textAlign: "center", padding: "0 24px" }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgb(11,29,40)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px" }}>
+            <Lock size={16} color="white" strokeWidth={2} />
+          </div>
+          <p style={{ fontSize: 14, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 12px", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Unlock to view {title.toLowerCase()}
+          </p>
+          <button
+            onClick={onUnlock}
+            style={{
+              background: "#D4922A",
+              color: "white",
+              border: "none",
+              borderRadius: 12,
+              padding: "11px 22px",
+              fontSize: 14,
+              fontWeight: 700,
+              cursor: "pointer",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              boxShadow: "0 4px 14px rgba(212,146,42,0.4)",
+            }}
+          >
+            Unlock full report — £20
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function PreviewPage() {
   const [data, setData]         = useState<PreviewData | null>(null);
@@ -316,6 +375,45 @@ export default function PreviewPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Assessment summary — locked */}
+              <LockedCard title="Assessment summary" onUnlock={() => openCheckout(project.address)}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {["Planning policy context for your project type", "How your site constraints affect the outcome", "Key conditions likely to be applied if approved", "Comparable decisions in your area"].map((line, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 0", borderBottom: i < 3 ? "1px solid rgb(240,246,246)" : "none" }}>
+                      <div style={{ width: 8, height: 8, borderRadius: "50%", background: "rgb(200,215,220)", marginTop: 6, flexShrink: 0 }} />
+                      <p style={{ fontSize: 14, color: "rgb(80,100,110)", margin: 0, lineHeight: 1.5 }}>{line}</p>
+                    </div>
+                  ))}
+                </div>
+              </LockedCard>
+
+              {/* Documents — locked */}
+              <LockedCard title="Planning documents" onUnlock={() => openCheckout(project.address)}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {["Design & Access Statement", "Site Location Plan", "Supporting Planning Statement", "Pre-application checklist"].map((doc, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 0", borderBottom: i < 3 ? "1px solid rgb(240,246,246)" : "none" }}>
+                      <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgb(248,250,250)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgb(130,150,160)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                      </div>
+                      <p style={{ fontSize: 14, fontWeight: 500, color: "rgb(11,29,40)", margin: 0 }}>{doc}</p>
+                    </div>
+                  ))}
+                </div>
+              </LockedCard>
+
+              {/* Cost estimate — locked */}
+              <LockedCard title="Cost estimate" onUnlock={() => openCheckout(project.address)}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {[["Planning application fee", "£528"], ["Architect / drawings", "£800–£2,500"], ["Planning consultant (optional)", "£500–£1,500"], ["Total estimated range", "£1,300–£4,500"]].map(([label, value], i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: i < 3 ? "1px solid rgb(240,246,246)" : "none" }}>
+                      <p style={{ fontSize: 14, color: i === 3 ? "rgb(11,29,40)" : "rgb(80,100,110)", fontWeight: i === 3 ? 700 : 400, margin: 0 }}>{label}</p>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: i === 3 ? "#D4922A" : "rgb(11,29,40)", margin: 0 }}>{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </LockedCard>
+
             </div>
 
             {/* RIGHT — Paywall CTA (sticky) */}
