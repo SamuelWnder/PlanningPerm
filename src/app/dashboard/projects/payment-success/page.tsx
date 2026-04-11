@@ -15,16 +15,19 @@ function PaymentSuccessContent() {
   const [errorMsg, setErrorMsg]   = useState("");
 
   useEffect(() => {
-    // Accept transaction_id from URL param or from sessionStorage (set by Paddle eventCallback)
+    // Paddle appends ?_ptxn=TXN_ID on successUrl redirect; eventCallback stores in sessionStorage
     const transactionId =
+      searchParams.get("_ptxn") ??
       searchParams.get("transaction_id") ??
       sessionStorage.getItem("pp_transaction_id");
 
     if (!transactionId) {
       setStatus("error");
-      setErrorMsg("No transaction ID found. If you completed payment, please contact support.");
+      setErrorMsg("No transaction ID found. If you completed payment, please contact support at hello@planningperm.com");
       return;
     }
+    // Persist so the page still works on reload
+    sessionStorage.setItem("pp_transaction_id", transactionId);
 
     async function verify() {
       try {

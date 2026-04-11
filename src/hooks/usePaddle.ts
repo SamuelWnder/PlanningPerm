@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 interface PaddleEvent {
   name: string;
-  data?: { transaction_id?: string };
+  data?: { transaction_id?: string; id?: string };
 }
 
 declare global {
@@ -42,7 +42,7 @@ export function usePaddle() {
         token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN!,
         eventCallback(data: PaddleEvent) {
           if (data.name === "checkout.completed") {
-            const txId = data.data?.transaction_id;
+            const txId = data.data?.transaction_id ?? data.data?.id;
             if (txId) {
               sessionStorage.setItem("pp_transaction_id", txId);
               routerRef.current.push("/dashboard/projects/payment-success");
