@@ -2,13 +2,22 @@ import type { Metadata } from "next";
 import ArticleLayout from "@/components/ArticleLayout";
 
 const SLUG = "do-you-need-planning-permission-for-a-pergola";
-const TITLE = "Do You Need Planning Permission for a Pergola?";
-const DESC = "Pergolas often fall under permitted development, but height, size, and proximity to boundaries are easy to get wrong. Find out exactly what the rules say for your garden.";
+const TITLE = "Do You Need Planning Permission for a Pergola? (2026)";
+const DESC = "Most pergolas don't need planning permission under permitted development — but height limits, boundary distances, and covered roofs can change that. Here's exactly what the rules say.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
-  keywords: ["planning permission pergola", "pergola permitted development", "do I need planning permission for a pergola", "garden structure planning rules", "pergola height limit UK"],
+  keywords: [
+    "do you need planning permission for a pergola",
+    "pergola planning permission uk",
+    "pergola permitted development",
+    "do i need planning permission for a pergola",
+    "planning permission for pergola",
+    "pergola without planning permission",
+    "how big can a pergola be without planning permission",
+    "garden structure planning rules",
+  ],
   authors: [{ name: "PlanningPerm", url: "https://planningperm.com" }],
   alternates: { canonical: `https://planningperm.com/blog/${SLUG}` },
   openGraph: {
@@ -16,7 +25,7 @@ export const metadata: Metadata = {
     description: DESC,
     type: "article",
     url: `https://planningperm.com/blog/${SLUG}`,
-    publishedTime: "2025-04-01T00:00:00Z",
+    publishedTime: "2026-04-01T00:00:00Z",
     authors: ["PlanningPerm"],
     tags: ["pergola", "garden structures", "planning permission", "permitted development"],
   },
@@ -42,9 +51,9 @@ export default function PergolaArticle() {
       title="Do you need planning permission for a pergola?"
       description="Pergolas often fall under permitted development, but the rules on height, size, and proximity to boundaries are easy to get wrong. Find out exactly what applies to your property."
       readTime="5 min"
-      published="April 2025"
+      published="April 2026"
       slug={SLUG}
-      datePublished="2025-04-01"
+      datePublished="2026-04-01"
       related={related}
       faq={faq}
     >

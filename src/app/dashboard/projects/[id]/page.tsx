@@ -5,7 +5,7 @@ export const runtime = 'edge';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import {
   Home, FolderOpen, FileText, MapPin, Bell, User,
@@ -469,15 +469,9 @@ export default function ProjectResultPage() {
 
   // Fetch logged-in user's email for the lead capture form
   useEffect(() => {
-    try {
-      const sb = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      );
-      sb.auth.getUser().then(({ data }) => {
-        if (data?.user?.email) setUserEmail(data.user.email);
-      });
-    } catch { /* not logged in */ }
+    createClient().auth.getSession().then(({ data: { session } }) => {
+      if (session?.user?.email) setUserEmail(session.user.email);
+    }).catch(() => { /* not logged in */ });
   }, []);
 
   useEffect(() => {

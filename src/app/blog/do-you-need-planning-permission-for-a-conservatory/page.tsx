@@ -2,13 +2,22 @@ import type { Metadata } from "next";
 import ArticleLayout from "@/components/ArticleLayout";
 
 const SLUG = "do-you-need-planning-permission-for-a-conservatory";
-const TITLE = "Do You Need Planning Permission for a Conservatory?";
-const DESC = "Most conservatories fall under permitted development rights. Find out the exact size limits, rules for listed buildings and conservation areas, and when you do need to apply.";
+const TITLE = "Do You Need Planning Permission for a Conservatory? (2026)";
+const DESC = "Most conservatories don't need planning permission — but size, roof height, and location all matter. Find out the exact permitted development rules and when you do need to apply.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
-  keywords: ["planning permission conservatory", "conservatory permitted development", "do I need planning permission for a conservatory", "conservatory planning rules UK", "rear extension planning permission"],
+  keywords: [
+    "do you need planning permission for a conservatory",
+    "does a conservatory need planning permission",
+    "conservatory planning permission",
+    "do i need planning permission for a conservatory",
+    "planning permission for conservatory",
+    "conservatory permitted development",
+    "conservatory building regulations",
+    "conservatory planning rules UK",
+  ],
   authors: [{ name: "PlanningPerm", url: "https://planningperm.com" }],
   alternates: { canonical: `https://planningperm.com/blog/${SLUG}` },
   openGraph: {
@@ -16,7 +25,7 @@ export const metadata: Metadata = {
     description: DESC,
     type: "article",
     url: `https://planningperm.com/blog/${SLUG}`,
-    publishedTime: "2025-04-01T00:00:00Z",
+    publishedTime: "2026-04-01T00:00:00Z",
     authors: ["PlanningPerm"],
     tags: ["planning permission", "conservatory", "permitted development", "UK housing"],
   },
@@ -42,9 +51,9 @@ export default function ConservatoryArticle() {
       title="Do you need planning permission for a conservatory?"
       description="Most conservatories fall under permitted development, but size, location, and conservation area rules all affect whether you need permission. Here's what the rules actually say."
       readTime="6 min"
-      published="April 2025"
+      published="April 2026"
       slug={SLUG}
-      datePublished="2025-04-01"
+      datePublished="2026-04-01"
       related={related}
       faq={faq}
     >
