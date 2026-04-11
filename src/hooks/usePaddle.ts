@@ -17,6 +17,7 @@ declare global {
           items: { priceId: string; quantity: number }[];
           customer?: { email: string };
           customData?: Record<string, string>;
+          settings?: { successUrl?: string };
         }) => void;
       };
     };
@@ -68,7 +69,10 @@ export function usePaddle() {
     window.Paddle.Checkout.open({
       items: [{ priceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID!, quantity: 1 }],
       ...(email ? { customer: { email } } : {}),
-      customData: { address },
+      customData: { address: address || "unknown" },
+      settings: {
+        successUrl: `${window.location.origin}/dashboard/projects/payment-success`,
+      },
     });
   }
 

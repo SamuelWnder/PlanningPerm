@@ -19,9 +19,9 @@ const securityHeaders = [
       // Next.js inline scripts + Plausible
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://cdn.paddle.com https://public.profitwell.com",
       // Styles: self + inline (Tailwind generates inline) + Paddle
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net https://api.fonts.coollabs.io https://cdn.paddle.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net https://api.fonts.coollabs.io https://*.paddle.com https://fonts.fontsource.org",
       // Fonts
-      "font-src 'self' data: https://fonts.gstatic.com https://fonts.bunny.net https://api.fonts.coollabs.io",
+      "font-src 'self' data: https://fonts.gstatic.com https://fonts.bunny.net https://api.fonts.coollabs.io https://fonts.fontsource.org https://api.fontsource.org https://*.paddle.com",
       // Images: self + data URIs + OS Maps tiles
       "img-src 'self' data: blob: https://*.os.uk https://*.ordnancesurvey.co.uk",
       // API calls to external services
@@ -31,9 +31,7 @@ const securityHeaders = [
         "https://*.supabase.co",
         "https://api.anthropic.com",
         "https://api.os.uk",
-        "https://api.paddle.com",
-        "https://checkout.paddle.com",
-        "https://cdn.paddle.com",
+        "https://*.paddle.com",
         "https://www.planning.data.gov.uk",
         "https://services-eu1.arcgis.com",
         "https://environment.data.gov.uk",
@@ -44,7 +42,7 @@ const securityHeaders = [
       // Videos in public/
       "media-src 'self'",
       // iframes — Paddle checkout overlay
-      "frame-src https://checkout.paddle.com https://buy.paddle.com",
+      "frame-src https://*.paddle.com",
       // Workers
       "worker-src 'self' blob:",
     ].join("; "),
