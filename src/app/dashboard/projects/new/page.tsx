@@ -75,6 +75,7 @@ const USE_CLASSES = [
   "General industrial (B2)",
   "Storage / warehouse (B8)",
   "Other / sui generis",
+  "Not sure",
 ];
 
 type TypeKey = "rear-single" | "rear-double" | "side" | "loft" | "garage" | "porch" | "trees" | "change";
@@ -721,6 +722,7 @@ function NewProjectContent() {
                     { id: "Maisonette",         desc: "Multi-floor flat" },
                     { id: "Bungalow",           desc: "Single-storey house" },
                     { id: "Other",              desc: "Listed, barn, other" },
+                    { id: "Not sure",           desc: "We'll use a standard assumption" },
                   ].map((opt) => (
                     <button
                       key={opt.id}
@@ -801,7 +803,7 @@ function NewProjectContent() {
                     <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What type of work are you planning?</p>
                     <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Select the main type of work</p>
                     <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 8 }}>
-                      {["Crown reduction", "Crown thinning", "Pollarding", "Felling", "Pruning / deadwooding", "Root works"].map((opt) => (
+                      {["Crown reduction", "Crown thinning", "Pollarding", "Felling", "Pruning / deadwooding", "Root works", "Not sure"].map((opt) => (
                         <PillBtn key={opt} label={opt} selected={treeWorkType === opt} onClick={() => setTreeWorkType(opt)} fullWidth />
                       ))}
                     </div>
@@ -855,10 +857,10 @@ function NewProjectContent() {
                   <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                     <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0" }}>What is the total floor area?</p>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 }}>
-                      {typeConfig.sizes.map((opt) => (
-                        <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} fullWidth />
-                      ))}
-                    </div>
+                        {[...typeConfig.sizes, "Not sure"].map((opt) => (
+                          <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} fullWidth />
+                        ))}
+                      </div>
                   </div>
                 </>
               )}
@@ -871,7 +873,7 @@ function NewProjectContent() {
                       <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>{typeConfig.sizeLabel}</p>
                       <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Approximate floor area in square metres</p>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 }}>
-                        {typeConfig.sizes.map((opt) => (
+                        {[...typeConfig.sizes, "Not sure"].map((opt) => (
                           <PillBtn key={opt} label={opt} selected={size === opt} onClick={() => setSize(opt)} fullWidth />
                         ))}
                       </div>
@@ -884,7 +886,7 @@ function NewProjectContent() {
                       <div style={{ ...CARD, padding: isMobile ? "20px" : "28px 32px" }}>
                         <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 16px 0" }}>Attached or detached?</p>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                          {["Attached to the main house", "Detached structure"].map((opt) => (
+                          {["Attached to the main house", "Detached structure", "Not sure"].map((opt) => (
                             <PillBtn key={opt} label={opt} selected={garageAttachment === opt} onClick={() => setGarageAttachment(opt)} fullWidth />
                           ))}
                         </div>
@@ -893,7 +895,7 @@ function NewProjectContent() {
                         <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What will it be used for?</p>
                         <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Intended use affects planning classification</p>
                         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 8 }}>
-                          {["Car storage / garage", "Home office", "Studio / gym", "Storage", "Annexe / guest room"].map((opt) => (
+                          {["Car storage / garage", "Home office", "Studio / gym", "Storage", "Annexe / guest room", "Not sure"].map((opt) => (
                             <PillBtn key={opt} label={opt} selected={garageUse === opt} onClick={() => setGarageUse(opt)} fullWidth />
                           ))}
                         </div>
@@ -906,7 +908,7 @@ function NewProjectContent() {
                       <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>What roof type are you planning?</p>
                       <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Affects permitted development limits and design policy</p>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                        {typeConfig.roofOptions.map((opt) => (
+                        {[...typeConfig.roofOptions, "Not sure"].map((opt) => (
                           <PillBtn key={opt} label={opt} selected={roof === opt} onClick={() => setRoof(opt)} fullWidth />
                         ))}
                       </div>
@@ -918,7 +920,7 @@ function NewProjectContent() {
                       <p style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: "rgb(11,29,40)", margin: "0 0 6px 0" }}>Proposed external material</p>
                       <p style={{ fontSize: 14, color: "rgb(100,120,130)", margin: "0 0 16px 0" }}>Councils assess whether materials match the character of the area</p>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                        {typeConfig.materialOptions.map((opt) => (
+                        {[...typeConfig.materialOptions, "Not sure"].map((opt) => (
                           <PillBtn key={opt} label={opt} selected={material === opt} onClick={() => setMaterial(opt)} fullWidth />
                         ))}
                       </div>
