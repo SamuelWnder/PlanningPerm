@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PublicNav from "@/components/PublicNav";
+import BlogList from "@/components/BlogList";
 
 export const metadata: Metadata = {
   title: "Planning Permission Guides for UK Homeowners — PlanningPerm",
@@ -83,20 +84,7 @@ export default function BlogPage() {
           </Link>
         </div>
 
-        {/* Article grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(520px, 1fr))", gap: 24 }}>
-          {articles.map((a) => (
-            <Link key={a.slug} href={`/blog/${a.slug}`} style={{ background: "white", borderRadius: 20, padding: "28px 32px", textDecoration: "none", display: "block", boxShadow: "0 2px 16px rgba(0,0,0,0.06)", transition: "box-shadow 0.15s" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
-                <span style={{ background: "rgba(212,146,42,0.1)", color: "#D4922A", borderRadius: 99, padding: "3px 10px", fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase" }}>{a.category}</span>
-                <span style={{ color: "#9ca3af", fontSize: 13 }}>{a.readTime} read</span>
-              </div>
-              <h2 style={{ fontSize: 17, fontWeight: 700, color: "#0b1d28", margin: "0 0 10px", lineHeight: 1.35, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{a.title}</h2>
-              <p style={{ color: "#2d3843", fontSize: 15, margin: "0 0 16px", lineHeight: 1.65 }}>{a.description}</p>
-              <span style={{ color: "#D4922A", fontSize: 14, fontWeight: 600 }}>Read guide →</span>
-            </Link>
-          ))}
-        </div>
+        <BlogList articles={articles} />
       </div>
     </div>
   );
