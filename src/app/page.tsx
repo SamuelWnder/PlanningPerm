@@ -249,7 +249,7 @@ export default function HomePage() {
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-[#6b7280]">
-          {[["Blog","/blog"],["How it works","#feature-cards"]].map(([label, href]) => (
+          {[["Guides","/blog"],["How it works","#feature-cards"]].map(([label, href]) => (
             <a key={label} href={href} className="hover:text-[#0b1d28] transition-colors whitespace-nowrap">{label}</a>
           ))}
         </div>
@@ -262,7 +262,7 @@ export default function HomePage() {
       {/* Mobile nav drawer */}
       {navOpen && (
         <div className="md:hidden sticky top-[57px] z-40 bg-white border-t border-gray-100 px-5 py-4 flex flex-col gap-1">
-          {[["Blog","/blog"],["How it works","#feature-cards"]].map(([label, href]) => (
+          {[["Guides","/blog"],["How it works","#feature-cards"]].map(([label, href]) => (
             <a key={label} href={href} onClick={() => setNavOpen(false)}
                className="py-3 text-sm font-semibold text-[#0b1d28] border-b border-gray-50 hover:text-[#D4922A] transition-colors">
               {label}
