@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { usePaddle } from "@/hooks/usePaddle";
 import {
   MapPin, ChevronLeft,
   CheckCircle, AlertTriangle, XCircle, Building2, Zap, ShieldCheck,
-  Trees, Landmark, TrendingUp,
+  Trees, Landmark, Lock,
 } from "lucide-react";
 import type { StoredProject, AssessmentResult } from "@/lib/project-store";
 
@@ -110,30 +111,15 @@ function HeroBg() {
 export default function PreviewPage() {
   const [data, setData]         = useState<PreviewData | null>(null);
   const [noData, setNoData]     = useState(false);
-  const [name, setName]             = useState("");
-  const [email, setEmail]           = useState("");
-  const [emailSaved, setEmailSaved] = useState(false);
   const { isMobile, isTablet }  = useBreakpoint();
   const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
+  const { openCheckout } = usePaddle();
 
   useEffect(() => {
     const raw = sessionStorage.getItem("pp_preview_data");
     if (!raw) { setNoData(true); return; }
     try { setData(JSON.parse(raw)); } catch { setNoData(true); }
   }, []);
-
-  const handleEmailCapture = () => {
-    if (!email.trim() || !email.includes("@")) return;
-    const lead = { name: name.trim(), email: email.trim(), address: data?.project.address ?? "", ts: new Date().toISOString() };
-    sessionStorage.setItem("pp_lead_email", email.trim());
-    if (name.trim()) sessionStorage.setItem("pp_lead_name", name.trim());
-    try {
-      const existing = JSON.parse(localStorage.getItem("pp_leads") ?? "[]");
-      existing.unshift(lead);
-      localStorage.setItem("pp_leads", JSON.stringify(existing));
-    } catch { /* ignore */ }
-    setEmailSaved(true);
-  };
 
 
   if (noData) {
@@ -292,75 +278,68 @@ export default function PreviewPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <div style={{ position: "sticky", top: 96 }}>
 
-                {/* What's included card */}
+                {/* Unlock card */}
                 <div style={{ background: "rgb(11,29,40)", borderRadius: 24, padding: "28px 24px", boxShadow: "rgba(0,0,0,0.2) 0px 8px 32px", marginBottom: 16 }}>
-                  <h3 style={{ fontSize: 18, fontWeight: 800, color: "white", letterSpacing: -0.4, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: "0 0 16px 0" }}>
-                    What&apos;s in your report
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(212,146,42,0.15)", border: "1px solid rgba(212,146,42,0.3)", borderRadius: 20, padding: "4px 12px", marginBottom: 16 }}>
+                    <Lock size={11} color="#D4922A" strokeWidth={2.5} />
+                    <span style={{ fontSize: 12, fontWeight: 600, color: "#D4922A" }}>Preview</span>
+                  </div>
+                  <h3 style={{ fontSize: 20, fontWeight: 800, color: "white", letterSpacing: -0.4, fontFamily: "'Plus Jakarta Sans', sans-serif", margin: "0 0 8px 0", lineHeight: 1.2 }}>
+                    Unlock your full planning report
                   </h3>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", margin: "0 0 20px 0", lineHeight: 1.6 }}>
+                    Your preview shows constraints and risk factors. The full report adds:
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
                     {[
-                      { icon: <CheckCircle  size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Approval probability score" },
-                      { icon: <CheckCircle  size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "20 automated site checks" },
-                      { icon: <CheckCircle  size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Full risk factor breakdown" },
-                      { icon: <CheckCircle  size={14} color="rgb(55,176,170)" strokeWidth={2} />, text: "Council decision history" },
-                    ].map((item, i) => (
+                      "Detailed assessment summary",
+                      "Planning document templates",
+                      "Cost estimate breakdown",
+                      "Recommended next steps",
+                      "Saved to your account forever",
+                    ].map((text, i) => (
                       <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 24, height: 24, borderRadius: 6, background: "rgba(55,176,170,0.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                          {item.icon}
+                        <div style={{ width: 22, height: 22, borderRadius: 6, background: "rgba(55,176,170,0.12)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                          <CheckCircle size={13} color="rgb(55,176,170)" strokeWidth={2.5} />
                         </div>
-                        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.8)", margin: 0 }}>{item.text}</p>
+                        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", margin: 0 }}>{text}</p>
                       </div>
                     ))}
                   </div>
+
+                  <button
+                    onClick={() => openCheckout(project.address)}
+                    style={{
+                      width: "100%",
+                      background: "#D4922A",
+                      color: "white",
+                      border: "none",
+                      borderRadius: 14,
+                      padding: "16px 20px",
+                      fontSize: 16,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      boxShadow: "0 0 24px rgba(212,146,42,0.35)",
+                      marginBottom: 10,
+                    }}
+                  >
+                    Unlock full report — £20
+                  </button>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.25)", margin: 0, textAlign: "center" }}>
+                    One-time payment · No subscription
+                  </p>
                 </div>
 
                 {/* Approval rate teaser */}
                 {assessment.area_approval_rate !== null && (
-                  <div style={{ background: "white", borderRadius: 20, padding: "20px 24px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px", marginBottom: 16 }}>
+                  <div style={{ background: "white", borderRadius: 20, padding: "20px 24px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" }}>
                     <p style={{ fontSize: 13, fontWeight: 600, color: "rgb(100,120,130)", margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.06em" }}>Area approval rate</p>
                     <p style={{ fontSize: 32, fontWeight: 400, color: "rgb(11,29,40)", margin: "0 0 4px 0", letterSpacing: -1, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       {assessment.area_approval_rate}%
                       <span style={{ fontSize: 15, fontWeight: 400, color: "rgb(100,120,130)", marginLeft: 6 }}>householder</span>
                     </p>
                     <p style={{ fontSize: 12, color: "rgb(160,180,185)", margin: 0, lineHeight: 1.5 }}>{project.council} · MHCLG PS2 data</p>
-                  </div>
-                )}
-
-                {/* Email capture — save report link */}
-                {!emailSaved ? (
-                  <div style={{ background: "white", borderRadius: 20, padding: "20px 24px", boxShadow: "rgba(0,0,0,0.16) 0px 0px 4px 0px, rgba(152,203,205,0.64) 0px 4px 8px 0px" }}>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: "rgb(11,29,40)", margin: "0 0 4px 0" }}>Save this report</p>
-                    <p style={{ fontSize: 13, color: "rgb(100,120,130)", margin: "0 0 12px 0", lineHeight: 1.5 }}>Leave your details and we&apos;ll email you a link to come back. Your name will also appear on your planning documents.</p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                      <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Your full name"
-                        style={{ border: "1.5px solid rgb(226,240,240)", borderRadius: 10, padding: "10px 12px", fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgb(11,29,40)", background: "rgb(249,252,252)" }}
-                      />
-                      <div style={{ display: "flex", gap: 8 }}>
-                        <input
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          onKeyDown={(e) => { if (e.key === "Enter") handleEmailCapture(); }}
-                          placeholder="your@email.com"
-                          style={{ flex: 1, border: "1.5px solid rgb(226,240,240)", borderRadius: 10, padding: "10px 12px", fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgb(11,29,40)", background: "rgb(249,252,252)" }}
-                        />
-                        <button
-                          onClick={handleEmailCapture}
-                          style={{ background: "rgb(11,29,40)", color: "white", border: "none", borderRadius: 10, padding: "10px 16px", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}
-                        >
-                          Save
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div style={{ background: "rgba(55,176,170,0.08)", border: "1.5px solid rgba(55,176,170,0.3)", borderRadius: 20, padding: "16px 20px", display: "flex", alignItems: "center", gap: 10 }}>
-                    <CheckCircle size={18} color="rgb(55,176,170)" strokeWidth={2} />
-                    <p style={{ fontSize: 14, color: "rgb(30,100,95)", margin: 0, fontWeight: 500 }}>Got it — we&apos;ll hold your report at this link.</p>
                   </div>
                 )}
               </div>

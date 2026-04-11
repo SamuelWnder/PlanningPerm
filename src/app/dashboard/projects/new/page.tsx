@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, Suspense } from "react";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { usePaddle } from "@/hooks/usePaddle";
 import Link from "next/link";
 import {
   Home, FolderOpen, FileText, MapPin, Bell, User,
@@ -257,6 +258,7 @@ function NewProjectContent() {
   const TOTAL_STEPS  = 5;
   const { isMobile, isTablet } = useBreakpoint();
   const hPad = isMobile ? "16px" : isTablet ? "32px" : "64px";
+  const { openCheckout } = usePaddle();
 
   // Free-check gate
   const [gated, setGated] = useState<"loading" | "free" | "used">("loading");
@@ -516,20 +518,14 @@ function NewProjectContent() {
           </Link>
 
           <button
-            onClick={async () => {
+            onClick={() => {
               const address = (() => {
                 try {
                   const raw = sessionStorage.getItem("pp_new_project");
                   return raw ? (JSON.parse(raw) as { address: string }).address : "your property";
                 } catch { return "your property"; }
               })();
-              const res = await fetch("/api/stripe/create-checkout", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ address }),
-              });
-              const { url } = await res.json();
-              if (url) window.location.href = url;
+              openCheckout(address);
             }}
             style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "rgba(255,255,255,0.08)", border: "1.5px solid rgba(255,255,255,0.18)", color: "white", borderRadius: 14, padding: "15px 24px", fontSize: 15, fontWeight: 600, cursor: "pointer" }}
           >

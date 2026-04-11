@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Check, AlertTriangle, Mail, ArrowRight } from "lucide-react";
+import { Check, AlertTriangle } from "lucide-react";
 import type { StoredProject } from "@/lib/project-store";
 
 const STEPS = [
@@ -25,7 +25,7 @@ const FACTS = [
   "Planning decisions must be made within 8 weeks for most applications.",
 ];
 
-type PageState = "loading" | "needs_email" | "saving" | "error";
+type PageState = "loading" | "done" | "error";
 
 export default function GeneratedResultPage() {
   const router = useRouter();
@@ -39,12 +39,7 @@ export default function GeneratedResultPage() {
   const [pageState,  setPageState]  = useState<PageState>("loading");
   const [error,      setError]      = useState<string | null>(null);
 
-  // ── Email form ─────────────────────────────────────────────────────────────
-  const [email,       setEmail]      = useState("");
-  const [emailError,  setEmailError] = useState("");
-
-  // ── Internal refs (don't trigger re-renders) ──────────────────────────────
-  // Holds the finished AI result waiting for email submission
+  // ── Internal ref — holds finished result until redirect ───────────────────
   const pendingResult = useRef<{ project: StoredProject; assessment: unknown } | null>(null);
 
   // ── Step progression ───────────────────────────────────────────────────────
@@ -118,11 +113,13 @@ export default function GeneratedResultPage() {
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 
-        // AI done — store result and prompt for email
+        // AI done — store result in sessionStorage then redirect to preview
         pendingResult.current = { project: proj, assessment: data };
+        sessionStorage.setItem("pp_preview_data", JSON.stringify({ project: proj, assessment: data }));
         setProgress(100);
         setStep(STEPS.length);
-        setPageState("needs_email");
+        setPageState("done");
+        setTimeout(() => router.replace("/dashboard/projects/preview"), 1200);
       } catch (e) {
         console.error(e);
         setError("Something went wrong generating your assessment. Please try again.");
@@ -131,46 +128,6 @@ export default function GeneratedResultPage() {
     run();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // ── Save project + redirect ────────────────────────────────────────────────
-  async function handleSubmitEmail() {
-    setEmailError("");
-    const trimmed = email.trim().toLowerCase();
-    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-      setEmailError("Please enter a valid email address.");
-      return;
-    }
-    if (!pendingResult.current) {
-      setEmailError("Still generating — please wait a moment.");
-      return;
-    }
-
-    setPageState("saving");
-
-    try {
-      const res = await fetch("/api/auth/save-project", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email:      trimmed,
-          project:    pendingResult.current.project,
-          assessment: pendingResult.current.assessment,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error ?? "Save failed");
-
-      // Clean up session data
-      sessionStorage.removeItem("pp_new_project");
-
-      // Redirect directly to the report — UUID is the access token
-      router.replace(`/dashboard/projects/${data.projectId}`);
-    } catch (e) {
-      console.error(e);
-      setError("We couldn't save your report. Please try again.");
-    }
-  }
 
   // ── Error screen ───────────────────────────────────────────────────────────
   if (error) {
@@ -282,75 +239,30 @@ export default function GeneratedResultPage() {
           })}
         </div>
 
-        {/* ── Email gate — shown when AI is done ────────────────────────────── */}
-        {(pageState === "needs_email" || pageState === "saving") && (
+        {/* ── Done — brief confirmation before redirect ──────────────────────── */}
+        {pageState === "done" && (
           <div style={{
             width: "100%",
-            background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.12)",
+            background: "rgba(55,176,170,0.08)",
+            border: "1px solid rgba(55,176,170,0.25)",
             borderRadius: 18,
-            padding: "24px 22px",
+            padding: "20px 22px",
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
             animation: "fadeUp 0.4s ease",
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-              <div style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(55,176,170,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Mail size={14} color="rgb(55,176,170)" />
-              </div>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "white", margin: 0, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                Your report is ready
+            <div style={{ width: 32, height: 32, borderRadius: 10, background: "rgba(55,176,170,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Check size={16} color="rgb(55,176,170)" strokeWidth={2.5} />
+            </div>
+            <div>
+              <p style={{ fontSize: 14, fontWeight: 700, color: "white", margin: "0 0 2px 0", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                Assessment complete
+              </p>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", margin: 0 }}>
+                Opening your preview…
               </p>
             </div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", margin: "0 0 16px 0", lineHeight: 1.6 }}>
-              Enter your email to open your report and receive a saved link — so you can come back from any device.
-            </p>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
-                onKeyDown={(e) => { if (e.key === "Enter") handleSubmitEmail(); }}
-                placeholder="your@email.com"
-                disabled={pageState === "saving"}
-                autoFocus
-                style={{
-                  flex: 1,
-                  background: "rgba(255,255,255,0.08)",
-                  border: emailError ? "1.5px solid rgba(220,60,60,0.6)" : "1.5px solid rgba(255,255,255,0.15)",
-                  borderRadius: 10,
-                  padding: "11px 14px",
-                  fontSize: 14,
-                  color: "white",
-                  outline: "none",
-                  fontFamily: "'Inter', sans-serif",
-                }}
-              />
-              <button
-                onClick={handleSubmitEmail}
-                disabled={pageState === "saving"}
-                style={{
-                  background: pageState === "saving" ? "rgba(212,146,42,0.5)" : "#D4922A",
-                  color: "white",
-                  border: "none",
-                  borderRadius: 10,
-                  padding: "11px 16px",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: pageState === "saving" ? "default" : "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  whiteSpace: "nowrap",
-                  transition: "background 0.2s",
-                }}
-              >
-                {pageState === "saving" ? "Saving…" : <>Open report <ArrowRight size={14} /></>}
-              </button>
-            </div>
-            {emailError && (
-              <p style={{ fontSize: 12, color: "rgba(220,80,80,0.9)", margin: "8px 0 0", lineHeight: 1.5 }}>
-                {emailError}
-              </p>
-            )}
           </div>
         )}
 
