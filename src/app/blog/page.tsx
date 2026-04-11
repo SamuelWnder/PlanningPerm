@@ -9,6 +9,20 @@ export const metadata: Metadata = {
 
 const articles = [
   {
+    slug: "do-you-need-planning-permission-for-an-extension",
+    title: "Do you need planning permission for an extension?",
+    description: "Most single-storey rear extensions are permitted development — but size limits, the prior approval scheme, and conservation area rules are all easy to get wrong.",
+    readTime: "7 min",
+    category: "Extensions",
+  },
+  {
+    slug: "do-you-need-planning-permission-for-a-loft-conversion",
+    title: "Do you need planning permission for a loft conversion?",
+    description: "Most loft conversions are permitted development — but volume limits, front dormer rules, and Building Regulations requirements mean it's not always straightforward.",
+    readTime: "8 min",
+    category: "Loft Conversions",
+  },
+  {
     slug: "do-you-need-planning-permission-for-a-conservatory",
     title: "Do you need planning permission for a conservatory?",
     description: "Most conservatories fall under permitted development, but size, location, and conservation area rules all affect whether you need permission. Here's what the rules actually say.",

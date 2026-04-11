@@ -33,9 +33,9 @@ export const metadata: Metadata = {
 };
 
 const related = [
+  { title: "Do you need planning permission for an extension?", href: "/blog/do-you-need-planning-permission-for-an-extension", readTime: "7 min" },
+  { title: "Do you need planning permission for a loft conversion?", href: "/blog/do-you-need-planning-permission-for-a-loft-conversion", readTime: "8 min" },
   { title: "How much does planning permission cost?", href: "/blog/how-much-does-planning-permission-cost-uk", readTime: "7 min" },
-  { title: "Planning permission for solar panels", href: "/blog/do-you-need-planning-permission-for-solar-panels", readTime: "5 min" },
-  { title: "Planning permission for a pergola", href: "/blog/do-you-need-planning-permission-for-a-pergola", readTime: "5 min" },
 ];
 
 const faq = [
